@@ -1,0 +1,12 @@
+// https://github.com/storybookjs/storybook/issues/11362
+
+.docblock-argstable-head {
+    // 設定 description 最小寬
+    th:nth-of-type(2) { 
+        min-width: 400px;
+    }
+    // 設定 control 最小寬
+    th:last-of-type { 
+        min-width: 400px;
+    }
+}
