@@ -10,7 +10,7 @@ export default {
   name: "BoCurrencyInput",
   props: {
     value: {
-      type: String
+      type: [String, Number]
     }
   },
   computed: {

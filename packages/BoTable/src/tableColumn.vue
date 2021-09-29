@@ -11,6 +11,7 @@
         :column="child"
       ></table-column>
     </template>
+    
     <template slot-scope="scope">
       <span v-if="column.slotName">
         <!-- Table-column Scoped Slot -->

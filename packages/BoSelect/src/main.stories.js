@@ -9,14 +9,14 @@ export default {
 };
 
 const html = `<div>
-<bo-select
-  v-model="model"
-  :list="list"
-  :collapseTags="collapseTags"
-  :disabled="disabled"
-  :showBtn="showBtn"
-  :showType="showType"
->
+  <bo-select
+    v-model="model"
+    :list="list"
+    :collapseTags="collapseTags"
+    :disabled="disabled"
+    :showBtn="showBtn"
+    :showType="showType"
+  >
   </bo-select>
 </div>`
 

@@ -6,9 +6,9 @@
 $ npm i --save backoffice-ui
 ```
 
-## 文档
+## 例子
 
-[文档说明](http://prod-2gkci4wn5f5409a2-1257719813.tcloudbaseapp.com/storybook-static/?path=/docs/components-bopage--primary)
+暂无 
 
 ## 变更日志
 Detailed changes for each release are documented in the [release notes](./CHANGELOG.md).

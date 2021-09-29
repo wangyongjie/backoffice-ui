@@ -362,3 +362,62 @@ groupingTableHeadChart.args = {
   tableOptions
 }
 groupingTableHeadChart.parameters = parseDocsSourceCode(html, groupingTableHeadChart.args)
+
+
+
+const slotHtml = (name) => `<div>
+<bo-page
+  :loading.sync="loading"
+  :formOptions="formOptions"
+  :tips="tips"
+  :columns="columns"
+  :tableOptions="tableOptions"
+  :tabs="tabs"
+  @search="search"
+  @excel="excel"
+>
+  <template slot="${name}"">
+    ${name}
+  </template>
+</bo-page>
+</div>`
+export const preTable = (args, {
+  argTypes
+}) => ({
+  components: {
+    BoPage
+  },
+  props: Object.keys(argTypes),
+  template: slotHtml('preTable'),
+});
+preTable.storyName = "slot: preTable"
+preTable.args = {
+  ...Primary.args,
+  formOptions: {
+    forms: []
+  },
+  columns: [],
+  tableOptions: {}
+}
+preTable.parameters = parseDocsSourceCode(slotHtml('preTable'), preTable.args)
+
+
+export const nextTable = (args, {
+  argTypes
+}) => ({
+  components: {
+    BoPage
+  },
+  props: Object.keys(argTypes),
+  template: slotHtml('nextTable'),
+});
+nextTable.storyName = "slot: nextTable"
+nextTable.args = {
+  ...Primary.args,
+  formOptions: {
+    forms: []
+  },
+  columns: [],
+  tableOptions: {}
+}
+nextTable.parameters = parseDocsSourceCode(slotHtml('nextTable'), nextTable.args)

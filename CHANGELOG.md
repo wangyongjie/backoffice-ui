@@ -1,6 +1,15 @@
 ## 更新日志
 
+### 1.0.39
+*2021-09-27*
+- bo-page 组件
+  - 在 bo-table 组件前后加插槽 preTable 和 nextTable
+- bo-search 组件
+  - 新增 itemType: "selectInput"
+- 新增 bo-copy 组件
+
 ### 1.0.38
+
 *2021-09-18*
 - bo-page 增加自动处理loading
 

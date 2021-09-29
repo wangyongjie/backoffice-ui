@@ -1,6 +1,6 @@
 {
   "name": "backoffice-ui",
-  "version": "1.0.38",
+  "version": "1.0.39",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -61,8 +61,7 @@
     "overrides": [
       {
         "files": [
-          "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+          "**/packages/**/*.spec.{j,t}s?(x)"
         ],
         "env": {
           "jest": true

@@ -45,6 +45,8 @@
     </bo-search>
 
     <bo-chart :chartOptions="chartOptions"></bo-chart>
+    <!-- @slot 可從外部傳入 slot="preTable" 在 tabs & table 上方 -->
+    <slot name="preTable"></slot>
 
     <el-tabs
       v-if="tabs.length"
@@ -95,6 +97,9 @@
         ><slot :name="name" v-bind="slotData"
       /></template>
     </bo-table>
+
+    <!-- @slot 可從外部傳入 slot="nextTable" 在 tabs & table 下方 -->
+    <slot name="nextTable"></slot>
 
     <bo-pagination
       v-if="showPagination"
@@ -158,7 +163,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    // for nest table with tabs: [{ label, columns, tableOptions}]
     /**
      * 多層 tabs 設定
      */

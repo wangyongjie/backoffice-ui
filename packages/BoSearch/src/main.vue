@@ -36,6 +36,14 @@
           :label="option.label"
         />
       </el-select>
+
+      <bo-select-input
+        v-else-if="form.itemType === 'selectInput'"
+        :params="params"
+        :form="form"
+        @onEnter="searchHandler"
+      ></bo-select-input>
+
       <bo-select
         v-else-if="form.itemType === 'multSelect'"
         v-model="params[form.prop]"
@@ -89,7 +97,9 @@
 
 <script>
 import BoSelect from "../../BoSelect";
+import BoSelectInput from "../../BoSelectInput";
 import { pickerOptionsData } from "../../config/picker-options";
+import { checkFormPropsDuplicates } from "../..//utils/form"
 
 export default {
   name: "BoSearch",
@@ -132,9 +142,14 @@ export default {
   },
   components: {
     BoSelect,
+    BoSelectInput,
   },
   data() {
     const { forms } = this.$props;
+    if (checkFormPropsDuplicates(forms)) {
+      console.error('BoSearch form has duplicated prop.')
+    }
+
     return {
       ...pickerOptionsData(forms),
     };

@@ -92,6 +92,20 @@ Primary.args = {
         },
       ],
     },
+    {
+      itemType: "selectInput",
+      selectName: 'selectType',
+      prop: 'uid',
+      options: [{
+          value: 'uid',
+          label: "UID"
+        },
+        {
+          value: 'gameId',
+          label: "Games"
+        }
+      ],
+    }
   ],
 };
 Primary.parameters = parseDocsSourceCode(html, Primary.args)
@@ -130,6 +144,29 @@ select.args = {
   }]
 }
 select.parameters = parseDocsSourceCode(html, select.args)
+
+
+export const selectInput = Template.bind({});
+selectInput.storyName = "itemType: selectInput"
+selectInput.args = {
+  ...Primary.args,
+  forms: [{
+    itemType: "selectInput",
+    selectName: 'selectType',
+    prop: 'gameid',
+    options: [{
+        value: 'uid',
+        label: "UID"
+      },
+      {
+        value: 'name',
+        label: "Names"
+      }
+    ],
+    urlSync: true
+  }]
+}
+selectInput.parameters = parseDocsSourceCode(html, selectInput.args)
 
 
 export const multSelect = Template.bind({});
