@@ -63,7 +63,7 @@
         <bo-table
           v-loading.lock="loading"
           v-bind="tab.tableOptions"
-          :height="height"
+          :height="tab.tableOptions.height || height"
           border
           :columns="tab.columns"
           @sort-change="sortChange"
@@ -83,7 +83,7 @@
       v-else
       v-loading.lock="loading"
       v-bind="tableOptions"
-      :height="height"
+      :height="tableOptions.height || height"
       border
       :columns="columns"
       @sort-change="sortChange"
@@ -311,7 +311,10 @@ export default {
 
     //适配table高度
     this.$nextTick(() => {
-      this.autoHeight();
+      // 判断高度是否有传，如果有传递，就不自动设置高度
+      if((this.tabs.length && !this.tabs.tableOptions.height) || (!this.tabs.length && !this.tableOptions.height)) {
+        this.autoHeight();
+      }
       this.setChartOptions();
     });
 

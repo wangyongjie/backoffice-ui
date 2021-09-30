@@ -44,6 +44,13 @@
         @onEnter="searchHandler"
       ></bo-select-input>
 
+      <bo-select-date
+        v-else-if="form.itemType === 'selectDate'"
+        :value.sync="params[form.prop]"
+        :period.sync="params[form.periodName]"
+        :period-range="form.periodRange"
+      ></bo-select-date>
+
       <bo-select
         v-else-if="form.itemType === 'multSelect'"
         v-model="params[form.prop]"
@@ -98,6 +105,7 @@
 <script>
 import BoSelect from "../../BoSelect";
 import BoSelectInput from "../../BoSelectInput";
+import BoSelectDate from "../../BoSelectDate";
 import { pickerOptionsData } from "../../config/picker-options";
 import { checkFormPropsDuplicates } from "../..//utils/form"
 
@@ -143,13 +151,13 @@ export default {
   components: {
     BoSelect,
     BoSelectInput,
+    BoSelectDate
   },
   data() {
     const { forms } = this.$props;
     if (checkFormPropsDuplicates(forms)) {
       console.error('BoSearch form has duplicated prop.')
     }
-
     return {
       ...pickerOptionsData(forms),
     };
@@ -167,12 +175,12 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           let temp = { ...this.params };
-          if (temp.date) {
+          if (temp.date && temp.date instanceof Array) {
             temp.startAt = temp.date[0];
             temp.endAt = temp.date[1];
+            delete temp.date;
           }
           this.addParamsToUri(temp);
-          delete temp.date;
           /**
            * 回傳搜尋資料
            */
@@ -186,11 +194,11 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           let temp = { ...this.params };
-          if (temp.date) {
+          if (temp.date && temp.date instanceof Array) {
             temp.startAt = temp.date[0];
             temp.endAt = temp.date[1];
+            delete temp.date;
           }
-          delete temp.date;
           /**
            * 回傳搜尋資料
            */
@@ -226,6 +234,13 @@ export default {
       const urlSyncList = this.forms
         .filter((x) => !!x.urlSync)
         .map((x) => x.prop);
+      // 对类型为selectDate的添加新的prop
+      this.forms.forEach(i => {
+        if(i.itemType === 'selectDate' && !!i.urlSync) {
+          urlSyncList.push(i.periodName);
+        }
+      })
+
       if (urlSyncList.includes("tab")) {
         alert(`urlSync cannot use the 'tab' keyword, it's used by BoMenu.`);
       }

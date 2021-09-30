@@ -1,5 +1,19 @@
 ## 更新日志
 
+### 1.0.41
+*2021-09-30*
+- bo-search 组件
+  - itemType: "selectDate" 修复一下week日期不正确问题
+
+### 1.0.40
+*2021-09-30*
+- bo-search 组件
+  - 新增 itemType: "selectDate"
+- bo-copy 组件
+  - 修改display为inline-block
+- bo-page 组件
+  - height可传，如果为auto，则不自动设置table高度
+
 ### 1.0.39
 *2021-09-27*
 - bo-page 组件

@@ -64,6 +64,31 @@ export default {
             ],
             urlSync: true,
           },
+          {
+            "itemType": "selectInput",
+            "selectName": "selectType",
+            "prop": "gameid",
+            "options": [{
+                "value": "uids",
+                "label": "UID"
+              },
+              {
+                "value": "names",
+                "label": "Names"
+              }
+            ],
+            "urlSync": true
+          },
+          {
+            prop: "dates",
+            label: "Time",
+            itemType: "selectDate",
+            value: '20210701',
+            periodName: 'date_period',
+            periodRange: ['daily', 'week'],
+            periodValue: 'week',
+            urlSync: true,
+          }
         ],
       },
       tips: [
@@ -120,6 +145,15 @@ export default {
           { name: "Jean", mobile: "13452xxxx", num: 1234567, sex: 1 },
           { name: "Tony", mobile: "187233xxxx", num: 1234567, sex: 0 },
         ],
+        spanMethod: ({ rowIndex, columnIndex }) => {
+          if (rowIndex % 2 === 0) {
+            if (columnIndex === 0) {
+              return [1, 2];
+            } else if (columnIndex === 1) {
+              return [0, 0];
+            }
+          }
+        }
       },
 
       editDialogVisible: false,
@@ -152,7 +186,8 @@ export default {
     };
   },
   methods: {
-    searchHandle() {
+    searchHandle(params) {
+      console.log(params)
       setTimeout(() => {
         this.tableOptions.data = [
           { name: "Sam", mobile: "15299xxxx", sex: 0 },

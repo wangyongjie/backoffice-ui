@@ -2,6 +2,7 @@
   <div class="bo-copy">
     <slot></slot>
     <el-button
+      style="margin-left:3px;"
       type="primary"
       icon="el-icon-copy-document"
       size="mini"
@@ -19,7 +20,7 @@ export default {
   name: "BoCopy",
   directives: {
     copy: {
-      bind: function (el, binding, vnode) {
+      bind: function (el) {
         const sourceText = el.innerHTML;
         el.innerHTML = `
           ${sourceText}
@@ -42,6 +43,7 @@ export default {
 </script>
 <style lang="scss">
 .bo-copy {
+  display: inline-block;
   .el-button--mini.is-circle {
     padding: 4px;
   }

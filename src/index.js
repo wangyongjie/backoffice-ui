@@ -7,6 +7,7 @@ import BoPage from '../packages/BoPage/index.js';
 import BoSearch from '../packages/BoSearch/index.js';
 import BoSelect from '../packages/BoSelect/index.js';
 import BoSelectInput from '../packages/BoSelectInput/index.js';
+import BoSelectDate from '../packages/BoSelectDate/index.js';
 import BoTable from '../packages/BoTable/index.js';
 
 const components = [
@@ -19,6 +20,7 @@ const components = [
     BoSearch,
     BoSelect,
     BoSelectInput,
+    BoSelectDate,
     BoTable,
 ];
 
@@ -60,5 +62,6 @@ export default {
     BoSearch,
     BoSelect,
     BoSelectInput,
+    BoSelectDate,
     BoTable,
 };
