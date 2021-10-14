@@ -19,7 +19,18 @@ export default {
                 scales: {
                     y: {
                         beginAtZero: true
-                    }
+                    },
+                    // y gridLines
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display: true
+                        }
+                    }]
                 }
             },
         };

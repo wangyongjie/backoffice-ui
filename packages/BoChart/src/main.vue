@@ -1,5 +1,5 @@
 <template>
-  <div v-if="chartOptions && chartOptions.visible">
+  <div class="bo-chart">
     <line-chart v-if="type === 'line'" :chartData="chartData"></line-chart>
     <bar-chart v-else-if="type === 'bar'" :chartData="chartData"></bar-chart>
     <div class="pie-container" v-else-if="type === 'pie'">
@@ -16,7 +16,6 @@
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
 import PieChart from "./PieChart";
-import { transformUtils } from "./transform-utils";
 
 export default {
   name: "BoChart",
@@ -27,53 +26,26 @@ export default {
   },
   props: {
     /**
-     * { visible, tableOptions, columns }
-     * visible 是否顯示
-     * tableOptions, columns 同 BoPage 設定
+     * type: 'line' | 'bar' | 'pie'
      */
-    chartOptions: {
+    type: {
+      type: String,
+      default: ''
+    },
+    /**
+     * 同 [Chart.js data](https://www.chartjs.org/docs/latest/general/data-structures.html) 設定
+     */
+    chartData: {
       type: Object,
       default: () => {},
     },
-  },
-  watch: {
-    chartOptions: {
-      handler(chartOptions) {
-        const dataExist =
-          chartOptions &&
-          chartOptions.tableOptions &&
-          chartOptions.tableOptions.data &&
-          chartOptions.tableOptions.data.length;
-
-        if (!dataExist) {
-          this.type = "";
-          this.chartData = null;
-          return;
-        }
-
-        const trasformData = transformUtils.boChartData({
-          tableOptions: chartOptions.tableOptions,
-          columns: chartOptions.columns,
-        });
-
-        if (trasformData) {
-          this.type = trasformData.type;
-          this.chartData = trasformData.chartData;
-        }
-      },
-      deep: true,
-      immediate: true,
-    },
-  },
-  data() {
-    return {
-      type: "",
-      chartData: null,
-    };
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
+.bo-chart {
+  margin-bottom: 20px;
+}
 .pie-container {
   margin: 10px 0;
   display: flex;

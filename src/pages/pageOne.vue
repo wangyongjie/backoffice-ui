@@ -65,6 +65,16 @@ export default {
             urlSync: true,
           },
           {
+            prop: "radio",
+            label: "By Radio",
+            itemType: "radio",
+            options: [
+              { value: 0, label: "Male" },
+              { value: 1, label: "Female" },
+            ],
+            urlSync: true,
+          },
+          {
             "itemType": "selectInput",
             "selectName": "selectType",
             "prop": "gameid",

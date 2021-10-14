@@ -18,7 +18,7 @@
       <el-input
         v-if="form.itemType === 'input' || form.itemType === undefined"
         v-model.trim="params[form.prop]"
-        clearable
+        :clearable="(form.clearable !== undefined) ? form.clearable : true"
         @keyup.enter.native="searchHandler"
         :placeholder="form.placeholder"
       />
@@ -27,7 +27,7 @@
         v-model="params[form.prop]"
         :placeholder="form.placeholder"
         :multiple="form.multiple"
-        clearable
+        :clearable="(form.clearable !== undefined) ? form.clearable : true"
       >
         <el-option
           v-for="(option, optionIndex) in form.options"
@@ -36,6 +36,19 @@
           :label="option.label"
         />
       </el-select>
+
+      <el-radio-group
+          v-else-if="form.itemType === 'radio'"
+          v-model="params[form.prop]"
+        >
+          <el-radio
+            v-for="(radio, radioIndex) in form.options"
+            :key="radioIndex"
+            :label="radio.value"
+            v-bind="radio"
+            >{{ radio.label }}</el-radio
+          >
+        </el-radio-group>
 
       <bo-select-input
         v-else-if="form.itemType === 'selectInput'"
@@ -107,7 +120,7 @@ import BoSelect from "../../BoSelect";
 import BoSelectInput from "../../BoSelectInput";
 import BoSelectDate from "../../BoSelectDate";
 import { pickerOptionsData } from "../../config/picker-options";
-import { checkFormPropsDuplicates } from "../..//utils/form"
+import { checkFormPropsDuplicates } from "../../utils/form";
 
 export default {
   name: "BoSearch",
@@ -151,12 +164,12 @@ export default {
   components: {
     BoSelect,
     BoSelectInput,
-    BoSelectDate
+    BoSelectDate,
   },
   data() {
     const { forms } = this.$props;
     if (checkFormPropsDuplicates(forms)) {
-      console.error('BoSearch form has duplicated prop.')
+      console.error("BoSearch form has duplicated prop.");
     }
     return {
       ...pickerOptionsData(forms),
@@ -172,6 +185,7 @@ export default {
       }
     },
     searchHandler() {
+      if (!this.validateDateRange()) return;
       this.$refs.form.validate((valid) => {
         if (valid) {
           let temp = { ...this.params };
@@ -191,6 +205,7 @@ export default {
       });
     },
     excelHandler() {
+      if (!this.validateDateRange()) return;
       this.$refs.form.validate((valid) => {
         if (valid) {
           let temp = { ...this.params };
@@ -207,6 +222,33 @@ export default {
           return false;
         }
       });
+    },
+    validateDateRange() {
+      let isValid = true;
+      const dataRanges = this.forms.filter((x) => x.itemType === "daterange");
+      dataRanges.forEach((x) => {
+        const rangeDates = this.params[x.prop];
+        const maxRangeDays = x.maxRangeDays;
+        if (maxRangeDays && rangeDates && rangeDates.length === 2) {
+          const formateDate = (str) =>
+            new Date(
+              `${str.substr(0, 4)}-${str.substr(4, 2)}-${str.substr(6, 2)}`
+            );
+          const diffTime = Math.abs(
+            formateDate(rangeDates[1]) - formateDate(rangeDates[0])
+          );
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          console.log("dataRanges", diffTime, diffDays);
+          if (diffDays > maxRangeDays) {
+            isValid = false;
+            this.$message({
+              message: `Date range should not exceed ${maxRangeDays} days.`,
+              type: "error",
+            });
+          }
+        }
+      });
+      return isValid;
     },
     getParamsFromUrl() {
       const params = this.$route.query;
@@ -235,11 +277,11 @@ export default {
         .filter((x) => !!x.urlSync)
         .map((x) => x.prop);
       // 对类型为selectDate的添加新的prop
-      this.forms.forEach(i => {
-        if(i.itemType === 'selectDate' && !!i.urlSync) {
+      this.forms.forEach((i) => {
+        if (i.itemType === "selectDate" && !!i.urlSync) {
           urlSyncList.push(i.periodName);
         }
-      })
+      });
 
       if (urlSyncList.includes("tab")) {
         alert(`urlSync cannot use the 'tab' keyword, it's used by BoMenu.`);

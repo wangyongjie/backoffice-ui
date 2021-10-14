@@ -1,5 +1,28 @@
 ## 更新日志
 
+### 1.0.44
+*2021-10-12*
+- bo-search
+  - itemType: "daterange" 新增 maxRangeDays 限制最大天數和側邊欄快捷鍵顯示
+- bo-chart
+  - move table logic to bo-page
+  - adjust tooltip & grid line
+  
+### 1.0.43
+*2021-10-11*
+- bo-search 组件
+  - 修复clearable可配置，如果clearable: null 就清除clearble
+  - 
+### 1.0.42
+*2021-09-30*
+- bo-page 组件
+  - 修复height问题，通过属性为false或null不生效来处理
+
+### 1.0.42
+*2021-09-30*
+- bo-page 组件
+  - 修复height问题，通过属性为false或null不生效来处理
+  - 
 ### 1.0.41
 *2021-09-30*
 - bo-search 组件

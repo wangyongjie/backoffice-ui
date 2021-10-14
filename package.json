@@ -1,13 +1,12 @@
 {
   "name": "backoffice-ui",
-  "version": "1.0.41",
+  "version": "1.0.45",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:generate-output": "vue-cli-service test:unit --json --outputFile=.jest-test-results.json --watch",
     "lint": "vue-cli-service lint --fix",
-    "doc": "vuese gen",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -31,7 +30,6 @@
     "@vue/cli-plugin-unit-jest": "^4.5.13",
     "@vue/cli-service": "~4.5.0",
     "@vue/test-utils": "^1.0.3",
-    "@vuese/cli": "^2.14.3",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "element-ui": "^2.15.5",

@@ -22,6 +22,29 @@ export default {
                         fill: false,
                         tension: 0
                     }
+                },
+                // tooltips
+                tooltips: {
+                    mode: 'index',
+                    bodySpacing: 10,
+                    intersect: false
+                },
+                hover: {
+                    mode: 'index',
+                    intersect: false
+                },
+                // y gridLines
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display: true
+                        }
+                    }]
                 }
             },
         };

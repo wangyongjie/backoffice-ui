@@ -5,6 +5,7 @@ export const pickerOptionsData = (formItems) => {
     let pickerOptions = {
         shortcuts: [{
                 text: "Today",
+                rangeDays: 1, // custom field for 'maxRangeDays' to filter
                 onClick(picker) {
                     const end = new Date();
                     const start = new Date();
@@ -17,6 +18,7 @@ export const pickerOptionsData = (formItems) => {
             },
             {
                 text: "Past 7 Days",
+                rangeDays: 7, // custom field for 'maxRangeDays' to filter
                 onClick(picker) {
                     const end = new Date();
                     const start = new Date();
@@ -29,6 +31,7 @@ export const pickerOptionsData = (formItems) => {
             },
             {
                 text: "Past 15 Days",
+                rangeDays: 15, // custom field for 'maxRangeDays' to filter
                 onClick(picker) {
                     const end = new Date();
                     const start = new Date();
@@ -41,6 +44,7 @@ export const pickerOptionsData = (formItems) => {
             },
             {
                 text: "Past 30 Days",
+                rangeDays: 30, // custom field for 'maxRangeDays' to filter
                 onClick(picker) {
                     const end = new Date();
                     const start = new Date();
@@ -53,6 +57,7 @@ export const pickerOptionsData = (formItems) => {
             },
             {
                 text: "Past 90 Days",
+                rangeDays: 90, // custom field for 'maxRangeDays' to filter
                 onClick(picker) {
                     const end = new Date();
                     const start = new Date();
@@ -97,8 +102,14 @@ export const pickerOptionsData = (formItems) => {
                     }
                 }
             }
-
             pickerOptions = { ...v.pickerOptions, ...pickerOptions }
+
+            // filter by maxRangeDays
+            if (v.maxRangeDays) {
+                pickerOptions.shortcuts = pickerOptions.shortcuts.filter(x => {
+                    return x.rangeDays <= v.maxRangeDays
+                })
+            }
         } else if (v.itemType === "selectDate") {
             params[v.prop] = v.value; // 设置默认值
             v.periodName = v.periodName || (v.prop + '_period');

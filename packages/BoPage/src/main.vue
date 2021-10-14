@@ -44,7 +44,11 @@
       </template>
     </bo-search>
 
-    <bo-chart :chartOptions="chartOptions"></bo-chart>
+    <bo-chart
+      v-if="chartOptions.visible"
+      :type="chartOptions.type"
+      :chartData="chartOptions.chartData"
+    ></bo-chart>
     <!-- @slot 可從外部傳入 slot="preTable" 在 tabs & table 上方 -->
     <slot name="preTable"></slot>
 
@@ -63,7 +67,11 @@
         <bo-table
           v-loading.lock="loading"
           v-bind="tab.tableOptions"
-          :height="tab.tableOptions.height || height"
+          :height="
+            tab.tableOptions.height !== undefined
+              ? tab.tableOptions.height
+              : height
+          "
           border
           :columns="tab.columns"
           @sort-change="sortChange"
@@ -83,7 +91,7 @@
       v-else
       v-loading.lock="loading"
       v-bind="tableOptions"
-      :height="tableOptions.height || height"
+      :height="tableOptions.height !== undefined ? tableOptions.height : height"
       border
       :columns="columns"
       @sort-change="sortChange"
@@ -117,6 +125,7 @@ import BoSearch from "../../BoSearch";
 import BoPagination from "../../BoPagination";
 import BoTable from "../../BoTable";
 import BoChart from "../../BoChart";
+import { transformUtils } from "../../BoChart/src/transform-utils";
 import { flatColumns } from "../../utils/table";
 
 /**
@@ -198,8 +207,8 @@ export default {
       dialogVisible: false,
       chartOptions: {
         visible: false,
-        tableOptions: {},
-        columns: [],
+        type: "",
+        chartData: {},
       },
     };
   },
@@ -208,13 +217,7 @@ export default {
       return !this.tabs.length && this.hasPagination;
     },
     showChartBtn() {
-      return (
-        this.chartOptions &&
-        this.chartOptions.tableOptions &&
-        this.chartOptions.tableOptions.chart &&
-        this.chartOptions.tableOptions.data &&
-        this.chartOptions.tableOptions.data.length
-      );
+      return this.chartOptions && this.chartOptions.type;
     },
   },
   methods: {
@@ -225,8 +228,9 @@ export default {
       }
       this.$emit("update:loading", true);
       // 同步修改vuex中的loading参数
-      this.$BACKOFFICE.loadMutation && this.$store.commit(this.$BACKOFFICE.loadMutation, true)
-      
+      this.$BACKOFFICE.loadMutation &&
+        this.$store.commit(this.$BACKOFFICE.loadMutation, true);
+
       if (this.showPagination) {
         // search with filter & sort
         this.$emit("search", {
@@ -292,8 +296,25 @@ export default {
         this.chartOptions.visible = true;
       }
       const flatedColumns = flatColumns(columns);
-      this.$set(this.chartOptions, "tableOptions", tableOptions);
-      this.$set(this.chartOptions, "columns", flatedColumns);
+      // trasform table to chart
+      const dataExist =
+        tableOptions && tableOptions.data && tableOptions.data.length;
+
+      if (!dataExist) {
+        this.chartOptions.type = "";
+        this.chartOptions.chartData = null;
+        return;
+      }
+
+      const trasformData = transformUtils.boChartData({
+        tableOptions,
+        columns: flatedColumns,
+      });
+
+      if (trasformData) {
+        this.chartOptions.type = trasformData.type;
+        this.chartOptions.chartData = trasformData.chartData;
+      }
     },
     toggleChart() {
       this.chartOptions.visible = !this.chartOptions.visible;
@@ -301,20 +322,19 @@ export default {
   },
   mounted() {
     // 更新vuex中的loading
-    this.$BACKOFFICE.loadMutation && this.$store.commit(this.$BACKOFFICE.loadMutation, this.loading)
+    this.$BACKOFFICE.loadMutation &&
+      this.$store.commit(this.$BACKOFFICE.loadMutation, this.loading);
     // 添加vuex中的loading监控，如果为false，则把bo-page的loadin改为false
-    this.$BACKOFFICE.loadState && this.$watch(this.$BACKOFFICE.loadState, function (newVal) {
-      if(!newVal) {
-        this.$emit("update:loading", false);
-      }
-    })
+    this.$BACKOFFICE.loadState &&
+      this.$watch(this.$BACKOFFICE.loadState, function (newVal) {
+        if (!newVal) {
+          this.$emit("update:loading", false);
+        }
+      });
 
     //适配table高度
     this.$nextTick(() => {
-      // 判断高度是否有传，如果有传递，就不自动设置高度
-      if((this.tabs.length && !this.tabs.tableOptions.height) || (!this.tabs.length && !this.tableOptions.height)) {
-        this.autoHeight();
-      }
+      this.autoHeight();
       this.setChartOptions();
     });
 
