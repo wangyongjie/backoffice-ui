@@ -181,5 +181,67 @@ describe('BoDialog', () => {
         expect(wrapper.vm.form.model['text']).toBe(result)
     })
 
+    it('methods.onChange ', async () => {
+        const wrapper = shallowMount(BoDialog, {
+            propsData: {
+                form: {
+                    type: 'edit',
+                    model: {
+                        text: '123'
+                    }
+                },
+                formItems: [],
+                visible: true
+            },
+        })
+        const item = {
+            prop: 'text',
+            change: jest.fn()
+        }
+        wrapper.vm.onChange(item)
+        expect(item.change).toBeCalledWith('123')
+    })
 
+    it('mounted', () => {
+        const map = {};
+        window.addEventListener = jest.fn((event, cb) => {
+            map[event] = cb;
+        });
+        const wrapper = shallowMount(BoDialog, {
+            propsData: {
+                form: {
+                    type: 'edit',
+                    model: {}
+                },
+                formItems: [],
+                visible: true
+            },
+        })
+        wrapper.vm.$nextTick(() => {
+            expect(map).toEqual({
+                "resize": expect.any(Function)
+            })
+        })
+    });
+
+    it('beforeDestroy', () => {
+        const map = {};
+        window.removeEventListener = jest.fn((event, cb) => {
+            map[event] = cb;
+        });
+        const wrapper = shallowMount(BoDialog, {
+            propsData: {
+                form: {
+                    type: 'edit',
+                    model: {}
+                },
+                formItems: [],
+                visible: true
+            },
+        })
+        wrapper.destroy()
+        expect(map).toEqual({
+            "resize": expect.any(Function)
+        })
+    });
 })

@@ -5,6 +5,7 @@ import BoDialog from '../packages/BoDialog/index.js';
 import BoMenu from '../packages/BoMenu/index.js';
 import BoPage from '../packages/BoPage/index.js';
 import BoSearch from '../packages/BoSearch/index.js';
+import BoMultLang from '../packages/BoMultLang/index.js';
 import BoSelect from '../packages/BoSelect/index.js';
 import BoSelectInput from '../packages/BoSelectInput/index.js';
 import BoSelectDate from '../packages/BoSelectDate/index.js';
@@ -18,6 +19,7 @@ const components = [
     BoMenu,
     BoPage,
     BoSearch,
+    BoMultLang,
     BoSelect,
     BoSelectInput,
     BoSelectDate,
@@ -60,6 +62,7 @@ export default {
     BoMenu,
     BoPage,
     BoSearch,
+    BoMultLang,
     BoSelect,
     BoSelectInput,
     BoSelectDate,

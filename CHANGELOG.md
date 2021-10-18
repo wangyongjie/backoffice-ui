@@ -1,5 +1,15 @@
 ## 更新日志
 
+### 1.0.46
+*2021-10-14*
+- bo-dialog
+  - 新增itemType为 multLang的组件
+
+### 1.0.45
+*2021-10-12*
+- bo-search
+  - 新增 itemType: "radio"
+
 ### 1.0.44
 *2021-10-12*
 - bo-search

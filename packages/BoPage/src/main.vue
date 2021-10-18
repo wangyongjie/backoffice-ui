@@ -370,10 +370,7 @@ export default {
       font-size: 24px;
     }
   }
-}
-</style>
-<style lang="scss">
-.bopage {
+  
   @media screen and (max-width: 600px) {
     .dialog-width {
       width: 100%;

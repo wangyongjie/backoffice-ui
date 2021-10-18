@@ -65,6 +65,15 @@
           :disabled="form.type === item.disabledOn"
         >
         </bo-select>
+        <bo-mult-lang
+          v-else-if="item.itemType === 'multLang'"
+          v-model="form.model[item.prop]"
+          :langs="item.langs"
+          :form="item.form"
+          :formItems="item.formItems"
+          :disabled="form.type === item.disabledOn"
+        >
+        </bo-mult-lang>
         <el-date-picker
           v-else-if="item.itemType === 'date'"
           v-model="form.model[item.prop]"
@@ -153,6 +162,7 @@
 <script>
 import BoSelect from "../../BoSelect";
 import BoCurrencyInput from "../../BoCurrencyInput";
+import BoMultLang from "../../BoMultLang";
 import { pickerOptionsData } from "../../config/picker-options";
 import { setFormMsg, setFormItemsMsg } from "../../utils/formDefaultMessage";
 /**
@@ -163,6 +173,7 @@ export default {
   components: {
     BoSelect,
     BoCurrencyInput,
+    BoMultLang
   },
   computed: {
     title() {

@@ -255,6 +255,10 @@ export default {
             radio: 0,
             resource: "",
             textarea: "",
+            multLang: {
+              'en': { title: 'test', textarea: 'test' },
+              'br': { title: 'test1', textarea: 'test1' },
+            },
             slotTest: "",
           },
           labelWidth: "100px",
@@ -278,6 +282,13 @@ export default {
                 trigger: "change",
               },
             ],
+            // multLang: [
+            //   { validator: (rule, value, callback) => {
+            //       callback(new Error('Please fill in title and text。'));
+            //     }, 
+            //     trigger: 'blur'
+            //   }
+            // ],
             slotTest: [
               {
                 required: true,
@@ -331,6 +342,39 @@ export default {
             options: [
               { value: 0, label: "options1" },
               { value: 1, label: "options2" },
+            ],
+          },
+          {
+            prop: "multLang",
+            label: "Content",
+            itemType: "multLang",
+            langs: [
+              { value: 'en', label: 'English' },
+              { value: 'br', label: 'Brazie' },
+              { value: 'jp', label: 'Japan' },
+            ],
+            form: {
+              model: {
+                title: '',
+                textarea: '',
+              },
+              rules: {
+                title: [{ required: true, message: "Please check the title.", trigger: "blur" }],
+                textarea: [{ required: true, message: "Please check the textarea.", trigger: "blur" }],
+              },
+            },
+            formItems: [
+              {
+                prop: "title",
+                label: "Title",
+              },
+              {
+                prop: "textarea",
+                label: "Textarea",
+                itemType: "textarea",
+                showWordLimit: true,
+                rows: 4,
+              },
             ],
           },
           {

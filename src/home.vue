@@ -20,6 +20,9 @@
         <template #tableSummary>
           <tableSummary></tableSummary>
         </template>
+        <template #boMultLang>
+          <bo-mult-lang></bo-mult-lang>
+        </template>
       </bo-menu>
     </div>
   </div>
@@ -32,6 +35,7 @@ import pageTwo from "./pages/pageTwo.vue";
 import pageThree from "./pages/pageThree.vue";
 import chart from './pages/chart.vue';
 import tableSummary from './pages/tableSummary.vue'
+import boMultLang from './pages/boMultLang.vue'
 
 export default {
   name: "Home",
@@ -42,6 +46,7 @@ export default {
     pageThree,
     chart,
     tableSummary,
+    boMultLang
   },
   data() {
     return {
@@ -65,6 +70,10 @@ export default {
         {
           index: "tableSummary",
           label: "TableSummary",
+        },
+        {
+          index: "boMultLang",
+          label: "boMultLang",
         },
       ],
     };

@@ -18,16 +18,6 @@
  */
 export default {
   name: "BoCopy",
-  directives: {
-    copy: {
-      bind: function (el) {
-        const sourceText = el.innerHTML;
-        el.innerHTML = `
-          ${sourceText}
-        `;
-      },
-    },
-  },
   methods: {
     copy() {
       const text = this.$slots.default[0].text;

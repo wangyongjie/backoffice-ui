@@ -47,6 +47,33 @@ describe('BoSearch', () => {
         expect(wrapper.emitted('excel')[0]).toEqual([{}])
     })
 
+    it('methods.validateDateRange', async () => {
+        const wrapper = mount(BoSearch, {
+            propsData: {
+                labelWidth: '100px',
+                itemWidth: '100px',
+                loading: false,
+                submitBtnText: "Search",
+                forms: [{
+                    prop: "daterange",
+                    label: "Daterange:",
+                    itemType: "daterange",
+                    maxRangeDays: 31,
+                    pastDays: 1,
+                }]
+            },
+            mocks: mocksData
+        })
+        expect(wrapper.vm.validateDateRange()).toBe(true)
+        wrapper.setData({
+            params: {
+                daterange: ['20210101', '20210301']
+            }
+        })
+        expect(wrapper.vm.validateDateRange()).toBe(false)
+
+    })
+
     it('methods.getParamsFromUrl', async () => {
         const wrapper = mount(BoSearch, {
             propsData: {
@@ -118,5 +145,21 @@ describe('BoSearch', () => {
         }
         expect(replace).toHaveBeenCalledWith(result)
     })
+
+    it('created', async () => {
+        const mockMethod = jest.spyOn(BoSearch.methods, 'getParamsFromUrl')
+        const wrapper = mount(BoSearch, {
+            propsData: {
+                labelWidth: '100px',
+                itemWidth: '100px',
+                loading: false,
+                submitBtnText: "Search",
+                forms: [],
+            },
+            mocks: mocksData
+        })
+
+        expect(mockMethod).toHaveBeenCalled()
+      })
 
 })
