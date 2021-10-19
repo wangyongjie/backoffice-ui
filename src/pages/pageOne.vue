@@ -42,6 +42,7 @@ export default {
             urlSync: true,
           },
           { prop: "dureDate", label: "Due Date", itemType: "date", urlSync: true },
+          { prop: "datetime", label: "DateTime", itemType: "datetime", offset: 300 },
           {
             prop: "location",
             label: "Location",

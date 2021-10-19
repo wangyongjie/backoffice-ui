@@ -264,7 +264,7 @@ export default {
       const height = this.$refs.bopage.offsetHeight;
       const top = this.$refs.bopage.offsetTop;
       const newHeight =
-        window.innerHeight - (height + top + 70) + parseInt(this.height);
+        window.innerHeight - (height + top + this.$BACKOFFICE.headerTop) + parseInt(this.height);
       this.height = (newHeight > 300 ? newHeight : 300) + "px";
     },
     autoSearch() {

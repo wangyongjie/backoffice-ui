@@ -3,6 +3,7 @@
     <el-menu
       :default-active="activeIndex"
       mode="horizontal"
+      class="bo-menu"
       @select="handleSelect"
     >
       <el-menu-item
@@ -64,3 +65,11 @@ export default {
   },
 };
 </script>
+
+<style lang="css">
+.bo-menu.el-menu--horizontal .el-menu-item {
+  height: 54px;
+  line-height: 54px;
+  font-weight: 500;
+}
+</style>

@@ -85,6 +85,17 @@
           :disabled="form.type === item.disabledOn"
         />
         <el-date-picker
+          v-else-if="item.itemType === 'datetime'"
+          v-model="form.model[item.prop]"
+          type="datetime"
+          :placeholder="item.placeholder"
+          :format="item.format || 'yyyy-MM-dd HH:mm:ss'"
+          :value-format="item.valueFormat || 'yyyy-MM-dd HH:mm:ss'"
+          clearable
+          :picker-options="item.pickerOptions || {}"
+          :disabled="form.type === item.disabledOn"
+        />
+        <el-date-picker
           v-else-if="item.itemType === 'daterange'"
           v-model="form.model[item.prop]"
           @input="onChange(item)"
@@ -153,7 +164,7 @@
     <div slot="footer">
       <el-button @click="closeDialog">Cancel</el-button>
       <el-button type="primary" @click="confirm" :loading="loading"
-        >Confirm</el-button
+        >{{ confirmTitle }}</el-button
       >
     </div>
   </el-dialog>
@@ -198,8 +209,11 @@ export default {
             };
             return typeDefault[type];
           };
+
+          const { formItems } = this.$props;
+
           Object.keys(this.form.model).forEach((key) => {
-            this.form.model[key] = getDefault(this.form.model[key]);
+            this.form.model[key] = pickerOptionsData(formItems).params[key] || getDefault(this.form.model[key]);
           });
         }
       },
@@ -251,6 +265,13 @@ export default {
     loading: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * confirm 按鈕文案
+     */
+    confirmTitle: {
+      type: String,
+      default: 'Confirm',
     },
   },
   data() {

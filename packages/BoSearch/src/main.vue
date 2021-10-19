@@ -79,6 +79,16 @@
         :picker-options="form.pickerOptions || {}"
       />
       <el-date-picker
+        v-else-if="form.itemType === 'datetime'"
+        v-model="params[form.prop]"
+        type="datetime"
+        :placeholder="form.placeholder"
+        :format="form.format || 'yyyy-MM-dd HH:mm:ss'"
+        :value-format="form.valueFormat || 'yyyy-MM-dd HH:mm:ss'"
+        clearable
+        :picker-options="form.pickerOptions || {}"
+      />
+      <el-date-picker
         v-else-if="form.itemType === 'daterange'"
         v-model="params[form.prop]"
         type="daterange"
@@ -237,7 +247,7 @@ export default {
           const diffTime = Math.abs(
             formateDate(rangeDates[1]) - formateDate(rangeDates[0])
           );
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
           console.log("dataRanges", diffTime, diffDays);
           if (diffDays > maxRangeDays) {
             isValid = false;

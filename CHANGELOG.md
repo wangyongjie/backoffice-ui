@@ -1,5 +1,27 @@
 ## 更新日志
 
+### 1.0.49
+*2021-10-19*
+- bo-dialog
+  - 可配置confirm文案，使用 confirm-title="preview"
+- bo-menu
+  - 减少高度，添加加粗
+- bo-search
+  - 优化maxRangeDays判断
+  
+
+### 1.0.48
+*2021-10-18*
+- bo-page
+  - 优化自动高度设置
+
+### 1.0.47
+*2021-10-18*
+- bo-dialog
+  - 新增itemType为 datetime的组件
+- bo-search
+  - 新增itemType为 datetime的组件
+
 ### 1.0.46
 *2021-10-14*
 - bo-dialog

@@ -21,6 +21,7 @@
       v-bind="editDialog"
       :visible.sync="editDialogVisible"
       :loading.sync="editDialogLoading"
+      confirm-title="preview"
       @confirm="confirm"
     >
       <template v-slot:slotTest="{ model }">
@@ -250,6 +251,7 @@ export default {
             region: [],
             date: "",
             daterange: "",
+            datetime: '',
             delivery: false,
             checkbox: [],
             radio: 0,
@@ -381,13 +383,13 @@ export default {
             prop: "date",
             label: "Date:",
             itemType: "date",
-            pastDays: 1,
           },
+          { prop: "datetime", label: "DateTime", itemType: "datetime", offset: 300 },
           {
             prop: "daterange",
             label: "Daterange:",
             itemType: "daterange",
-            pastDays: 1,
+            dayRange: 1,
           },
           {
             prop: "delivery",

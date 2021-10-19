@@ -45,7 +45,8 @@ const install = function (Vue, opts = {}) {
     // 初始化公共变量 
     Vue.prototype.$BACKOFFICE = {
         loadMutation: opts.loadMutation || '',  // loading在vuex中修改的mutation
-        loadState: opts.loadState || ''  // loading在vuex中的state地址
+        loadState: opts.loadState || '',  // loading在vuex中的state地址
+        headerTop: opts.headerTop || 70  // 顶部栏高度
     };
 };
 

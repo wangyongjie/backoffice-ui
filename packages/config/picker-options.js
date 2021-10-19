@@ -121,6 +121,14 @@ export const pickerOptionsData = (formItems) => {
             }
         }else if (v.itemType === "multSelect") {
             params[v.prop] = v.value || ["_all_"];
+        }else if (v.itemType === "datetime") {
+            
+            params[v.prop] = v.value || "";
+
+            // 设置了默认值
+            if(v.offset) {
+                params[v.prop] = parseTime(Date.now() + parseInt(v.offset) * 1000, v.cFormat);
+            }
         } else {
             params[v.prop] = v.value || "";
         }
