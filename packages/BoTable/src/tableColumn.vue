@@ -56,7 +56,7 @@ export default {
   name: "TableColumn",
   props: {
     column: Object,
-    default: () => {},
+    default: () => ({}),
   },
 };
 </script>

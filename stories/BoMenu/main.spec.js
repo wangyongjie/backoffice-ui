@@ -11,7 +11,7 @@ describe('BoMenu', () => {
             query: {}
         },
         $router: {
-            replace: () => {}
+            replace: () => ({})
         },
     }
 
@@ -83,7 +83,7 @@ describe('BoMenu', () => {
                     }
                 },
                 $router: {
-                    replace: () => {}
+                    replace: () => ({})
                 },
             }
 

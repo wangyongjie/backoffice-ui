@@ -37,7 +37,7 @@ export default {
      */
     chartData: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   }
 };

@@ -11,7 +11,7 @@ describe('BoPage', () => {
             query: {}
         },
         $router: {
-            replace: () => {}
+            replace: () => ({})
         },
     }
 
@@ -76,9 +76,9 @@ describe('BoPage', () => {
 
     it('methods.autoSearch', async () => {
         const searchFormStub = {
-            render: () => {},
+            render: () => ({}),
             methods: {
-                searchHandler: () => {}
+                searchHandler: () => ({})
             }
         }
         const wrapper = mount(BoPage, {

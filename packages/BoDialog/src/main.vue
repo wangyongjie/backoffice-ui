@@ -28,7 +28,7 @@
           :type="item.type || 'text'"
           :placeholder="item.placeholder"
           :disabled="form.type === item.disabledOn"
-          @blur="trimOnBlur(item.prop)"
+          @blur="form.model[item.prop] = $event.target.value.trim()"
         />
         <bo-currency-input
           v-else-if="item.itemType === 'currency'"
@@ -249,7 +249,7 @@ export default {
      */
     form: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     /**
      * prop: 與 form.model 對應,
@@ -329,9 +329,6 @@ export default {
         this.dialogWidth = "50%";
         this.labelPosition = "left";
       }
-    },
-    trimOnBlur(prop) {
-      this.form.model[prop] = this.form.model[prop].trim();
     },
     // 除了slot 其他都支援on change call formItems.change function
     onChange(item) {

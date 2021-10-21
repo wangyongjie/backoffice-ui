@@ -10,17 +10,32 @@ describe('BoSelectInput', () => {
         const mockMethod = jest.spyOn(BoSelectInput.methods, 'resetSelectInputParams')
         const wrapper = shallowMount(BoSelectInput, {
             propsData: {
-                params: {},
+                value: {},
                 form: {},
             },
         })
         expect(mockMethod).toBeCalled()
     })
 
+    it('watch.params', async () => {
+        const wrapper = shallowMount(BoSelectInput, {
+            propsData: {
+                value: {},
+                form: {},
+            },
+        })
+        wrapper.setData({
+            params: {
+                model: 'test'
+            }
+        })
+        expect(wrapper.emitted('input')).toEqual()
+    })
+
     it('methods.resetSelectInputParams', async () => {
         const wrapper = shallowMount(BoSelectInput, {
             propsData: {
-                params: {},
+                value: {},
                 form: {
                     prop: 'prop',
                     selectName: 'selectName'
@@ -28,13 +43,15 @@ describe('BoSelectInput', () => {
             },
         })
         wrapper.vm.resetSelectInputParams()
-        expect(wrapper.vm.params).toEqual({"selectName": "prop"})
+        expect(wrapper.vm.params).toEqual({
+            "selectName": "prop"
+        })
     })
 
     it('methods.onEnter', async () => {
         const wrapper = shallowMount(BoSelectInput, {
             propsData: {
-                params: {},
+                value: {},
                 form: {},
             },
         })

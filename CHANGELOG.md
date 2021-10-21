@@ -1,5 +1,12 @@
 ## 更新日志
 
+### 1.0.51
+*2021-10-21*
+- bo-dialog 和 bo-search
+  - 修复input框不能输入空格的问题
+- bo-search-input
+  - 修复prop值不正确问题
+
 ### 1.0.50
 *2021-10-21*
 - bo-dialog

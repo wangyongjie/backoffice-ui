@@ -17,10 +17,11 @@
     >
       <el-input
         v-if="form.itemType === 'input' || form.itemType === undefined"
-        v-model.trim="params[form.prop]"
+        v-model="params[form.prop]"
         :clearable="(form.clearable !== undefined) ? form.clearable : true"
         @keyup.enter.native="searchHandler"
         :placeholder="form.placeholder"
+        @blur="params[form.prop] = $event.target.value.trim()"
       />
       <el-select
         v-else-if="form.itemType === 'select'"
@@ -52,7 +53,7 @@
 
       <bo-select-input
         v-else-if="form.itemType === 'selectInput'"
-        :params="params"
+        v-model="params"
         :form="form"
         @onEnter="searchHandler"
       ></bo-select-input>

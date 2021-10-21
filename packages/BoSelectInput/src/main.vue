@@ -1,10 +1,11 @@
 <template>
   <el-input
     class="select-input"
-    v-model.trim="params[form.prop]"
+    v-model="params[form.prop]"
     clearable
     @keyup.enter.native="onEnter"
     :placeholder="form.placeholder"
+    @blur="trimOnBlur(form.prop)"
   >
     <el-select
       v-model="form.prop"
@@ -31,9 +32,9 @@ export default {
     /**
      * form params
      */
-    params: {
+    value: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     /**
      * itemType: "selectInput"
@@ -43,8 +44,15 @@ export default {
      */
     form: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
+  },
+  data() {
+    return {
+      params: {
+        ...this.value,
+      },
+    };
   },
   watch: {
     form: {
@@ -53,8 +61,17 @@ export default {
         this.resetSelectInputParams();
       },
     },
+    params: {
+      deep: true,
+      handler(value) {
+        this.$emit("input", value);
+      },
+    },
   },
   methods: {
+    trimOnBlur(prop) {
+      this.params[prop] = this.params[prop].trim();
+    },
     resetSelectInputParams() {
       // 先抓現有的 prop 資料
       const prop = this.params[this.form.selectName];

@@ -11,7 +11,7 @@ export default {
 
 const html = `<div>
   <bo-select-input
-    :params="params"
+    v-model="params"
     :form="form"
     @onEnter="onEnter"
   ></bo-select-input>

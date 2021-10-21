@@ -11,7 +11,7 @@ describe('BoSearch', () => {
             query: {}
         },
         $router: {
-            replace: () => {}
+            replace: () => ({})
         },
     }
 
