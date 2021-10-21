@@ -96,6 +96,16 @@
           :disabled="form.type === item.disabledOn"
         />
         <el-date-picker
+          v-else-if="item.itemType === 'monthrange'"
+          v-model="form.model[item.prop]"
+          type="monthrange"
+          :clearable="false"
+          :value-format="item.valueFormat || 'yyyyMM'"
+          :picker-options="item.pickerOptions || monthPickerOptions"
+          :disabled="form.type === item.disabledOn"
+          style="width: 280px"
+        />
+        <el-date-picker
           v-else-if="item.itemType === 'daterange'"
           v-model="form.model[item.prop]"
           @input="onChange(item)"

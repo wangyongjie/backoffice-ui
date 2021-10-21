@@ -81,6 +81,7 @@ export default {
           minWidth: 140,
           align: "center",
           sortable: true,
+          pre: true,
         },
         {
           prop: "sex",
@@ -252,6 +253,7 @@ export default {
             date: "",
             daterange: "",
             datetime: '',
+            month: '',
             delivery: false,
             checkbox: [],
             radio: 0,
@@ -385,6 +387,7 @@ export default {
             itemType: "date",
           },
           { prop: "datetime", label: "DateTime", itemType: "datetime", offset: 300 },
+          { prop: "month", label: "Month", itemType: "monthrange", range: 6 },
           {
             prop: "daterange",
             label: "Daterange:",
@@ -438,7 +441,7 @@ export default {
     searchHandle() {
       setTimeout(() => {
         this.tableOptions.data = [
-          { name: "Sam", mobile: "15299xxxx", sex: 0 },
+          { name: "Sam", mobile: "123123\nr23r23", sex: 0 },
           { name: "Jean", mobile: "13452xxxx", sex: 1 },
         ];
       }, 2000);

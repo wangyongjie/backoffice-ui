@@ -70,6 +70,43 @@ export const pickerOptionsData = (formItems) => {
             }
         ],
     }
+    let monthPickerOptions = {
+        shortcuts: [{
+            text: 'This Month',
+            onClick(picker) {
+                picker.$emit('pick', [
+                    parseTime(new Date(), "{y}{m}"),
+                    parseTime(new Date(), "{y}{m}"),
+                ]);
+            }
+            }, {
+            text: 'This Year',
+            onClick(picker) {
+                const end = new Date();
+                const start = new Date(new Date().getFullYear(), 0);
+                picker.$emit('pick', [
+                    parseTime(start, "{y}{m}"),
+                    parseTime(end, "{y}{m}"),
+                ]);
+            }
+            }, {
+            text: 'Past 6 Months',
+            onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setMonth(start.getMonth() - 5);
+                picker.$emit('pick', [
+                    parseTime(start, "{y}{m}"),
+                    parseTime(end, "{y}{m}"),
+                ]);
+            }
+            }, {
+            text: 'All Time',
+            onClick(picker) {
+                picker.$emit("pick", "");
+            },
+        }]
+    }
     formItems.forEach((v) => {
         if (v.itemType === "daterange") {
             // 设置了默认值
@@ -110,6 +147,19 @@ export const pickerOptionsData = (formItems) => {
                     return x.rangeDays <= v.maxRangeDays
                 })
             }
+        } else if (v.itemType === "monthrange") {
+            // 设置了默认值
+            if (v.range !== undefined) {
+                const end = new Date();
+                const start = new Date();
+                start.setMonth(start.getMonth() - v.range + 1);
+                params[v.prop] = [
+                    parseTime(start, "{y}{m}"),
+                    parseTime(end, "{y}{m}"),
+                ];
+            } else {
+                params[v.prop] = v.value || "";
+            }
         } else if (v.itemType === "selectDate") {
             params[v.prop] = v.value; // 设置默认值
             v.periodName = v.periodName || (v.prop + '_period');
@@ -119,9 +169,9 @@ export const pickerOptionsData = (formItems) => {
             }else {
                 params[v.periodName] = v.periodValue;
             }
-        }else if (v.itemType === "multSelect") {
+        } else if (v.itemType === "multSelect") {
             params[v.prop] = v.value || ["_all_"];
-        }else if (v.itemType === "datetime") {
+        } else if (v.itemType === "datetime") {
             
             params[v.prop] = v.value || "";
 
@@ -136,6 +186,7 @@ export const pickerOptionsData = (formItems) => {
 
     return {
         params,
-        pickerOptions
+        pickerOptions,
+        monthPickerOptions
     }
 }

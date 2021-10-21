@@ -1,5 +1,14 @@
 ## 更新日志
 
+### 1.0.50
+*2021-10-21*
+- bo-dialog
+  - 新增itemType为 monthrange
+- bo-search
+  - 新增itemType为 monthrange
+- bo-table
+  - 新增pre属性，用于渲染textarea数据
+
 ### 1.0.49
 *2021-10-19*
 - bo-dialog

@@ -43,6 +43,7 @@ export default {
           },
           { prop: "dureDate", label: "Due Date", itemType: "date", urlSync: true },
           { prop: "datetime", label: "DateTime", itemType: "datetime", offset: 300 },
+          { prop: "month", label: "Month", itemType: "monthrange", range: 6, urlSync: true },
           {
             prop: "location",
             label: "Location",

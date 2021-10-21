@@ -89,6 +89,15 @@
         :picker-options="form.pickerOptions || {}"
       />
       <el-date-picker
+        v-else-if="form.itemType === 'monthrange'"
+        v-model="params[form.prop]"
+        type="monthrange"
+        :clearable="false"
+        :value-format="form.valueFormat || 'yyyyMM'"
+        :picker-options="form.pickerOptions || monthPickerOptions"
+        style="width: 280px"
+      />
+      <el-date-picker
         v-else-if="form.itemType === 'daterange'"
         v-model="params[form.prop]"
         type="daterange"

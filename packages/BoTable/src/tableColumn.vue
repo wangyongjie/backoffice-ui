@@ -24,6 +24,9 @@
       <span v-else-if="column.filter">
         {{ scope.row[column.prop] | boFilter(column.filter) }}
       </span>
+      <span v-else-if="column.pre" style="white-space: pre-wrap;">
+        {{ scope.row[column.prop] }}
+      </span>
       <!-- target: https://www.w3schools.com/tags/att_a_target.asp  -->
       <span v-else-if="column.linkPrefix">
         <el-link
