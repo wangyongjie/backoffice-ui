@@ -2,6 +2,7 @@
   <div class="bo-table">
     <el-table
       v-bind="$attrs"
+      :key="key"
       :data="extraData"
       @sort-change="sortChange"
     >
@@ -37,6 +38,7 @@ export default {
   },
   data() {
     return {
+      key: Date.now(),
       extraData: this.data,
     };
   },
@@ -81,6 +83,9 @@ export default {
     columns: {
       immediate: true,
       handler(columns) {
+        // 重写el-table的key值，避免表头混乱问题
+        this.key = Date.now()
+
         // prevent 'extraBtn' used by table slot
         const useExtraBtn = columns.find((x) => x.slotName === "extraBtn");
         if (useExtraBtn) {

@@ -60,6 +60,7 @@ export default {
             prop: "sex",
             label: "Sex",
             itemType: "select",
+            change: this.change,
             options: [
               { value: 0, label: "Male" },
               { value: 1, label: "Female" },
@@ -102,6 +103,10 @@ export default {
             urlSync: true,
           }
         ],
+        exportBtn: {
+          type: 'success',
+          text: 'Export'
+        }
       },
       tips: [
         "test test",
@@ -138,7 +143,7 @@ export default {
         {
           prop: "num",
           label: "Num",
-          filter: 'number'
+          filter: 'date'
         },
         {
           label: "Options",
@@ -147,8 +152,8 @@ export default {
       ],
       tableOptions: {
         data: [
-          { name: "Sam", mobile: "15299xxxx", num: 1234567, sex: 0 },
-          { name: "Jean", mobile: "13452xxxx", num: 1234567, sex: 1 },
+          { name: "Sam", mobile: "15299xxxx", num: 1635218799, sex: 0 },
+          { name: "Jean", mobile: "13452xxxx", num: 20210111, sex: 1 },
           { name: "Tony", mobile: "187233xxxx", num: 1234567, sex: 0 },
           { name: "Sam", mobile: "15299xxxx", num: 1234567, sex: 0 },
           { name: "Jean", mobile: "13452xxxx", num: 1234567, sex: 1 },
@@ -198,6 +203,9 @@ export default {
     };
   },
   methods: {
+    change(value) {
+      console.log(value)
+    },
     searchHandle(params) {
       console.log(params)
       setTimeout(() => {

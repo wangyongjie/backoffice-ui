@@ -21,11 +21,13 @@
         :clearable="(form.clearable !== undefined) ? form.clearable : true"
         @keyup.enter.native="searchHandler"
         :placeholder="form.placeholder"
+        @change="onChange(form)"
         @blur="params[form.prop] = $event.target.value.trim()"
       />
       <el-select
         v-else-if="form.itemType === 'select'"
         v-model="params[form.prop]"
+        @change="onChange(form)"
         :placeholder="form.placeholder"
         :multiple="form.multiple"
         :clearable="(form.clearable !== undefined) ? form.clearable : true"
@@ -119,13 +121,14 @@
         {{ submitBtnText }}
       </el-button>
       <el-button
-        type="primary"
+        v-bind="exportBtn"
+        :type="exportBtn.type || 'primary'"
         icon="el-icon-download"
         @click="excelHandler"
         :loading="loading"
         v-if="showExcel"
       >
-        Excel
+        {{ exportBtn.text || 'Excel' }}
       </el-button>
       <!-- @slot 預設 slot, 擴充按鈕等等 -->
       <slot></slot>
@@ -180,6 +183,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    exportBtn: {
+      type: Object,
+      default: () => ({}),
+    }
   },
   components: {
     BoSelect,
@@ -196,6 +203,12 @@ export default {
     };
   },
   methods: {
+    onChange(item) {
+      const value = this.params[item.prop];
+      if (item.change) {
+        item.change(value);
+      }
+    },
     validate(prop, valid, msg) {
       if (!valid) {
         this.$message({

@@ -171,7 +171,7 @@
         </div>
       </el-form-item>
     </el-form>
-    <div slot="footer">
+    <div slot="footer" v-if="showFooter">
       <el-button @click="closeDialog">Cancel</el-button>
       <el-button type="primary" @click="confirm" :loading="loading"
         >{{ confirmTitle }}</el-button
@@ -239,7 +239,7 @@ export default {
       handler(formItems) {
         setFormItemsMsg(formItems, "Please check the configuration.");
       },
-    },
+    }
   },
   props: {
     /**
@@ -283,6 +283,10 @@ export default {
       type: String,
       default: 'Confirm',
     },
+    showFooter: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     const { formItems } = this.$props;

@@ -1,6 +1,9 @@
 import {
   action
 } from '@storybook/addon-actions'
+import {
+  numberFormat
+} from '../../packages/BoFilter/src/main';
 import BoTable from '../../packages/BoTable/src/main.vue'
 import {
   parseDocsSourceCode
@@ -226,17 +229,52 @@ filter.storyName = "column.filter"
 filter.args = {
   ...Primary.args,
   columns: [{
-    prop: "balance",
-    label: "Balance",
-    minWidth: 140,
-    align: "center",
-    filter: 'number'
-  }, ],
+      prop: "date",
+      label: "Filter date",
+      minWidth: 140,
+      align: "center",
+      filter: 'date'
+    },
+    {
+      prop: "currency",
+      label: "Filter currency",
+      minWidth: 140,
+      align: "center",
+      filter: 'currency'
+    },
+    {
+      prop: "number",
+      label: "Filter number",
+      minWidth: 140,
+      align: "center",
+      filter: 'number'
+    },
+    {
+      prop: "currencyNumber",
+      label: "Filter currency|number",
+      minWidth: 140,
+      align: "center",
+      filter: 'currency|number'
+    },
+  ],
   data: [{
-    balance: 2300000
-  }, {
-    balance: null
-  }, ],
+      date: '20211221',
+      currency: 123124,
+      number: 123124,
+      currencyNumber: 1212121
+    }, {
+      date: 1635218799,
+      currency: '123124',
+      number: null,
+      currencyNumber: ''
+    },
+    {
+      date: 'error format',
+      currency: null,
+      number: null,
+      currencyNumber: ''
+    },
+  ],
 }
 filter.parameters = parseDocsSourceCode(html, filter.args)
 

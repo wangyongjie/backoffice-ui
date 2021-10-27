@@ -10,6 +10,7 @@ import BoSelect from '../packages/BoSelect/index.js';
 import BoSelectInput from '../packages/BoSelectInput/index.js';
 import BoSelectDate from '../packages/BoSelectDate/index.js';
 import BoTable from '../packages/BoTable/index.js';
+import BoFilter from '../packages/BoFilter/index'
 
 const components = [
     BoCurrencyInput,
@@ -31,16 +32,7 @@ const install = function (Vue, opts = {}) {
         Vue.component(component.name, component);
     });
 
-    Vue.filter('boFilter', (value, format) => {
-        if (value && format === 'number') {
-            value = value.toString();
-            return value.replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
-                return s + ",";
-            });
-        } else {
-            return value;
-        }
-    })
+    Vue.use(BoFilter);
 
     // 初始化公共变量 
     Vue.prototype.$BACKOFFICE = {

@@ -1,5 +1,40 @@
 ## 更新日志
 
+### 1.0.57
+*2021-10-27*
+- bo-search
+  - 放开input和select的值变化
+
+### 1.0.56
+*2021-10-27*
+- bo-table
+  - 修复更换表头引起的表头混乱问题
+- bo-search
+  - 增加导出按钮的配置，如 exportBtn: { type: 'success', text: 'Export' }
+
+### 1.0.55
+*2021-10-26*
+- bo-table
+  - filter: 'date', 优化格式判断
+
+### 1.0.54
+*2021-10-26*
+- bo-table
+  - filter: 'date', 格式化日期
+  - filter: number 新增預設值 0
+  - filter: 'currency' 支持货币转换
+  - filter: 'currency|number' 支援多filter 照順序執行
+
+### 1.0.53
+*2021-10-25*
+- bo-dialog
+  - 修复show-footer="false" 问题
+
+### 1.0.52
+*2021-10-22*
+- bo-dialog
+  - 可配置是否展示footer，默认展示， :show-footer="false" 就不展示
+
 ### 1.0.51
 *2021-10-21*
 - bo-dialog 和 bo-search
