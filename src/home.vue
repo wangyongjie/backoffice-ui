@@ -23,6 +23,9 @@
         <template #boMultLang>
           <bo-mult-lang></bo-mult-lang>
         </template>
+        <template #selectInput>
+          <select-input></select-input>
+        </template>
       </bo-menu>
     </div>
   </div>
@@ -36,6 +39,7 @@ import pageThree from "./pages/pageThree.vue";
 import chart from './pages/chart.vue';
 import tableSummary from './pages/tableSummary.vue'
 import boMultLang from './pages/boMultLang.vue'
+import selectInput from './pages/selectInput.vue'
 
 export default {
   name: "Home",
@@ -46,7 +50,8 @@ export default {
     pageThree,
     chart,
     tableSummary,
-    boMultLang
+    boMultLang,
+    selectInput
   },
   data() {
     return {
@@ -74,6 +79,10 @@ export default {
         {
           index: "boMultLang",
           label: "boMultLang",
+        },
+        {
+          index: "selectInput",
+          label: "selectInput",
         },
       ],
     };

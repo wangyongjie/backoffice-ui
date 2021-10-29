@@ -158,7 +158,7 @@
           :autosize="item.autosize"
           :disabled="form.type === item.disabledOn"
           type="textarea"
-          @blur="trimOnBlur(item.prop)"
+          @blur="form.model[item.prop] = $event.target.value.trim()"
         ></el-input>
         <!-- @slot 可從外部傳入 slot 給 itemType: slot 使用 -->
         <slot

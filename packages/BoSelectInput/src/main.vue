@@ -1,25 +1,28 @@
 <template>
-  <el-input
-    class="select-input"
-    v-model="params[form.prop]"
-    clearable
-    @keyup.enter.native="onEnter"
-    :placeholder="form.placeholder"
-    @blur="trimOnBlur(form.prop)"
-  >
-    <el-select
-      v-model="form.prop"
-      @change="resetSelectInputParams"
-      slot="prepend"
+  <div>
+    <el-input
+      class="select-input"
+      type="text"
+      v-model="params[form.prop]"
+      clearable
+      @keyup.enter.native="onEnter"
+      :placeholder="form.placeholder"
+      @blur="trimOnBlur(form.prop)"
     >
-      <el-option
-        v-for="(option, optionIndex) in form.options"
-        :key="optionIndex + '_local'"
-        :value="option.value"
-        :label="option.label"
-      />
-    </el-select>
-  </el-input>
+      <el-select
+        v-model="form.prop"
+        @change="resetSelectInputParams"
+        slot="prepend"
+      >
+        <el-option
+          v-for="(option, optionIndex) in form.options"
+          :key="optionIndex + '_local'"
+          :value="option.value"
+          :label="option.label"
+        />
+      </el-select>
+    </el-input>
+  </div>
 </template>
 
 <script>
@@ -49,6 +52,7 @@ export default {
   },
   data() {
     return {
+      isMounted: false,
       params: {
         ...this.value,
       },
@@ -68,19 +72,26 @@ export default {
       },
     },
   },
+  mounted() {
+    this.isMounted = true
+  },
   methods: {
     trimOnBlur(prop) {
       this.params[prop] = this.params[prop].trim();
     },
     resetSelectInputParams() {
+      // prevent params.prop delete when form.prop change before mounted
+      if (!this.isMounted) {
+        return
+      }
       // 先抓現有的 prop 資料
       const prop = this.params[this.form.selectName];
       // 如果 params 有舊的資料就刪除
       if (prop) {
-        delete this.params[prop];
+        this.$delete(this.params, prop);
       }
       // 設定當前 prop
-      this.params[this.form.selectName] = this.form.prop;
+      this.$set(this.params, this.form.selectName, this.form.prop);
     },
     onEnter() {
       /**

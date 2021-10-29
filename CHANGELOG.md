@@ -1,5 +1,29 @@
 ## 更新日志
 
+### 1.0.61
+*2021-10-29*
+- bo-search
+  - 修正 input 查询参数转成科学计数法
+
+### 1.0.60
+*2021-10-28*
+- bo-search
+  - itemType:'date' 新增参数offset，表示偏移量，单位是天，如-1表示昨天，0表示今天
+
+### 1.0.59
+*2021-10-28*
+- bo-search
+  - itemType:'date' 新增参数offset，表示偏移量，单位是天，如-1表示昨天，0表示今天
+
+### 1.0.58
+*2021-10-28*
+- bo-dialog
+  - fix blur error
+- bo-search
+  - urlSync需优化，只需从url同步到bo-search，点击search按钮不需要同步数据到url
+  - BoSelectInput的urlSync有bug，无法根据url的参数切到对应的select框
+  - BoSelectInput会把订单号等比较长的查询参数转成科学计数法，需修复
+
 ### 1.0.57
 *2021-10-27*
 - bo-search

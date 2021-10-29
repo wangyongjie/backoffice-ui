@@ -78,6 +78,8 @@
         v-model="params[form.prop]"
         type="date"
         :placeholder="form.placeholder"
+        :format="form.format || 'yyyy-MM-dd'"
+        :value-format="form.valueFormat || 'yyyyMMdd'"
         clearable
         :picker-options="form.pickerOptions || {}"
       />
@@ -227,7 +229,8 @@ export default {
             temp.endAt = temp.date[1];
             delete temp.date;
           }
-          this.addParamsToUri(temp);
+          // stop sync data when search
+          // this.addParamsToUri(temp);
           /**
            * 回傳搜尋資料
            */
@@ -285,8 +288,15 @@ export default {
     },
     getParamsFromUrl() {
       const params = this.$route.query;
+      // set selectInput
+      const form = this.forms.find((x) => x.itemType === "selectInput");      
+      const urlProp = form && params[form.selectName]
+      if (urlProp) {
+        form.prop = urlProp
+      }
       // parse number
       const isNumeric = (num) => !isNaN(num);
+      const textItemType = ['input', undefined, 'selectInput']
       for (const key in params) {
         const row = this.forms.find((x) => x.prop === key);
         const value = params[key];
@@ -296,10 +306,14 @@ export default {
           } else {
             params[key] = [isNumeric(value) ? +value : value];
           }
+        } else if (row && textItemType.includes(row.itemType)) {
+          // keep selectInput value be text
+          params[key] = value       
         } else {
           params[key] = isNumeric(value) ? +value : value;
         }
       }
+
       this.params = {
         ...this.params,
         ...params,
@@ -315,6 +329,12 @@ export default {
           urlSyncList.push(i.periodName);
         }
       });
+      // 对类型为 selectInput 的添加 selectName
+      this.forms.forEach((i) => {
+        if (i.itemType === "selectInput" && !!i.urlSync) {
+          urlSyncList.push(i.selectName);
+        }
+      });
 
       if (urlSyncList.includes("tab")) {
         alert(`urlSync cannot use the 'tab' keyword, it's used by BoMenu.`);
@@ -328,8 +348,10 @@ export default {
           filteredParams[key] = value;
         }
       }
+
+      const tab = this.$route.query.tab
       const query = {
-        ...this.$route.query,
+        tab,
         ...filteredParams,
       };
       this.$router.replace({ query });

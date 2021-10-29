@@ -1,6 +1,6 @@
 {
   "name": "backoffice-ui",
-  "version": "1.0.57",
+  "version": "1.0.61",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

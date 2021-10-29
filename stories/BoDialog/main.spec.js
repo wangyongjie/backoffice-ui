@@ -162,25 +162,6 @@ describe('BoDialog', () => {
         windowSpy.mockRestore();
     })
 
-    it('methods.trimOnBlur ', async () => {
-        const wrapper = shallowMount(BoDialog, {
-            propsData: {
-                form: {
-                    type: 'edit',
-                    model: {
-                        text: '    trim    '
-                    }
-                },
-                formItems: [],
-                visible: true
-            },
-        })
-
-        const result = 'trim'
-        wrapper.vm.trimOnBlur('text')
-        expect(wrapper.vm.form.model['text']).toBe(result)
-    })
-
     it('methods.onChange ', async () => {
         const wrapper = shallowMount(BoDialog, {
             propsData: {

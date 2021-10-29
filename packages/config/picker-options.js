@@ -179,6 +179,14 @@ export const pickerOptionsData = (formItems) => {
             if(v.offset) {
                 params[v.prop] = parseTime(Date.now() + parseInt(v.offset) * 1000, v.cFormat);
             }
+        } else if (v.itemType === "date") {
+            
+            params[v.prop] = v.value || "";
+
+            // 设置了默认值
+            if(v.offset !== undefined) {
+                params[v.prop] = parseTime(Date.now() + parseInt(v.offset) * 86400000, v.cFormat || '{y}{m}{d}');
+            }
         } else {
             params[v.prop] = v.value || "";
         }

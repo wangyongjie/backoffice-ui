@@ -2,7 +2,6 @@
   <div>
     <bo-page
       :formOptions="formOptions"
-      :tips="tips"
       :columns="columns"
       :tableOptions="tableOptions"
       @search="searchHandle"
@@ -33,54 +32,10 @@ export default {
       formOptions: {
         submitBtnText: "Search",
         forms: [
-          { prop: "name", label: "Name", urlSync: true },
-          { prop: "mobile", label: "Mobile", urlSync: true },
-          {
-            prop: "date",
-            label: "Time Rage",
-            itemType: "daterange",
-            urlSync: true,
-          },
-          { prop: "dureDate", label: "Due Date", itemType: "date", urlSync: true, value: '20211028', offset: -2 },
-          { prop: "datetime", label: "DateTime", itemType: "datetime", offset: 300 },
-          { prop: "month", label: "Month", itemType: "monthrange", range: 6, urlSync: true },
-          {
-            prop: "location",
-            label: "Location",
-            itemType: "multSelect",
-            options: [
-              { value: 0, label: "A Country" },
-              { value: 1, label: "B Country" },
-              { value: 2, label: "C Country" },
-              { value: 3, label: "D Country" },
-            ],
-            urlSync: true,
-          },
-          {
-            prop: "sex",
-            label: "Sex",
-            itemType: "select",
-            change: this.change,
-            options: [
-              { value: 0, label: "Male" },
-              { value: 1, label: "Female" },
-            ],
-            urlSync: true,
-          },
-          {
-            prop: "radio",
-            label: "By Radio",
-            itemType: "radio",
-            options: [
-              { value: 0, label: "Male" },
-              { value: 1, label: "Female" },
-            ],
-            urlSync: true,
-          },
           {
             "itemType": "selectInput",
             "selectName": "selectType",
-            "prop": "gameid",
+            "prop": "uids",
             "options": [{
                 "value": "uids",
                 "label": "UID"
@@ -92,27 +47,8 @@ export default {
             ],
             "urlSync": true
           },
-          {
-            prop: "dates",
-            label: "Time",
-            itemType: "selectDate",
-            value: '20210701',
-            periodName: 'date_period',
-            periodRange: ['daily', 'week'],
-            periodValue: 'week',
-            urlSync: true,
-          }
         ],
-        exportBtn: {
-          type: 'success',
-          text: 'Export'
-        }
       },
-      tips: [
-        "test test",
-        { label: "Type of Data", child: ["tips tips1", "tips tips2"] },
-        "test 2222",
-      ],
       columns: [
         {
           prop: "name",
@@ -143,7 +79,7 @@ export default {
         {
           prop: "num",
           label: "Num",
-          filter: 'date'
+          filter: 'number'
         },
         {
           label: "Options",
@@ -152,8 +88,8 @@ export default {
       ],
       tableOptions: {
         data: [
-          { name: "Sam", mobile: "15299xxxx", num: 1635218799, sex: 0 },
-          { name: "Jean", mobile: "13452xxxx", num: 20210111, sex: 1 },
+          { name: "Sam", mobile: "15299xxxx", num: 1234567, sex: 0 },
+          { name: "Jean", mobile: "13452xxxx", num: 1234567, sex: 1 },
           { name: "Tony", mobile: "187233xxxx", num: 1234567, sex: 0 },
           { name: "Sam", mobile: "15299xxxx", num: 1234567, sex: 0 },
           { name: "Jean", mobile: "13452xxxx", num: 1234567, sex: 1 },
@@ -203,9 +139,6 @@ export default {
     };
   },
   methods: {
-    change(value) {
-      console.log(value)
-    },
     searchHandle(params) {
       console.log(params)
       setTimeout(() => {
