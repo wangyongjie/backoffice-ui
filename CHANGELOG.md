@@ -1,9 +1,62 @@
 ## 更新日志
 
+### 1.0.71
+*2021-11-10*
+- bo-menu
+  - 新增keepAlive，默认为false，如果配置true，menu互相切换时，旧的页面会缓存，不会重置数据
+
+### 1.0.70
+*2021-11-08*
+- 新增 bo-image-upload 元件
+- 新增 bo-emoji 元件
+- bo-dialog 新增兩種 itemType
+  - itemType === 'emoji'
+  - itemType === 'imageUpload'
+
+### 1.0.69
+*2021-11-08*
+- bo-search
+  - itemType为datetimerange的增加maxRangeDays判断
+
+### 1.0.68
+*2021-11-08*
+- bo-search
+  - itemType为datetimerange的添加快捷选项
+
+### 1.0.67
+*2021-11-08*
+- bo-search
+  - 优化itemType为datetimerange的dayRange值，和defaultTime关联起来
+  - 
+### 1.0.66
+*2021-11-08*
+- bo-search
+  - itemType为datetimerange的新增defaultTime配置
+  - 
+### 1.0.65
+*2021-11-08*
+- bo-search
+  - 新增itemType为datetimerange的类型，默认值为dayRange:1,如果想自定义，请用value，如[1635734224826, 1636339024826],格式默认为时间戳，如果希望其他格式，请配置valueFormat
+
+### 1.0.64
+*2021-11-03*
+- bo-search
+  - 新增style参数配置，可以更改组件的样式
+
+### 1.0.63
+*2021-10-29*
+- bo-table
+  - 如设置summary: { type: 'avg', precision: 2}，精度为2，如果判断平均值为整数，则忽略精度
+
+### 1.0.62
+*2021-10-29*
+- bo-select-input
+  - 默认也传selectType值
+
 ### 1.0.61
 *2021-10-29*
 - bo-search
-  - 修正 input 查询参数转成科学计数法
+  - 修复input输入框出现科学计数法问题
 
 ### 1.0.60
 *2021-10-28*

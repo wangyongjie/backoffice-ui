@@ -48,6 +48,7 @@ export default {
             "urlSync": true
           },
         ],
+        autoSearch: true,
       },
       columns: [
         {

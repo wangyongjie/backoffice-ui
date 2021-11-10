@@ -511,6 +511,48 @@ textarea.args = {
 }
 textarea.parameters = parseDocsSourceCode(html, textarea.args)
 
+export const emoji = Template.bind({});
+emoji.storyName = "itemType: emoji"
+emoji.args = {
+  ...Primary.args,
+  form: {
+    type: 'add',
+    model: {
+      emoji: "",
+    }
+  },
+  formItems: [{
+    prop: "emoji",
+    label: "Emoji",
+    itemType: "emoji",
+    showWordLimit: true,
+    size: "medium",
+    rows: 3,
+  }]
+}
+emoji.parameters = parseDocsSourceCode(html, emoji.args)
+
+export const imageUpload = Template.bind({});
+imageUpload.storyName = "itemType: imageUpload"
+imageUpload.args = {
+  ...Primary.args,
+  form: {
+    type: 'add',
+    model: {
+      imageUpload: "",
+    }
+  },
+  formItems: [{
+    prop: "imageUpload",
+    label: "ImageUpload",
+    itemType: "imageUpload",
+    showWordLimit: true,
+    size: "medium",
+    rows: 3,
+  }]
+}
+imageUpload.parameters = parseDocsSourceCode(html, imageUpload.args)
+
 
 export const slot = Template.bind({});
 slot.storyName = "itemType: slot"

@@ -21,6 +21,7 @@
         :clearable="(form.clearable !== undefined) ? form.clearable : true"
         @keyup.enter.native="searchHandler"
         :placeholder="form.placeholder"
+        :style="form.style"
         @change="onChange(form)"
         @blur="params[form.prop] = $event.target.value.trim()"
       />
@@ -31,6 +32,7 @@
         :placeholder="form.placeholder"
         :multiple="form.multiple"
         :clearable="(form.clearable !== undefined) ? form.clearable : true"
+        :style="form.style"
       >
         <el-option
           v-for="(option, optionIndex) in form.options"
@@ -43,6 +45,7 @@
       <el-radio-group
           v-else-if="form.itemType === 'radio'"
           v-model="params[form.prop]"
+          :style="form.style"
         >
           <el-radio
             v-for="(radio, radioIndex) in form.options"
@@ -57,6 +60,7 @@
         v-else-if="form.itemType === 'selectInput'"
         v-model="params"
         :form="form"
+        :style="form.style"
         @onEnter="searchHandler"
       ></bo-select-input>
 
@@ -65,12 +69,14 @@
         :value.sync="params[form.prop]"
         :period.sync="params[form.periodName]"
         :period-range="form.periodRange"
+        :style="form.style"
       ></bo-select-date>
 
       <bo-select
         v-else-if="form.itemType === 'multSelect'"
         v-model="params[form.prop]"
         :list="form.options"
+        :style="form.style"
       >
       </bo-select>
       <el-date-picker
@@ -82,6 +88,7 @@
         :value-format="form.valueFormat || 'yyyyMMdd'"
         clearable
         :picker-options="form.pickerOptions || {}"
+        :style="form.style"
       />
       <el-date-picker
         v-else-if="form.itemType === 'datetime'"
@@ -92,6 +99,7 @@
         :value-format="form.valueFormat || 'yyyy-MM-dd HH:mm:ss'"
         clearable
         :picker-options="form.pickerOptions || {}"
+        :style="form.style"
       />
       <el-date-picker
         v-else-if="form.itemType === 'monthrange'"
@@ -100,7 +108,7 @@
         :clearable="false"
         :value-format="form.valueFormat || 'yyyyMM'"
         :picker-options="form.pickerOptions || monthPickerOptions"
-        style="width: 280px"
+        :style="form.style || { width: '280px' }"
       />
       <el-date-picker
         v-else-if="form.itemType === 'daterange'"
@@ -110,7 +118,19 @@
         :clearable="false"
         :placeholder="form.placeholder"
         :picker-options="pickerOptions"
-        style="width: 280px"
+        :style="form.style || { width: '280px' }"
+      />
+      <el-date-picker
+        v-else-if="form.itemType === 'datetimerange'"
+        v-model="params[form.prop]"
+        type="datetimerange"
+        :clearable="false"
+        :placeholder="form.placeholder"
+        :picker-options="form.pickerOptions"
+        :value-format="form.valueFormat || 'timestamp'"
+        :format="form.format || 'yyyy-MM-dd HH:mm:ss'"
+        :default-time="form.defaultTime"
+        :style="form.style"
       />
     </el-form-item>
     <el-form-item label="">
@@ -279,6 +299,25 @@ export default {
             isValid = false;
             this.$message({
               message: `Date range should not exceed ${maxRangeDays} days.`,
+              type: "error",
+            });
+          }
+        }
+      });
+      const dataTimeRanges = this.forms.filter((x) => x.itemType === "datetimerange");
+      dataTimeRanges.forEach((x) => {
+        const rangeDateTime = this.params[x.prop];
+        const maxRangeDays = x.maxRangeDays;
+        if (maxRangeDays && rangeDateTime && rangeDateTime.length === 2) {
+          const diffTime = Math.abs(
+            rangeDateTime[1] - rangeDateTime[0]
+          );
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          console.log("dataTimeRanges", diffTime, diffDays);
+          if (diffDays > maxRangeDays) {
+            isValid = false;
+            this.$message({
+              message: `DateTime range should not exceed ${maxRangeDays} days.`,
               type: "error",
             });
           }

@@ -36,13 +36,14 @@ export default {
           { prop: "name", label: "Name", urlSync: true },
           { prop: "mobile", label: "Mobile", urlSync: true },
           {
-            prop: "date",
+            prop: "date1",
             label: "Time Rage",
             itemType: "daterange",
             urlSync: true,
           },
           { prop: "dureDate", label: "Due Date", itemType: "date", urlSync: true, value: '20211028', offset: -2 },
           { prop: "datetime", label: "DateTime", itemType: "datetime", offset: 300 },
+          { prop: "date", label: "DateTimeRange", itemType: "datetimerange", dayRange: 7, defaultTime: ['02:30:00', '02:30:00'], maxRangeDays: 30 },
           { prop: "month", label: "Month", itemType: "monthrange", range: 6, urlSync: true },
           {
             prop: "location",
@@ -65,6 +66,7 @@ export default {
               { value: 0, label: "Male" },
               { value: 1, label: "Female" },
             ],
+            style: { width: "300px" },
             urlSync: true,
           },
           {

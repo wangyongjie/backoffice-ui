@@ -70,6 +70,81 @@ export const pickerOptionsData = (formItems) => {
             }
         ],
     }
+    let timeRangePickerOptions = (defaultTime) => ({
+        shortcuts: [{
+                text: "Today",
+                rangeDays: 1,
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
+                    picker.$emit("pick", [
+                        defaultTime ? (new Date(parseTime(start, "{y}-{m}-{d}") + ' ' + defaultTime[0])).getTime() : start.getTime(),
+                        defaultTime ? (new Date(parseTime(end, "{y}-{m}-{d}") + ' ' + defaultTime[1])).getTime() : end.getTime()
+                    ]);
+                },
+            },
+            {
+                text: "Past 7 Days",
+                rangeDays: 7,
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                    picker.$emit("pick", [
+                        defaultTime ? (new Date(parseTime(start, "{y}-{m}-{d}") + ' ' + defaultTime[0])).getTime() : start.getTime(),
+                        defaultTime ? (new Date(parseTime(end, "{y}-{m}-{d}") + ' ' + defaultTime[1])).getTime() : end.getTime()
+                    ]);
+                },
+            },
+            {
+                text: "Past 15 Days",
+                rangeDays: 15,
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 15);
+                    picker.$emit("pick", [
+                        defaultTime ? (new Date(parseTime(start, "{y}-{m}-{d}") + ' ' + defaultTime[0])).getTime() : start.getTime(),
+                        defaultTime ? (new Date(parseTime(end, "{y}-{m}-{d}") + ' ' + defaultTime[1])).getTime() : end.getTime()
+                    ]);
+                },
+            },
+            {
+                text: "Past 30 Days",
+                rangeDays: 30,
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                    picker.$emit("pick", [
+                        defaultTime ? (new Date(parseTime(start, "{y}-{m}-{d}") + ' ' + defaultTime[0])).getTime() : start.getTime(),
+                        defaultTime ? (new Date(parseTime(end, "{y}-{m}-{d}") + ' ' + defaultTime[1])).getTime() : end.getTime()
+                    ]);
+                },
+            },
+            {
+                text: "Past 90 Days",
+                rangeDays: 90,
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                    picker.$emit("pick", [
+                        defaultTime ? (new Date(parseTime(start, "{y}-{m}-{d}") + ' ' + defaultTime[0])).getTime() : start.getTime(),
+                        defaultTime ? (new Date(parseTime(end, "{y}-{m}-{d}") + ' ' + defaultTime[1])).getTime() : end.getTime()
+                    ]);
+                },
+            },
+            {
+                text: "All Time",
+                rangeDays: 36500,
+                onClick(picker) {
+                    picker.$emit("pick", '');
+                },
+            }
+        ],
+    })
     let monthPickerOptions = {
         shortcuts: [{
             text: 'This Month',
@@ -146,6 +221,39 @@ export const pickerOptionsData = (formItems) => {
                 pickerOptions.shortcuts = pickerOptions.shortcuts.filter(x => {
                     return x.rangeDays <= v.maxRangeDays
                 })
+            }
+        } else if (v.itemType === "datetimerange") {
+            
+            params[v.prop] = v.value || '';
+
+            // 设置了默认值
+            if(v.dayRange) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * (v.dayRange));
+                params[v.prop] = [
+                    start.getTime(),
+                    end.getTime(),
+                ];
+
+                if(v.defaultTime) {
+                    params[v.prop] = [
+                        (new Date(parseTime(start, "{y}-{m}-{d}") + ' ' + v.defaultTime[0])).getTime(),
+                        (new Date(parseTime(end, "{y}-{m}-{d}") + ' ' + v.defaultTime[1])).getTime()
+                    ];
+                }
+                if(!v.pickerOptions) {
+                    v.pickerOptions = timeRangePickerOptions(v.defaultTime)
+                    // filter by maxRangeDays
+                    if (v.maxRangeDays) {
+                        v.pickerOptions.shortcuts = v.pickerOptions.shortcuts.filter(x => {
+                            return x.rangeDays <= v.maxRangeDays
+                        })
+                    }
+                }
+            }
+            if(v.value) {
+                params[v.prop] = v.value
             }
         } else if (v.itemType === "monthrange") {
             // 设置了默认值

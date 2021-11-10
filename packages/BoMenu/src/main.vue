@@ -14,11 +14,12 @@
       >
     </el-menu>
 
-    <div v-for="(me, index) in menus" :key="index">
-      <div v-if="activeIndex === me.index" style="margin-top: 20px">
+    <div style="margin-top: 20px">
+      <keep-alive>
         <!-- @slot 可從外部傳入 stemplate slot name 使用 -->
-        <slot :name="me.index"></slot>
-      </div>
+        <slot :name="activeIndex" v-if="keepAlive"></slot>
+      </keep-alive>
+      <slot :name="activeIndex" v-if="!keepAlive"></slot>
     </div>
   </div>
 </template>
@@ -34,6 +35,14 @@ export default {
       required: true,
       type: Array,
     },
+    /**
+     *  默认为false，如果配置true，menu互相切换时，旧的页面会缓存，不会重置数据
+     */
+    keepAlive: {
+      require: false,
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {

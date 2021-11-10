@@ -160,6 +160,22 @@
           type="textarea"
           @blur="form.model[item.prop] = $event.target.value.trim()"
         ></el-input>
+        <bo-emoji
+          v-else-if="item.itemType === 'emoji'"
+          v-model="form.model[item.prop]"
+          @input="onChange(item)"
+          :show-word-limit="item.showWordLimit"
+          :size="item.size"
+          :rows="item.rows"
+          :autosize="item.autosize"
+          :disabled="form.type === item.disabledOn"
+        ></bo-emoji>
+        <bo-image-upload
+          v-else-if="item.itemType === 'imageUpload'"
+          v-model="form.model[item.prop]"
+          @input="onChange(item)"
+          :disabled="form.type === item.disabledOn"
+        ></bo-image-upload>
         <!-- @slot 可從外部傳入 slot 給 itemType: slot 使用 -->
         <slot
           v-else-if="item.itemType === 'slot'"
@@ -184,6 +200,8 @@
 import BoSelect from "../../BoSelect";
 import BoCurrencyInput from "../../BoCurrencyInput";
 import BoMultLang from "../../BoMultLang";
+import BoEmoji from "../../BoEmoji"
+import BoImageUpload from "../../BoImageUpload"
 import { pickerOptionsData } from "../../config/picker-options";
 import { setFormMsg, setFormItemsMsg } from "../../utils/formDefaultMessage";
 /**
@@ -194,7 +212,9 @@ export default {
   components: {
     BoSelect,
     BoCurrencyInput,
-    BoMultLang
+    BoMultLang,
+    BoEmoji,
+    BoImageUpload,
   },
   computed: {
     title() {

@@ -139,7 +139,9 @@ export default {
           !values.every((value) => isNaN(value)) &&
           !excludeProps.includes(prop)
         ) {
-          const round = (n) => n.toFixed(precision);
+          const round = (n) => {
+            return Number.isInteger(n) ? n : n.toFixed(precision)
+          };
           const sum = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {

@@ -74,6 +74,9 @@ export default {
   },
   mounted() {
     this.isMounted = true
+
+    // 设置默认值
+    this.resetSelectInputParams()
   },
   methods: {
     trimOnBlur(prop) {

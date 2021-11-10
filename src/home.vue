@@ -4,7 +4,7 @@
     <div style="height: 50px;background:#fff;"></div>
 
     <div class="app-container">
-      <bo-menu :menus="menus">
+      <bo-menu :menus="menus" :keep-alive="true">
         <template #banner>
           <page-one></page-one>
         </template>
@@ -26,6 +26,9 @@
         <template #selectInput>
           <select-input></select-input>
         </template>
+        <template #tabs>
+          <tabs></tabs>
+        </template>
       </bo-menu>
     </div>
   </div>
@@ -40,6 +43,7 @@ import chart from './pages/chart.vue';
 import tableSummary from './pages/tableSummary.vue'
 import boMultLang from './pages/boMultLang.vue'
 import selectInput from './pages/selectInput.vue'
+import tabs from './pages/tabs.vue'
 
 export default {
   name: "Home",
@@ -51,7 +55,8 @@ export default {
     chart,
     tableSummary,
     boMultLang,
-    selectInput
+    selectInput,
+    tabs
   },
   data() {
     return {
@@ -83,6 +88,10 @@ export default {
         {
           index: "selectInput",
           label: "selectInput",
+        },
+        {
+          index: "tabs",
+          label: "tabs",
         },
       ],
     };
