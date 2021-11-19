@@ -1,9 +1,11 @@
 import BoCurrencyInput from '../packages/BoCurrencyInput/index'
 import BoCopy from '../packages/BoCopy/index'
 import BoPagination from '../packages/BoPagination/index.js';
+import BoRangeInput from '../packages/BoRangeInput/index.js';
 import BoDialog from '../packages/BoDialog/index.js';
 import BoEmoji from '../packages/BoEmoji/index.js';
-import BoImageUpload from '../packages/BoImageUpload/index.js'
+import BoFormItem from '../packages/BoFormItem/index.js';
+import BoImageUpload from '../packages/BoImageUpload/index.js';
 import BoMenu from '../packages/BoMenu/index.js';
 import BoPage from '../packages/BoPage/index.js';
 import BoSearch from '../packages/BoSearch/index.js';
@@ -18,8 +20,10 @@ const components = [
     BoCurrencyInput,
     BoCopy,
     BoPagination,
+    BoRangeInput,
     BoDialog,
     BoEmoji,
+    BoFormItem,
     BoImageUpload,
     BoMenu,
     BoPage,
@@ -55,6 +59,7 @@ export default {
     install,
     BoCopy,
     BoPagination,
+    BoRangeInput,
     BoDialog,
     BoEmoji,
     BoImageUpload,

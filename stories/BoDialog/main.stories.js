@@ -369,6 +369,90 @@ multSelect.args = {
 multSelect.parameters = parseDocsSourceCode(html, multSelect.args)
 
 
+export const multLang = Template.bind({});
+multLang.storyName = "itemType: multLang"
+multLang.args = {
+  ...Primary.args,
+  form: {
+    type: 'add',
+    model: {
+      value: {
+        'en': {
+          title: 'test',
+          textarea: 'test'
+        },
+        'br': {
+          title: 'test1',
+          textarea: 'test1'
+        },
+      },
+    }
+  },
+  formItems: [{
+    prop: 'value',
+    itemType: 'multLang',
+    langs: [{
+        value: 'en',
+        label: 'English'
+      },
+      {
+        value: 'br',
+        label: 'Brazie'
+      },
+      {
+        value: 'jp',
+        label: 'Japan'
+      },
+    ],
+    form: {
+      model: {
+        title: '',
+        textarea: '',
+        einput: '',
+        etextarea: '',
+      },
+      rules: {
+        title: [{
+          required: true,
+          message: "Please check the title.",
+          trigger: "blur"
+        }],
+        textarea: [{
+          required: true,
+          message: "Please check the textarea.",
+          trigger: "blur"
+        }],
+      },
+    },
+    formItems: [
+      {
+        prop: "title",
+        label: "Title",
+      },
+      {
+        prop: "textarea",
+        label: "Textarea",
+        itemType: "textarea",
+        showWordLimit: true,
+        rows: 4,
+      },
+      {
+        prop: "einput",
+        label: "Emoji Input",
+        itemType: "emoji",
+        rows: 1,
+      },
+      {
+        prop: "etextarea",
+        label: "Emoji Textarea",
+        itemType: "emoji",
+        rows: 3,
+      }
+    ],
+  }]
+}
+multLang.parameters = parseDocsSourceCode(html, multLang.args)
+
 
 export const date = Template.bind({});
 date.storyName = "itemType: date"
@@ -554,6 +638,27 @@ imageUpload.args = {
 imageUpload.parameters = parseDocsSourceCode(html, imageUpload.args)
 
 
+export const rangeInput = Template.bind({});
+rangeInput.storyName = "itemType: rangeInput"
+rangeInput.args = {
+  ...Primary.args,
+  form: {
+    type: 'add',
+    model: {
+      rangeInput: "",
+      rangeProp: "",
+    }
+  },
+  formItems: [{
+    itemType: "rangeInput",
+    prop: "rangeInput",
+    label: "RangeInput",
+    rangeProp: 'rangeProp',
+  }]
+}
+rangeInput.parameters = parseDocsSourceCode(html, rangeInput.args)
+
+
 export const slot = Template.bind({});
 slot.storyName = "itemType: slot"
 slot.args = {
@@ -644,10 +749,8 @@ change.args = {
   },
   formItems: [{
     prop: 'name',
-      label: "Name",
-      change: (value) => {
-      }
-    },
-  ]
+    label: "Name",
+    change: (value) => {}
+  }, ]
 }
 change.parameters = parseDocsSourceCode(html, change.args)

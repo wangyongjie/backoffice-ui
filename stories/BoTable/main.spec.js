@@ -89,7 +89,7 @@ describe('BoTable', () => {
             const summary = {
                 "a": '18',
                 "b": "-",
-                "c": '10',
+                "c": 10,
                 "id": "Avg",
             }
             const result = [summary, ...testProps.data]
@@ -110,7 +110,7 @@ describe('BoTable', () => {
             const summary = {
                 "a": '18.33',
                 "b": "-",
-                "c": '10.00',
+                "c": 10,
                 "id": "Avg",
             }
             const result = [summary, ...testProps.data]

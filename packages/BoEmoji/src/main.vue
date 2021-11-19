@@ -20,7 +20,12 @@
       class="emoji-popper"
     >
       <VEmojiPicker @select="selectEmoji" />
-      <el-button style="padding: 0" type="text" slot="reference">
+      <el-button
+        :disabled="disabled"
+        style="padding: 0"
+        type="text"
+        slot="reference"
+      >
         <svg
           style="max-height: 18px"
           xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +84,6 @@ export default {
     },
     /**
      * [同 elemnent-ui input](https://element.eleme.io/#/en-US/component/input#textarea)
-     * rows 預設為 1 視同 input
      */
     disabled: {
       type: Boolean,
@@ -120,8 +124,8 @@ export default {
     position: absolute;
     width: 25px;
     height: 25px;
-    bottom: 5px;
-    right: 5px;
+    bottom: 2px;
+    right: 0;
   }
 }
 </style>

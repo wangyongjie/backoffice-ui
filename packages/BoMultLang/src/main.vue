@@ -33,22 +33,11 @@
             :key="`${i}item`"
             v-bind="item"
           >
-            <el-input
-              v-if="item.itemType === 'input' || item.itemType === undefined"
-              v-model="content[tab.name][item.prop]"
-              clearable
-              :type="item.type || 'text'"
-              :placeholder="item.placeholder"
-            />
-            <el-input
-              v-else-if="item.itemType === 'textarea'"
-              v-model="content[tab.name][item.prop]"
-              :show-word-limit="item.showWordLimit"
-              :size="item.size"
-              :rows="item.rows"
-              :autosize="item.autosize"
-              type="textarea"
-            ></el-input>
+            <bo-form-item
+              v-model="content[tab.name]"
+              :item="item"
+              :form="form"
+             ></bo-form-item>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -60,6 +49,9 @@
 
 export default {
   name: "BoMultLang",
+  components: {
+    BoFormItem: () => import('../../BoFormItem/src/main.vue'),
+  },
   props: {
     /**
      * 用来记录value值

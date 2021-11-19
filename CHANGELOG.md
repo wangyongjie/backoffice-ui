@@ -1,5 +1,25 @@
 ## 更新日志
 
+### 1.0.76
+*2021-11-15*
+- 新增 bo-range-input 元件 
+
+### 1.0.75
+*2021-11-15*
+- 新增 bo-form-item 元件 
+  - dialog & multlang 共用 form-item
+
+### 1.0.74
+*2021-11-12*
+- bo-dialog 新增 transition 修復關閉動畫流暢度
+
+### 1.0.73
+*2021-11-11*
+- bo-multlang fixed emoji v-model error
+### 1.0.72
+*2021-11-11*
+- bo-multlang 新增 emoji 元件
+
 ### 1.0.71
 *2021-11-10*
 - bo-menu
