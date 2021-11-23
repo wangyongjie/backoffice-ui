@@ -46,6 +46,22 @@ date.args = {
 };
 date.parameters = parseDocsSourceCode(html, date.args)
 
+export const cardNumber = Template.bind({});
+cardNumber.args = {
+  label: 'cardNumber filter',
+  value: 258,
+  type: 'card'
+};
+cardNumber.parameters = parseDocsSourceCode(html, cardNumber.args)
+
+export const cardArray = Template.bind({});
+cardArray.args = {
+  label: 'cardArray filter',
+  value: [258, 514, 770, 1026],
+  type: 'card'
+};
+cardArray.parameters = parseDocsSourceCode(html, cardArray.args)
+
 
 export const multiple = Template.bind({});
 multiple.args = {

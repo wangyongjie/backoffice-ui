@@ -1,5 +1,6 @@
+const isNumeric = (num) => num && !isNaN(num)
+
 const numberFormat = (value) => {
-    const isNumeric = (num) => num && !isNaN(num)
     // - 支持货币和千分位的联合转换
     // 123456 转换成 1,234.56 ，如没有，默认为0
 
@@ -22,12 +23,12 @@ const currencyFormat = (value) => {
 }
 
 const dateFormat = (value) => {
-    if(typeof value === 'number') {
+    if (typeof value === 'number') {
         value += ''
     }
     if ((typeof value === 'string' || value instanceof String)) {
         // ex: 20211221 转换成 2021/12/21
-        if(value.length === 8) {
+        if (value.length === 8) {
             return `${value.substr(0, 4)}/${value.substr(4, 2)}/${value.substr(6, 2)}`
         } else if (value.length === 10) {
             // ex: 1635218799 转换成 2021/10/26 11:26:39
@@ -49,6 +50,32 @@ const dateFormat = (value) => {
     }
 }
 
+// value support number, Array<number>
+const cardFormat = (value) => {
+    const cardsString = (c) => {
+        const suitIndex = Math.floor(c / 256)
+        // Suit: c / 256
+        const suitMap = {
+            1: "♦",
+            2: "♣",
+            3: "♥",
+            4: "♠",
+        }
+        const seqIndex = (c % 256) - 2
+        // Point: c % 256, Index: Point-2 
+        const seq = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
+        return `${suitMap[suitIndex]}${seq[seqIndex]}`
+    }
+
+    if (Array.isArray(value)) {
+        return value.map(x => cardsString(x)).join(' ')
+    } else if (isNumeric(value)) {
+        return cardsString(value)
+    } else {
+        return '-';
+    }
+}
+
 
 export const BoFilter = (value, format) => {
     const formatter = (format, value) => {
@@ -59,6 +86,8 @@ export const BoFilter = (value, format) => {
                 return currencyFormat(value)
             case 'date':
                 return dateFormat(value)
+            case 'card':
+                return cardFormat(value)
             default:
                 return value
         }

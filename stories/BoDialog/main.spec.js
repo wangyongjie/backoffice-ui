@@ -76,39 +76,13 @@ describe('BoDialog', () => {
                 visible: true
             },
         })
-        const parseCurrencyModel = jest.spyOn(wrapper.vm, 'parseCurrencyModel')
         const result = {
             balance: 100,
         }
         wrapper.vm.$nextTick(() => {
             wrapper.vm.confirm()
             expect(wrapper.emitted('confirm')[0]).toEqual([result])
-            expect(parseCurrencyModel).toBeCalled()
         })
-    })
-
-    it('methods.parseCurrencyModel ', async () => {
-        const wrapper = shallowMount(BoDialog, {
-            propsData: {
-                form: {
-                    type: 'edit',
-                    model: {
-                        currency: '100',
-                    }
-                },
-                formItems: [{
-                    prop: 'currency',
-                    label: 'Currency',
-                    itemType: 'currency'
-                }],
-                visible: true
-            },
-        })
-        const result = {
-            currency: 100,
-        }
-        wrapper.vm.parseCurrencyModel(wrapper.vm.form.model)
-        expect(wrapper.vm.form.model).toEqual(result)
     })
 
     it('methods.closeDialog ', async () => {

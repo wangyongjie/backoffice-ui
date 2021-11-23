@@ -127,6 +127,7 @@ import BoTable from "../../BoTable";
 import BoChart from "../../BoChart";
 import { transformUtils } from "../../BoChart/src/transform-utils";
 import { flatColumns } from "../../utils/table";
+import { getPosition } from '../../utils/dom'
 
 /**
  * 由 BoSearch, BoPagination, BoTable,  BoLineChart
@@ -261,10 +262,10 @@ export default {
       });
     },
     autoHeight() {
-      const height = this.$refs.bopage.offsetHeight;
-      const top = this.$refs.bopage.offsetTop;
-      const newHeight =
-        window.innerHeight - (height + top + this.$BACKOFFICE.headerTop) + parseInt(this.height);
+      // search + pagination height
+      const height = 150
+      const bopage = getPosition(this.$refs.bopage)
+      const newHeight = window.innerHeight - height - bopage.y
       this.height = (newHeight > 300 ? newHeight : 300) + "px";
     },
     autoSearch() {

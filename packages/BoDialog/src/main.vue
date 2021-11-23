@@ -15,19 +15,33 @@
         :label-position="labelPosition"
         @submit.native.prevent
       >
-        <el-form-item
-          v-for="(item, i) in formItems"
-          :key="`${i}item`"
-          v-show="item.showOn ? item.showOn === form.type : true"
-          v-bind="item"
-        >
-          <bo-form-item
-            v-model="form.model"
-            :item="item"
-            :form="form"
-            @input="onChange(item)"
-          ></bo-form-item>
-        </el-form-item>
+        <template v-for="(item, i) in formItems">
+          <el-form-item
+            :key="`${i}item`"
+            v-if="item.isExist !== undefined ? item.isExist : true"
+            v-show="item.showOn ? item.showOn === form.type : true"
+            v-bind="item"
+          >
+            <bo-form-item
+              v-model="form.model[item.prop]"
+              :item="item"
+              :form="form"
+              :formModel="form.model"
+              :monthPickerOptions="monthPickerOptions"
+              :pickerOptions="pickerOptions"
+              @input="onChange(item)"
+            >
+              <!-- by pass slot for bo-table -->
+              <slot v-for="(_, name) in $slots" :name="name" :slot="name" />
+              <template
+                v-for="(_, name) in $scopedSlots"
+                :slot="name"
+                slot-scope="slotData"
+                ><slot :name="name" v-bind="slotData"
+              /></template>
+            </bo-form-item>
+          </el-form-item>
+        </template>
       </el-form>
     </transition>
     <div slot="footer" v-if="showFooter">
@@ -43,6 +57,11 @@
 import BoFormItem from "../../BoFormItem/index";
 import { pickerOptionsData } from "../../config/picker-options";
 import { setFormMsg, setFormItemsMsg } from "../../utils/formDefaultMessage";
+import {
+  resetForm,
+  parseCurrencyModel,
+  resetNotExistModel,
+} from "../../utils/form";
 /**
  * 預設寬度 50% form 靠左對齊, 600px 以下會改成 寬度 100% form 靠上對齊
  */
@@ -60,28 +79,12 @@ export default {
     visible: {
       immediate: true,
       handler(value) {
+        // default: true
+        const resetOnAdd = this.form.resetOnAdd !== undefined ? this.form.resetOnAdd: true
         // watch visible & form type to reset form
-        if (value && this.form.type === "add") {
-          const getDefault = (value) => {
-            if (Array.isArray(value)) {
-              return [];
-            }
-            const type = (typeof value).toLowerCase();
-            const typeDefault = {
-              boolean: false,
-              number: 0,
-              string: "",
-            };
-            return typeDefault[type];
-          };
-
+        if (resetOnAdd && value && this.form.type === "add") {
           const { formItems } = this.$props;
-
-          Object.keys(this.form.model).forEach((key) => {
-            this.form.model[key] =
-              pickerOptionsData(formItems).params[key] ||
-              getDefault(this.form.model[key]);
-          });
+          resetForm(this.form.model, formItems, pickerOptionsData);
         }
       },
     },
@@ -95,6 +98,7 @@ export default {
       immediate: true,
       handler(formItems) {
         setFormItemsMsg(formItems, "Please check the configuration.");
+        resetNotExistModel(this.form.model, formItems);
       },
     },
   },
@@ -158,7 +162,7 @@ export default {
       this.$refs["dialogForm"].validate((valid) => {
         if (valid) {
           // pasre itemType: "currency", from string to number
-          this.parseCurrencyModel(this.form.model);
+          parseCurrencyModel(this.form.model, this.formItems);
           /**
            * 回傳 form.model
            */
@@ -167,14 +171,6 @@ export default {
           this.$message.error("Form validation failed!");
           return false;
         }
-      });
-    },
-    parseCurrencyModel(model) {
-      const currencyPropList = this.formItems
-        .filter((x) => x.itemType === "currency")
-        .map((x) => x.prop);
-      currencyPropList.forEach((prop) => {
-        model[prop] = parseInt(model[prop]);
       });
     },
     closeDialog() {

@@ -1,5 +1,37 @@
 ## 更新日志
 
+### 1.0.82
+*2021-11-23*
+- bo-table
+  - 配置render时仍然支持配置fliter，先进行render后执行filter
+
+### 1.0.81
+*2021-11-23*
+- 新增 BoPlugin
+ - 可在元件內使用 this.$watermark 新增浮水印
+- bo-filter
+ - 新增 card filter
+
+### 1.0.80
+*2021-11-23*
+- bo-dialog
+  - fixed bo-form-item v-model issue
+
+### 1.0.79
+*2021-11-22*
+- bo-dialog
+  - add form.resetOnAdd 關閉重設表單 預設為 true
+
+### 1.0.78
+*2021-11-15*
+- [hotfix] bo-dialog
+  - bo-form-item not pass slot
+
+### 1.0.77
+*2021-11-15*
+- bo-page autoHeight 自動判斷高 不需外部傳入
+- bo-dialog 新增 isExist 欄位, false 時會清空 model
+
 ### 1.0.76
 *2021-11-15*
 - 新增 bo-range-input 元件 

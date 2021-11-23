@@ -71,7 +71,7 @@ describe('BoPage', () => {
             innerHeight: 500
         }));
         wrapper.vm.autoHeight()
-        expect(wrapper.vm.height).toBe('730px')
+        expect(wrapper.vm.height).toBe('350px')
     })
 
     it('methods.autoSearch', async () => {

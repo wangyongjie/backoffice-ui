@@ -54,6 +54,23 @@ describe('BoFilter', () => {
         });
     });
 
+    describe('date', () => {
+        it('258 should be ♦2', () => {
+            const result = BoFilter(258, 'card')
+            expect(result).toBe('♦2')
+        });
+
+        it('[258, 514, 770, 1026] should be ♦2,♣2,♥2,♠2', () => {
+            const result = BoFilter([258, 514, 770, 1026], 'card')
+            expect(result).toBe('♦2,♣2,♥2,♠2')
+        });
+
+        it('null should be -', () => {
+            const result = BoFilter(null, 'card')
+            expect(result).toBe('-')
+        });
+    });
+
     describe('currency|number', () => {
         it('1212121 should be 12,121.21', () => {
             const result = BoFilter(1212121, 'currency|number')

@@ -52,6 +52,7 @@ export default {
                   prop: "currency",
                   label: "Currency",
                   minWidth: 140,
+                  render: function(row) { return row.currency + '1' },
                   filter: "number",
                 },
               ],

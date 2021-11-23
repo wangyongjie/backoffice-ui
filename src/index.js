@@ -14,7 +14,8 @@ import BoSelect from '../packages/BoSelect/index.js';
 import BoSelectInput from '../packages/BoSelectInput/index.js';
 import BoSelectDate from '../packages/BoSelectDate/index.js';
 import BoTable from '../packages/BoTable/index.js';
-import BoFilter from '../packages/BoFilter/index'
+import BoFilter from '../packages/BoFilter/index.js';
+import BoPlugin from '../packages/BoPlugin/index.js';
 
 const components = [
     BoCurrencyInput,
@@ -41,12 +42,12 @@ const install = function (Vue, opts = {}) {
     });
 
     Vue.use(BoFilter);
+    Vue.use(BoPlugin);
 
     // 初始化公共变量 
     Vue.prototype.$BACKOFFICE = {
         loadMutation: opts.loadMutation || '',  // loading在vuex中修改的mutation
         loadState: opts.loadState || '',  // loading在vuex中的state地址
-        headerTop: opts.headerTop || 70  // 顶部栏高度
     };
 };
 

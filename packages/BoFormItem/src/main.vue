@@ -2,29 +2,26 @@
   <div>
     <el-input
       v-if="item.itemType === 'input' || item.itemType === undefined"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       clearable
       :type="item.type || 'text'"
       :placeholder="item.placeholder"
       :disabled="isDisabled"
-      @blur="model[item.prop] = $event.target.value.trim()"
+      @blur="model = $event.target.value.trim()"
     />
     <bo-currency-input
       v-else-if="item.itemType === 'currency'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       clearable
       :placeholder="item.placeholder"
       :disabled="isDisabled"
     ></bo-currency-input>
     <div v-else-if="item.itemType === 'text'">
-      {{ model[item.prop] }}
+      {{ model }}
     </div>
     <el-select
       v-else-if="item.itemType === 'select'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       :placeholder="item.placeholder"
       :multiple="item.multiple"
       :disabled="isDisabled"
@@ -39,15 +36,14 @@
     </el-select>
     <bo-select
       v-else-if="item.itemType === 'multSelect'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       :list="item.options"
       :disabled="isDisabled"
     >
     </bo-select>
     <bo-mult-lang
       v-else-if="item.itemType === 'multLang'"
-      v-model="model[item.prop]"
+      v-model="model"
       :langs="item.langs"
       :form="item.form"
       :formItems="item.formItems"
@@ -56,8 +52,7 @@
     </bo-mult-lang>
     <el-date-picker
       v-else-if="item.itemType === 'date'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       type="date"
       :placeholder="item.placeholder"
       clearable
@@ -66,7 +61,7 @@
     />
     <el-date-picker
       v-else-if="item.itemType === 'datetime'"
-      v-model="model[item.prop]"
+      v-model="model"
       type="datetime"
       :placeholder="item.placeholder"
       :format="item.format || 'yyyy-MM-dd HH:mm:ss'"
@@ -77,7 +72,7 @@
     />
     <el-date-picker
       v-else-if="item.itemType === 'monthrange'"
-      v-model="model[item.prop]"
+      v-model="model"
       type="monthrange"
       :clearable="false"
       :value-format="item.valueFormat || 'yyyyMM'"
@@ -87,8 +82,7 @@
     />
     <el-date-picker
       v-else-if="item.itemType === 'daterange'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       type="daterange"
       value-format="yyyyMMdd"
       :clearable="false"
@@ -99,13 +93,11 @@
     />
     <el-switch
       v-else-if="item.itemType === 'switch'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
     ></el-switch>
     <el-checkbox-group
       v-else-if="item.itemType === 'checkbox'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       :disabled="isDisabled"
     >
       <el-checkbox
@@ -116,8 +108,7 @@
     </el-checkbox-group>
     <el-radio-group
       v-else-if="item.itemType === 'radio'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       :disabled="isDisabled"
     >
       <el-radio
@@ -130,20 +121,18 @@
     </el-radio-group>
     <el-input
       v-else-if="item.itemType === 'textarea'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       :show-word-limit="item.showWordLimit"
       :size="item.size"
       :rows="item.rows"
       :autosize="item.autosize"
       :disabled="isDisabled"
       type="textarea"
-      @blur="model[item.prop] = $event.target.value.trim()"
+      @blur="model = $event.target.value.trim()"
     ></el-input>
     <bo-emoji
       v-else-if="item.itemType === 'emoji'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       :show-word-limit="item.showWordLimit"
       :size="item.size"
       :rows="item.rows"
@@ -152,13 +141,12 @@
     ></bo-emoji>
     <bo-image-upload
       v-else-if="item.itemType === 'imageUpload'"
-      v-model="model[item.prop]"
-      @input="onChange(item)"
+      v-model="model"
       :disabled="isDisabled"
     ></bo-image-upload>
     <bo-range-input
       v-else-if="item.itemType === 'rangeInput'"
-      :prop.sync="model[item.prop]"
+      :prop.sync="model"
       :rangeProp.sync="model[item.rangeProp]"
       :rangeOptions="item.rangeOptions"
     ></bo-range-input>
@@ -166,7 +154,7 @@
     <slot
       v-else-if="item.itemType === 'slot'"
       :name="item.slotName"
-      :model="model"
+      :model="formModel"
     ></slot>
     <div class="tips">
       {{ item.tips }}
@@ -210,34 +198,36 @@ export default {
       default: () => ({}),
     },
     /**
-     * for v-model
+     * form.model for slot
      */
-    value: {
+    formModel: {
       type: Object,
       default: () => ({}),
     },
-  },
-  watch: {
-    model: {
-      deep: true,
-      handler(value) {
-        this.$emit("input", value);
-      },
+    monthPickerOptions: {
+      type: Object,
+      default: () => ({}),
     },
-  },
-  data() {
-    return {
-      model: {
-        ...this.value,
-      },
-    };
-  },
-  methods: {
-    onChange(item) {
-      this.$emit("input", item);
+    pickerOptions: {
+      type: Object,
+      default: () => ({}),
+    },
+    /**
+     * for v-model
+     */
+    value: {
+      default: '',
     },
   },
   computed: {
+    model: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit("input", value);
+      }
+    },
     isDisabled() {
       const type = this.form.type;
       const disabledOn = this.item.disabledOn;

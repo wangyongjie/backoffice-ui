@@ -699,6 +699,26 @@ withTips.args = {
 withTips.parameters = parseDocsSourceCode(html, withTips.args)
 
 
+export const resetOnAdd = Template.bind({});
+resetOnAdd.storyName = "resetOnAdd"
+resetOnAdd.args = {
+  ...Primary.args,
+  form: {
+    type: 'add',
+    resetOnAdd: false,
+    model: {
+      name: "test",
+    }
+  },
+  formItems: [{
+    prop: "name",
+    label: "Name",
+    tips: 'tips text'
+  }]
+}
+resetOnAdd.parameters = parseDocsSourceCode(html, resetOnAdd.args)
+
+
 export const showOn = Template.bind({});
 showOn.storyName = "showOn with form.type"
 showOn.args = {
@@ -754,3 +774,21 @@ change.args = {
   }, ]
 }
 change.parameters = parseDocsSourceCode(html, change.args)
+
+export const isExist = Template.bind({});
+isExist.storyName = "formItems.isExist"
+isExist.args = {
+  ...Primary.args,
+  form: {
+    type: 'add',
+    model: {
+      name: "",
+    }
+  },
+  formItems: [{
+    prop: 'name',
+    label: "Name",
+    isExist: false
+  }, ]
+}
+isExist.parameters = parseDocsSourceCode(html, isExist.args)

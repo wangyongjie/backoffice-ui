@@ -19,7 +19,7 @@
       </span>
       <span v-else-if="column.html" v-html="column.html(scope.row)"></span>
       <span v-else-if="column.render">
-        {{ column.render(scope.row) }}
+        {{ column.render(scope.row) | boFilter(column.filter || '') }}
       </span>
       <span v-else-if="column.filter">
         {{ scope.row[column.prop] | boFilter(column.filter) }}

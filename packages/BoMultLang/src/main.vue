@@ -34,9 +34,10 @@
             v-bind="item"
           >
             <bo-form-item
-              v-model="content[tab.name]"
+              v-model="content[tab.name][item.prop]"
               :item="item"
               :form="form"
+              :formModel="content[tab.name]"
              ></bo-form-item>
           </el-form-item>
         </el-form>
