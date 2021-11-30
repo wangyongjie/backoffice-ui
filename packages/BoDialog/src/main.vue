@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="title"
+    :title="formTitle"
     :visible="visible"
     :width="dialogWidth"
     @close="closeDialog"
@@ -10,6 +10,7 @@
       <el-form
         v-if="visible"
         v-bind="form"
+        :disabled="isPreview ? true : form.disabled"
         ref="dialogForm"
         :label-width="form.labelWidth"
         :label-position="labelPosition"
@@ -45,10 +46,17 @@
       </el-form>
     </transition>
     <div slot="footer" v-if="showFooter">
-      <el-button @click="closeDialog">Cancel</el-button>
-      <el-button type="primary" @click="confirm" :loading="loading">{{
-        confirmTitle
-      }}</el-button>
+      <!-- preview footer  -->
+      <div v-if="isPreview">
+        <el-button @click="closeDialog">Ok</el-button>
+      </div>
+      <!-- others footer  -->
+      <div v-else>
+        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button type="primary" @click="confirm" :loading="loading">{{
+          confirmTitle
+        }}</el-button>
+      </div>
     </div>
   </el-dialog>
 </template>
@@ -71,8 +79,16 @@ export default {
     BoFormItem,
   },
   computed: {
-    title() {
-      return this.form.type === "add" ? "Add Form" : "Edit Form";
+    formTitle() {
+      const titleByFormType = {
+        add: "Add Form",
+        edit: "Edit Form",
+        preview: "Preview Form",
+      }[this.form.type];
+      return this.title || titleByFormType;
+    },
+    isPreview() {
+      return this.form.type === "preview";
     },
   },
   watch: {
@@ -80,7 +96,8 @@ export default {
       immediate: true,
       handler(value) {
         // default: true
-        const resetOnAdd = this.form.resetOnAdd !== undefined ? this.form.resetOnAdd: true
+        const resetOnAdd =
+          this.form.resetOnAdd !== undefined ? this.form.resetOnAdd : true;
         // watch visible & form type to reset form
         if (resetOnAdd && value && this.form.type === "add") {
           const { formItems } = this.$props;
@@ -104,8 +121,16 @@ export default {
   },
   props: {
     /**
-     * 除了 form.type= 'add' | 'edit' (當type = add會自動清空form.model), 其他設定如
-     * [Form Attributes](https://element.eleme.io/#/zh-CN/component/form#form-attributes)
+     * 設定 title 後，依據 form.type 切換 title 的功能會失效
+     */
+    title: {
+      type: String,
+      default: "",
+    },
+    /**
+     * 除了 form.type= 'add' | 'edit' | 'preview' (當type = add會自動清空form.model), 
+     * form.type = 'preview' 預設會 disabled form 表單
+     * 其他設定如 [Form Attributes](https://element.eleme.io/#/zh-CN/component/form#form-attributes)
      * (model, labelWidth, rules... )`
      */
     form: {

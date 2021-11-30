@@ -39,7 +39,10 @@ export default {
 const html = `<div>
   <el-button @click="onAdd">Add</el-button>
   <el-button @click="onEdit">Edit</el-button>
+  <el-button @click="onPreview">Preview</el-button>
+
   <bo-dialog
+    :title="title"
     :form="form"
     :formItems="formItems"
     :visible.sync="visible"
@@ -71,6 +74,10 @@ const Template = (args, {
       this.form.type = 'edit'
       this.form.model.id = 1234
     },
+    onPreview() {
+      this.form.type = 'preview'
+      this.visible = true
+    },
     onLoad() {
       this.loading = true
       setTimeout(() => {
@@ -87,6 +94,7 @@ Primary.storyName = "all with validation"
 Primary.args = {
   visible: false,
   loading: false,
+  title: '',
   form: {
     type: 'add',
     model: {
@@ -255,6 +263,24 @@ Primary.args = {
   ],
 };
 Primary.parameters = parseDocsSourceCode(html, Primary.args)
+
+export const title = Template.bind({});
+title.storyName = "title"
+title.args = {
+  ...Primary.args,
+  title: 'title',
+  form: {
+    type: 'add',
+    model: {
+      name: "",
+    }
+  },
+  formItems: [{
+    prop: "name",
+    label: "Name"
+  }]
+}
+title.parameters = parseDocsSourceCode(html, title.args)
 
 export const input = Template.bind({});
 input.storyName = "itemType: input"

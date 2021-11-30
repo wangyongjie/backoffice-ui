@@ -262,10 +262,10 @@ export default {
       });
     },
     autoHeight() {
-      // search + pagination height
-      const height = 150
+      const height = this.$refs.bopage.offsetHeight;
       const bopage = getPosition(this.$refs.bopage)
-      const newHeight = window.innerHeight - height - bopage.y
+      const newHeight =
+        window.innerHeight - (height + bopage.y + 20) + parseInt(this.height);
       this.height = (newHeight > 300 ? newHeight : 300) + "px";
     },
     autoSearch() {
@@ -348,12 +348,14 @@ export default {
     tableOptions: {
       handler() {
         this.$emit("update:loading", false);
+        this.setChartOptions();
       },
       deep: true,
     },
     tabs: {
       handler() {
         this.$emit("update:loading", false);
+        this.setChartOptions();
       },
       deep: true,
     },

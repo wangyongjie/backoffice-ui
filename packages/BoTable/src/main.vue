@@ -84,7 +84,9 @@ export default {
       immediate: true,
       handler(columns) {
         // 重写el-table的key值，避免表头混乱问题
+        
         this.key = Date.now()
+        alert(this.key)
 
         // prevent 'extraBtn' used by table slot
         const useExtraBtn = columns.find((x) => x.slotName === "extraBtn");

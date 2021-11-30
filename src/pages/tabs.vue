@@ -20,7 +20,7 @@ export default {
         forms: [
           { prop: 'date', label: 'Date:', itemType: 'daterange', dayRange: 7 },
         ],
-        autoSearch: true
+        autoSearch: false
       },
       tips: [
         '本页面所有的统计单位均为钻石数量（颗）',
@@ -33,13 +33,31 @@ export default {
         {
           label: 'consumption',
           columns: [
-            { prop: 'name', label: 'Country' },
+            { prop: 'name', label: 'Country', fixed: true },
             { prop: 'mobile', label: 'Total' },
             { prop: 'num', label: 'Chip Exchange', filter: 'number' },
             { prop: 'sex', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex1', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex2', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex3', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex4', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex5', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex6', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex7', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex8', label: 'Creating Clan', filter: 'number' },
           ],
           tableOptions: {
-            data: [],
+            data:  [
+              { name: "Sam", mobile: "15299xxxx", num: 1635218799, sex: 0, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Jean", mobile: "13452xxxx", num: 20210111, sex: 1, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Tony", mobile: "187233xxxx", num: 1234567, sex: 0, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Sam", mobile: "15299xxxx", num: 1234567, sex: 0, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Jean", mobile: "13452xxxx", num: 1234567, sex: 1, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Tony", mobile: "187233xxxx", num: 1234567, sex: 0, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Sam", mobile: "15299xxxx", num: 1234567, sex: 0, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Jean", mobile: "13452xxxx", num: 1234567, sex: 1, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Tony", mobile: "187233xxxx", num: 1234567, sex: 0, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+            ],
             summary: { type: 'avg', precision: 2}
           }
         },
@@ -78,25 +96,32 @@ export default {
       console.log('fdf')
       await getData()
 
-      setTimeout(() => {
-         this.tabs[0].tableOptions.data =  [
-          { name: "Sam", mobile: "15299xxxx", num: 1635218799, sex: 0 },
-          { name: "Jean", mobile: "13452xxxx", num: 20210111, sex: 1 },
-          { name: "Tony", mobile: "187233xxxx", num: 1234567, sex: 0 },
-          { name: "Sam", mobile: "15299xxxx", num: 1234567, sex: 0 },
-          { name: "Jean", mobile: "13452xxxx", num: 1234567, sex: 1 },
-          { name: "Tony", mobile: "187233xxxx", num: 1234567, sex: 0 },
-          { name: "Sam", mobile: "15299xxxx", num: 1234567, sex: 0 },
-          { name: "Jean", mobile: "13452xxxx", num: 1234567, sex: 1 },
-          { name: "Tony", mobile: "187233xxxx", num: 1234567, sex: 0 },
-        ]
-      }, 2000);
 
-      setTimeout(() => {
-        this.tabs[1].tableOptions.data = [
-          { name: "Sam", mobile: "15299xxxx", num: 1635218799, sex: 0 },
+      this.tabs[0].columns = [
+            { prop: 'name', label: 'Country', fixed: true },
+            { prop: 'test', label: 'test' },
+            { prop: 'mobile', label: 'Total' },
+            { prop: 'num', label: 'Chip Exchange', filter: 'number' },
+            { prop: 'sex', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex1', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex2', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex3', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex4', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex5', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex6', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex7', label: 'Creating Clan', filter: 'number' },
+            { prop: 'sex8', label: 'Creating Clan', filter: 'number' },
+          ],
+
+
+         this.tabs[0].tableOptions.data =  [
+           { name: "Sam", test: '123123',mobile: "15299xxxx", num: 1635218799, sex: 0, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Jean", test: '123123',mobile: "13452xxxx", num: 20210111, sex: 1, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Tony", test: '123123',mobile: "187233xxxx", num: 1234567, sex: 0, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+              { name: "Sam", test: '123123',mobile: "15299xxxx", num: 1234567, sex: 0, sex1: 0, sex2: 0, sex3: 0, sex4: 0, se5: 0, sex6: 0, sex7: 0, sex8: 0 },
+
         ]
-      }, 2000);
+
      
         
     }

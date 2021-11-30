@@ -16,7 +16,7 @@ const tableToLineChart = ({
         );
         datasets.push({
             label: column.label,
-            borderColor: getColorByIndex(index),
+            borderColor: column.color || getColorByIndex(index),
             data,
         });
     });
@@ -89,7 +89,19 @@ const boChartData = ({
     let filteredColumns = columns.filter((column) => column.prop !== labelProp)
     // 預設為全部資料 如果有設定 dataProps 則使用裡面的資料
     if (dataProps && dataProps.length) {
-        filteredColumns = filteredColumns.filter((column) => dataProps.includes(column.prop))
+        filteredColumns = dataProps.map(item => {
+            if(typeof item === 'string') {
+                return {
+                    prop: item,
+                    label: (columns.find(i => i.prop === item)).label
+                }
+            }
+
+            if(item.label === undefined) {
+                item.label = (columns.find(i => i.prop === item.prop)).label
+            }
+            return item
+        })
     }
 
 
