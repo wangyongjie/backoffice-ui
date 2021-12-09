@@ -1,71 +1,139 @@
-const getColorByIndex = (index) => {
-    const colorList = ["#619ED6", "#6BA547", "#F7D027", "#E48F1B", "#B77EA3", "#E64345", "#60CEED", "#9CF168", "#F7EA4A", "#FBC543", "#FFC9ED", "#E6696E"]
-    const mode = index % colorList.length
-    return colorList[mode];
-};
-
+const getSeriesByType = ({
+    type,
+    dataProps,
+    columnLabelMap
+}) => {
+    return dataProps.map(x => {
+        const result = {
+            type: type,
+            // 設定 label, 預設名稱為 columns.label
+            name: x.label || columnLabelMap[x.prop],
+            // 設定 line chart 曲線是否平滑
+            smooth: x.smooth || true
+        }
+        // 如果有指定顏色才設定
+        if (x.color) {
+            //  設定線的顏色
+            result['lineStyle'] = {
+                color: x.color
+            }
+            //  設定點的顏色
+            result['itemStyle'] = {
+                color: x.color
+            }
+        }
+        return result
+    })
+}
 
 const tableToLineChart = ({
-    tableOptions,
-    filteredColumns,
+    dataProps,
+    columnLabelMap
 }) => {
-    const datasets = [];
-    filteredColumns.forEach((column, index) => {
-        const data = tableOptions["data"].map(
-            (row) => row[column.prop]
-        );
-        datasets.push({
-            label: column.label,
-            borderColor: column.color || getColorByIndex(index),
-            data,
-        });
-    });
-
-    return datasets
+    const series = getSeriesByType({
+        type: 'line',
+        dataProps,
+        columnLabelMap
+    })
+    return {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: null
+        },
+        legend: {
+            orient: 'horizontal',
+            top: 'top'
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            axisTick: {
+                alignWithLabel: true
+            }
+        },
+        // 声明一个 Y 轴，数值轴。
+        yAxis: {
+            type: 'value'
+        },
+        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+        series: series
+    }
 }
 
 
 const tableToBarChart = ({
-    tableOptions,
-    filteredColumns,
+    dataProps,
+    columnLabelMap
 }) => {
-    const datasets = [];
-    filteredColumns.forEach((column, index) => {
-        const data = tableOptions["data"].map(
-            (row) => row[column.prop]
-        );
-        datasets.push({
-            label: column.label,
-            backgroundColor: getColorByIndex(index),
-            data,
-        });
-    });
+    const series = getSeriesByType({
+        type: 'bar',
+        dataProps,
+        columnLabelMap
+    })
 
-    return datasets
+    return {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            orient: 'horizontal',
+            top: 'top'
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+        xAxis: {
+            type: 'category',
+            boundaryGap: true,
+            axisTick: {
+                alignWithLabel: true
+            }
+        },
+        // 声明一个 Y 轴，数值轴。
+        yAxis: {
+            type: 'value'
+        },
+        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+        series: series
+    }
 }
 
 
 const tableToPieChart = ({
-    tableOptions,
-    filteredColumns,
+    dataProps,
+    columnLabelMap
 }) => {
-    const datasets = [];
-    filteredColumns.forEach((column) => {
-        const backgroundColor = tableOptions["data"].map(
-            (_, index) => getColorByIndex(index)
-        );
-        const data = tableOptions["data"].map(
-            (row) => row[column.prop]
-        );
-        datasets.push({
-            label: column.label,
-            backgroundColor,
-            data,
-            hoverOffset: 4,
-        });
-    });
-
-    return datasets
+    const series = getSeriesByType({
+        type: 'pie',
+        dataProps,
+        columnLabelMap
+    })
+    return {
+        tooltip: {
+            trigger: 'item',
+            axisPointer: null
+        },
+        legend: {
+            orient: 'horizontal',
+            top: 'top'
+        },
+        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+        series: series
+    }
 }
 
 const boChartData = ({
@@ -77,57 +145,67 @@ const boChartData = ({
         return
     }
     const labelProp = chart.labelProp
-    const dataProps = chart.dataProps
     if (!labelProp) {
         console.error('chart.labelProp field is required.')
         return
     }
-    const labels = tableOptions.data.map((x) => x[labelProp]);
     // 預設為 line chart
     const type = chart.type || 'line'
-    // 過濾設定為 label 的資料
-    let filteredColumns = columns.filter((column) => column.prop !== labelProp)
-    // 預設為全部資料 如果有設定 dataProps 則使用裡面的資料
-    if (dataProps && dataProps.length) {
-        filteredColumns = dataProps.map(item => {
-            if(typeof item === 'string') {
-                return {
-                    prop: item,
-                    label: (columns.find(i => i.prop === item)).label
-                }
-            }
 
-            if(item.label === undefined) {
-                item.label = (columns.find(i => i.prop === item.prop)).label
-            }
-            return item
-        })
+    // custom option 會覆蓋預設值
+    const customOption = chart.option || {}
+
+    // dataProps 預設為除了label外的所有欄位
+    let dataProps = columns.filter(x => x.prop !== labelProp)
+    // 如果有設定 chart.dataProps 則使用 chart.dataProps的資料
+    if (chart.dataProps && chart.dataProps.length) {
+        // { prop, label, color}
+        dataProps = chart.dataProps
     }
 
+    // map columns's prop to label
+    const columnLabelMap = columns.reduce((pre, cur) => {
+        pre[cur.prop] = cur.label
+        return pre
+    }, {})
 
-    let datasets = []
+
+
+    let option = {}
     if (type === 'line') {
-        datasets = tableToLineChart({
-            tableOptions,
-            filteredColumns
+        option = tableToLineChart({
+            dataProps,
+            columnLabelMap
         })
     } else if (type === 'bar') {
-        datasets = tableToBarChart({
-            tableOptions,
-            filteredColumns
+        option = tableToBarChart({
+            dataProps,
+            columnLabelMap
         })
     } else if (type === 'pie') {
-        datasets = tableToPieChart({
-            tableOptions,
-            filteredColumns
+        option = tableToPieChart({
+            dataProps,
+            columnLabelMap
         })
     }
+
+    // 用 dimensions 指定了维度的顺序。直角坐标系中，如果 X 轴 type 为 category，
+    // 默认把第一个维度映射到 X 轴上，后面维度映射到 Y 轴上。
+    const reestDimensions = dataProps.map(x => x.prop)
+    const dimensions = [labelProp, ...reestDimensions]
 
     return {
         type,
-        chartData: {
-            labels,
-            datasets
+        // dataset: https://echarts.apache.org/handbook/zh/concepts/dataset
+        option: {
+            dataset: {
+                dimensions: dimensions,
+                // 預設為 table data array object
+                source: tableOptions.data
+            },
+            ...option,
+            /// custom option
+            ...customOption
         }
     }
 }

@@ -47,7 +47,7 @@
     <bo-chart
       v-if="chartOptions.visible"
       :type="chartOptions.type"
-      :chartData="chartOptions.chartData"
+      :option="chartOptions.option"
     ></bo-chart>
     <!-- @slot 可從外部傳入 slot="preTable" 在 tabs & table 上方 -->
     <slot name="preTable"></slot>
@@ -164,7 +164,18 @@ export default {
       default: () => [],
     },
     /**
-     * 除了 chart (可參考 BoChart),
+     * 除了 chart (可參考 custom chart),  
+     * chart: {   
+     *  show: true, 預設圖表是否顯示  
+     *  type: 'line', 圖表類型  
+     *  labelProp: 'time', x軸欄位   
+     *  dataProps: [{  
+     *    prop: 'prop1',  對應表格  
+     *    label: 'Custom Label', 預設表格label 可以修改  
+     *    color: 'black' 可修改預設顏色  
+     *  }]  
+     *  option: {} 可依照 echart.option 覆蓋設定  
+     * }  
      * 設定 table 資料顯示圖表資料,
      * paginationTotals 設定分 pagination 的資料總和,
      * 其他設定可參考 BoTable
@@ -209,7 +220,7 @@ export default {
       chartOptions: {
         visible: false,
         type: "",
-        chartData: {},
+        option: {},
       },
     };
   },
@@ -277,7 +288,7 @@ export default {
     },
     setChartOptions(tab) {
       // 先隱藏來觸發圖表重繪
-      this.chartOptions.visible = false;
+      // this.chartOptions.visible = false;
       // 無 tab 預設值
       let tableOptions = this.tableOptions || {};
       let columns = this.columns || [];
@@ -302,8 +313,9 @@ export default {
         tableOptions && tableOptions.data && tableOptions.data.length;
 
       if (!dataExist) {
+        this.chartOptions.visible = false;
         this.chartOptions.type = "";
-        this.chartOptions.chartData = null;
+        this.chartOptions.option = null;
         return;
       }
 
@@ -314,7 +326,7 @@ export default {
 
       if (trasformData) {
         this.chartOptions.type = trasformData.type;
-        this.chartOptions.chartData = trasformData.chartData;
+        this.chartOptions.option = trasformData.option;
       }
     },
     toggleChart() {

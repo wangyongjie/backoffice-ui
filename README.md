@@ -2,15 +2,16 @@
 
 ## 安装
 
-```
-$ npm i --save backoffice-ui
+``` shell
+npm i --save backoffice-ui
 ```
 
 ## 例子
 
-暂无 
+暂无
 
 ## 变更日志
+
 Detailed changes for each release are documented in the [release notes](./CHANGELOG.md).
 
 ## 快速开始
@@ -74,7 +75,6 @@ export default {
 </style>
 
 ```
-
 
 And the diamond page
 
@@ -258,4 +258,3 @@ export default {
 }
 </script>
 ```
-

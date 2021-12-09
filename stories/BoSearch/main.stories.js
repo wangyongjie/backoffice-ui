@@ -220,6 +220,23 @@ daterange.args = {
 }
 daterange.parameters = parseDocsSourceCode(html, daterange.args)
 
+export const section = Template.bind({});
+section.storyName = "itemType: section"
+section.args = {
+  ...Primary.args,
+  forms: [{
+    prop: "section",
+    label: "Section:",
+    itemType: "section",
+    maxSections: 10,
+    minShowDelete: 3,
+    Econfirm: (data) => console.log(data),
+    Edefault: (data) => console.log(data)
+  }]
+}
+section.parameters = parseDocsSourceCode(html, section.args)
+
+
 
 export const urlSync = Template.bind({});
 urlSync.storyName = "urlSync"

@@ -17,7 +17,8 @@ export default {
 };
 
 const html = `<div>
-  <bo-menu :menus="menus">
+  <bo-menu :menus="menus" @node-click="nodeClick">
+  <!-- Default -->
   <template #banner>
     banner
   </template>
@@ -27,6 +28,13 @@ const html = `<div>
   <template #form>
     form
   </template>
+  <!-- Tree -->
+  <template #label>
+    label
+  </template>
+  <template #layer>
+layer
+</template>
   </bo-menu>
 </div>`
 
@@ -39,10 +47,16 @@ const Template = (args, {
   },
   props: Object.keys(argTypes),
   template: html,
+  methods: {
+    nodeClick(data, node, el) {
+      console.log('node-click', data, node, el)
+    }
+  },
 });
 
 
 export const Primary = Template.bind({});
+Primary.storyName = "default"
 Primary.args = {
   menus: [{
       index: "banner",
@@ -55,7 +69,59 @@ Primary.args = {
     {
       index: "form",
       label: "Form",
+      default: true,
     },
   ],
 };
 Primary.parameters = parseDocsSourceCode(html, Primary.args)
+
+export const withTree = Template.bind({});
+withTree.storyName = "with Tree"
+withTree.args = {
+  menus: [{
+      label: "Label",
+      index: "label",
+      tree: [
+        {
+          label: 'Activity',
+          children: [
+            {
+              label: 'Hands',
+              children: [
+                {
+                  label: 'Section',
+                },
+                {
+                  label: 'Trend',
+                },
+              ]
+            },
+            {
+              label: 'Non-match Hands'
+            },
+            {
+              label: 'Matches'
+            },
+            {
+              label: 'Days Played'
+            },
+            {
+              label: 'Time played'
+            },
+            {
+              label: 'Game TO'
+            },
+            {
+              label: 'Player RW'
+            },
+          ]
+        }
+      ]
+    },
+    {
+      label: "Layer",
+      index: "layer",
+    },
+  ],
+};
+withTree.parameters = parseDocsSourceCode(html, withTree.args)

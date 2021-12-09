@@ -53,13 +53,12 @@ export const watermark = (props = {}) => {
     if (MutationObserver) {
         let mo = new MutationObserver(function () {
             const __wm = document.querySelector('.__wm');
-            // The __canvasWM is recalled only when the __wm element changes
+            // The watermark is recalled only when the __wm element changes
             if ((__wm && __wm.getAttribute('style') !== styleStr) || !__wm) {
                 // Avoid triggering all the time
                 mo.disconnect();
                 mo = null;
-                // eslint-disable-next-line no-undef
-                __canvasWM(JSON.parse(JSON.stringify(args)));
+                watermark(JSON.parse(JSON.stringify(args)));
             }
         });
 

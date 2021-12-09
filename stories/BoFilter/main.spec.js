@@ -62,7 +62,7 @@ describe('BoFilter', () => {
 
         it('[258, 514, 770, 1026] should be ♦2,♣2,♥2,♠2', () => {
             const result = BoFilter([258, 514, 770, 1026], 'card')
-            expect(result).toBe('♦2,♣2,♥2,♠2')
+            expect(result).toBe('♦2 ♣2 ♥2 ♠2')
         });
 
         it('null should be -', () => {

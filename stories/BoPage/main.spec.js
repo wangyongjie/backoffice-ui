@@ -136,7 +136,7 @@ describe('BoPage', () => {
         wrapper.vm.setChartOptions()
         const result = {
             "type": "",
-            "chartData": null,
+            "option": null,
             "visible": false
         }
         expect(wrapper.vm.chartOptions).toEqual(result)

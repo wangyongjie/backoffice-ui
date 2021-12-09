@@ -127,6 +127,7 @@
       :rows="item.rows"
       :autosize="item.autosize"
       :disabled="isDisabled"
+      :placeholder="item.placeholder"
       type="textarea"
       @blur="model = $event.target.value.trim()"
     ></el-input>
@@ -147,9 +148,25 @@
     <bo-range-input
       v-else-if="item.itemType === 'rangeInput'"
       :prop.sync="model"
-      :rangeProp.sync="model[item.rangeProp]"
+      :rangeProp.sync="formModel[item.rangeProp]"
       :rangeOptions="item.rangeOptions"
     ></bo-range-input>
+    <bo-plus
+      v-else-if="item.itemType === 'plus'"
+      :maxSlots="item.maxSlots"
+      :slotName="item.slotName"
+      v-model="model"
+    >
+      <!-- by pass slot -->
+      <slot v-for="(_, name) in $slots" :name="name" :slot="name" />
+      <template
+        v-for="(_, name) in $scopedSlots"
+        :slot="name"
+        slot-scope="slotData"
+        ><slot :name="name" v-bind="slotData"
+      /></template>
+    </bo-plus>
+
     <!-- @slot 可從外部傳入 slot 給 itemType: slot 使用 -->
     <slot
       v-else-if="item.itemType === 'slot'"
@@ -169,6 +186,7 @@ import BoMultLang from "../../BoMultLang";
 import BoEmoji from "../../BoEmoji";
 import BoImageUpload from "../../BoImageUpload";
 import BoRangeInput from "../../BoRangeInput";
+import BoPlus from "../../BoPlus"
 
 export default {
   name: "BoFormItem",
@@ -179,6 +197,7 @@ export default {
     BoEmoji,
     BoImageUpload,
     BoRangeInput,
+    BoPlus,
   },
   props: {
     /**

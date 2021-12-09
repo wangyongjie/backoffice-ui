@@ -16,6 +16,9 @@ import BoSelectDate from '../packages/BoSelectDate/index.js';
 import BoTable from '../packages/BoTable/index.js';
 import BoFilter from '../packages/BoFilter/index.js';
 import BoPlugin from '../packages/BoPlugin/index.js';
+import BoSection from '../packages/BoSection/index.js';
+import BoPlus from '../packages/BoPlus/index.js';
+import BoChart from '../packages/BoChart/index.js';
 
 const components = [
     BoCurrencyInput,
@@ -34,6 +37,9 @@ const components = [
     BoSelectInput,
     BoSelectDate,
     BoTable,
+    BoSection,
+    BoPlus,
+    BoChart,
 ];
 
 const install = function (Vue, opts = {}) {
@@ -72,4 +78,7 @@ export default {
     BoSelectInput,
     BoSelectDate,
     BoTable,
+    BoSection,
+    BoPlus,
+    BoChart,
 };

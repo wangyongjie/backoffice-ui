@@ -72,6 +72,15 @@
         :style="form.style"
       ></bo-select-date>
 
+       <bo-section
+        v-else-if="form.itemType === 'section'"
+        v-model="params[form.prop]"
+        :maxSections="form.maxSections"
+        :minShowDelete="form.minShowDelete"
+        @input="form.Econfirm"
+        @onDefault="form.Edefault"
+      ></bo-section>
+
       <bo-select
         v-else-if="form.itemType === 'multSelect'"
         v-model="params[form.prop]"
@@ -164,6 +173,7 @@
 import BoSelect from "../../BoSelect";
 import BoSelectInput from "../../BoSelectInput";
 import BoSelectDate from "../../BoSelectDate";
+import BoSection from "../../BoSection";
 import { pickerOptionsData } from "../../config/picker-options";
 import { checkFormPropsDuplicates } from "../../utils/form";
 
@@ -214,6 +224,7 @@ export default {
     BoSelect,
     BoSelectInput,
     BoSelectDate,
+    BoSection,
   },
   data() {
     const { forms } = this.$props;

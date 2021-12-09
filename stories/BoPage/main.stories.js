@@ -168,6 +168,7 @@ Primary.args = {
       },
     ],
   },
+  tabs: []
 };
 Primary.parameters = parseDocsSourceCode(html, Primary.args)
 
@@ -292,27 +293,38 @@ tabsShow.args = {
           type: 'pie',
           labelProp: 'time',
         },
-        // data: [{
-        //     time: '10:00',
-        //     prop1: 15,
-        //     prop2: 5
-        //   },
-        //   {
-        //     time: '11:00',
-        //     prop1: 13,
-        //     prop2: 10
-        //   },
-        //   {
-        //     time: '12:00',
-        //     prop1: 21,
-        //     prop2: 22
-        //   },
-        //   {
-        //     time: '13:00',
-        //     prop1: 35,
-        //     prop2: 15
-        //   },
-        // ]
+        data: [{
+            time: '10:00',
+            prop1: 15,
+            prop2: 5
+          },
+          {
+            time: '11:00',
+            prop1: 13,
+            prop2: 10
+          },
+          {
+            time: '12:00',
+            prop1: 21,
+            prop2: 22
+          },
+          {
+            time: '13:00',
+            prop1: 35,
+            prop2: 15
+          },
+        ]
+      }
+    },
+    {
+      label: 'No Data Tab',
+      columns,
+      tableOptions: {
+        chart: {
+          show: true,
+          type: 'pie',
+          labelProp: 'time',
+        },
       }
     }
   ]
@@ -333,6 +345,95 @@ lineChart.args = {
 }
 lineChart.parameters = parseDocsSourceCode(html, lineChart.args)
 
+export const customLineChart = Template.bind({});
+customLineChart.storyName = "custom chart"
+customLineChart.args = {
+  ...Primary.args,
+  formOptions: {
+    forms: []
+  },
+  tips: null,
+  columns,
+  tableOptions: {
+    ...tableOptions,
+    chart: {
+      show: true,
+      type: 'line',
+      labelProp: 'time',
+      dataProps: [{
+        prop: 'prop1',
+        label: 'Custom Label',
+        color: 'black'
+      }],
+      option: {
+        title: {
+          text: 'Custom title'
+        },
+      }
+    },
+  }
+}
+customLineChart.parameters = parseDocsSourceCode(html, customLineChart.args)
+
+export const sectionExample = Template.bind({});
+sectionExample.storyName = "chart.option"
+sectionExample.args = {
+  ...Primary.args,
+  formOptions: {
+    forms: []
+  },
+  tips: null,
+  columns: [{
+      prop: "section",
+      label: "section",
+      minWidth: 140,
+      align: "center",
+      sortable: true
+    },
+    {
+      prop: "user",
+      label: "Qualified Users",
+      minWidth: 140,
+      align: "center",
+      filter: 'number'
+    },
+  ],
+  tableOptions: {
+    chart: {
+      show: true,
+      type: 'bar',
+      labelProp: 'section',
+      option: {
+        xAxis: {
+          type: 'value',
+        },
+        yAxis: {
+          type: 'category',
+        }
+      }
+    },
+    data: [{
+        section: 'section1',
+        user: 1200,
+      },
+      {
+        section: 'section2',
+        user: 2400,
+      },
+      {
+        section: 'section3',
+        user: 3600,
+      },
+      {
+        section: 'section4',
+        user: 4800,
+      }
+    ]
+  }
+}
+sectionExample.parameters = parseDocsSourceCode(html, sectionExample.args)
+
+
 
 export const groupingTableHeadChart = Template.bind({});
 groupingTableHeadChart.storyName = "Grouping Table Head Chart"
@@ -345,7 +446,7 @@ groupingTableHeadChart.args = {
   columns: [{
       label: "Group",
       children: [{
-        prop: "time",
+          prop: "time",
           label: "Time"
         },
         {

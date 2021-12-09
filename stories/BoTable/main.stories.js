@@ -22,7 +22,7 @@ const html = `<div>
     border
     :summary="summary"
     :columns="columns"
-    @sort-change="sortChange"
+    @sort-change="onSortChange"
   >
     <template v-slot:options="{ row }">
       <el-button type="primary">Edit</el-button>
@@ -40,7 +40,7 @@ const Template = (args, {
   props: Object.keys(argTypes),
   template: html,
   methods: {
-    sortChange: action('sortChange')
+    onSortChange: action('sortChange')
   }
 });
 

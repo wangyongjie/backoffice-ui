@@ -73,19 +73,15 @@ export default {
         this.$emit("update:rangeProp", val);
       },
     },
+    options() {
+      return this.rangeOptions || ["<", "≤", "=", "≥", ">"];
+    },
   },
-  data() {
-    const options = this.rangeOptions || ["<", "≤", "=", "≥", ">"];
-    return {
-      options,
-      params: {
-        ...this.value,
-      },
-    };
-  },
-  created() {
-    // init selectValue
-    this.selectValue = this.options[0];
+  mounted() {
+    this.$nextTick(() => {
+      // init selectValue
+      this.selectValue = this.options[0];
+    });
   },
 };
 </script>

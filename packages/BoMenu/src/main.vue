@@ -14,7 +14,26 @@
       >
     </el-menu>
 
-    <div style="margin-top: 20px">
+    <div class="container" style="margin-top: 20px">
+      <!-- Tree -->
+      <div v-if="treeData" class="tree-block">
+        <el-tree
+          :data="treeData"
+          node-key="id"
+          default-expand-all
+          :expand-on-click-node="false"
+          @node-click="nodeClick"
+        >
+          <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{ node.label }}</span>
+            <span v-if="node.parent.level === 0 && data.children">
+              ({{ data.children.length }})
+            </span>
+          </span>
+        </el-tree>
+      </div>
+
+      <!-- Page slot -->
       <keep-alive>
         <!-- @slot 可從外部傳入 stemplate slot name 使用 -->
         <slot :name="activeIndex" v-if="keepAlive"></slot>
@@ -41,13 +60,19 @@ export default {
     keepAlive: {
       require: false,
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       activeIndex: "",
     };
+  },
+  computed: {
+    treeData() {
+      const menu = this.menus.find((x) => x.index === this.activeIndex);
+      return menu.tree || null
+    }
   },
   created() {
     let item = this.menus.find((item) => item.default);
@@ -71,9 +96,29 @@ export default {
       const query = { tab: this.activeIndex };
       this.$router.replace({ query });
     },
+    // Tree
+    nodeClick(data, node, el) {
+      /**
+       * 节点被点击时的回调  
+       * 共三个参数，依次为：传递给 data 属性的数组中该节点所对应的对象、节点对应的 Node、节点组件本身。
+       */
+      this.$emit('node-click', data, node, el)
+    }
   },
 };
 </script>
+<style lang="scss" scoped>
+.container {
+  display: flex;
+  flex-direction: row;
+
+  .tree-block {
+    margin-right: 20px;
+    padding: 10px;
+    background-color: white;
+  }
+}
+</style>
 
 <style lang="css">
 .bo-menu.el-menu--horizontal .el-menu-item {

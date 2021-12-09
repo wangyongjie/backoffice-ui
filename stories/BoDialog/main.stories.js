@@ -49,8 +49,21 @@ const html = `<div>
     :loading.sync="loading"
     @confirm="confirm($event); onLoad()"
   >
+    <!-- itemType: slot -->
     <template v-slot:slotTest="{model}">
       <el-input v-model="model.slotTest"></el-input>
+    </template>
+    <!-- itemType: plus -->
+    <template v-slot:slotItem="{item, index}">
+      <div>
+        1-{{ index+1 }}
+        <el-input v-model="item.name">
+          <template slot="prepend">Name</template>
+        </el-input>
+        <el-input v-model="item.activity">
+          <template slot="prepend">Activity</template>
+        </el-input>
+      </div>
     </template>
   </bo-dialog>
 </div>`
@@ -450,8 +463,7 @@ multLang.args = {
         }],
       },
     },
-    formItems: [
-      {
+    formItems: [{
         prop: "title",
         label: "Title",
       },
@@ -495,9 +507,50 @@ date.args = {
     label: "Date:",
     itemType: "date",
     pastDays: 1,
+    value: '2021-11-04'
   }]
 }
 date.parameters = parseDocsSourceCode(html, date.args)
+
+export const datetime = Template.bind({});
+datetime.storyName = "itemType: datetime"
+datetime.args = {
+  ...Primary.args,
+  form: {
+    type: 'add',
+    model: {
+      datetime: "",
+    }
+  },
+  formItems: [{
+    prop: "datetime",
+    label: "Datetime:",
+    itemType: "datetime",
+    pastDays: 1,
+    value: '2021-11-30 00:00:00 '
+  }]
+}
+datetime.parameters = parseDocsSourceCode(html, datetime.args)
+
+
+export const monthrange = Template.bind({});
+monthrange.storyName = "itemType: monthrange"
+monthrange.args = {
+  ...Primary.args,
+  form: {
+    type: 'add',
+    model: {
+      monthrange: "",
+    }
+  },
+  formItems: [{
+    prop: "monthrange",
+    label: "Monthrange:",
+    itemType: "monthrange",
+    pastDays: 1,
+  }]
+}
+monthrange.parameters = parseDocsSourceCode(html, monthrange.args)
 
 
 export const daterange = Template.bind({});
@@ -518,7 +571,6 @@ daterange.args = {
   }]
 }
 daterange.parameters = parseDocsSourceCode(html, daterange.args)
-
 
 export const switchItem = Template.bind({});
 switchItem.storyName = "itemType: switch"
@@ -683,6 +735,30 @@ rangeInput.args = {
   }]
 }
 rangeInput.parameters = parseDocsSourceCode(html, rangeInput.args)
+
+export const plus = Template.bind({});
+plus.storyName = "itemType: plus"
+plus.args = {
+  ...Primary.args,
+  form: {
+    type: 'add',
+    model: {
+      plus: [{
+        name: 'name',
+        activity: 'activity'
+      }, ],
+    }
+  },
+  formItems: [{
+    "prop": "plus",
+    label: "Plus",
+    "itemType": "plus",
+    "slotName": "slotItem",
+    "maxSlots": 5
+  }]
+}
+plus.parameters = parseDocsSourceCode(html, plus.args)
+
 
 
 export const slot = Template.bind({});

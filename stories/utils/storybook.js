@@ -7,7 +7,9 @@ const beautifyOptions = {
 export const parseDocsSourceCode = (html, args) => {
     const data = JSON.stringify(args, function (key, value) {
         if (typeof value === 'function') {
-            return value.toString();
+            // replace \n
+            const regex = /\n/ig;
+            return value.toString().replaceAll(regex, '');
         } else {
             return value;
         }

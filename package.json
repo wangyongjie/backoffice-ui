@@ -1,6 +1,6 @@
 {
   "name": "backoffice-ui",
-  "version": "1.0.85",
+  "version": "1.0.90",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -16,9 +16,10 @@
     "packages"
   ],
   "dependencies": {
-    "chart.js": "2.9.4",
+    "@vue/composition-api": "^1.4.0",
+    "echarts": "^5.2.2",
     "v-emoji-picker": "^2.3.3",
-    "vue-chartjs": "2.8.7"
+    "vue-echarts": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
@@ -32,6 +33,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^24.9.0",
     "babel-loader": "^8.2.2",
     "element-ui": "^2.15.5",
     "eslint": "^6.7.2",
