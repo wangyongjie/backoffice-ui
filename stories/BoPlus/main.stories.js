@@ -11,7 +11,7 @@ export default {
 const html = `<div>
 form.model: {{ form.model }}
 <el-form ref="form" :model="form" label-width="120px">
-  <bo-plus v-model="form.model" :maxSlots="formItems.maxSlots" :slotName="formItems.slotName">
+  <bo-plus v-model="form.model" :maxSlots="formItems.maxSlots" :slotName="formItems.slotName" :defaultValue="formItems.defaultValue">
     <template v-slot:slotItem="{item, index}">
       <div>
         1-{{ index+1 }}
@@ -51,7 +51,11 @@ Primary.args = {
     "prop": "plus",
     "itemType": "plus",
     "slotName": "slotItem",
-    "maxSlots": 10
+    "maxSlots": 10,
+    defaultValue: {
+      name: '1111',
+      activity: '2222'
+    }
   }
 };
 Primary.parameters = parseDocsSourceCode(html, Primary.args)

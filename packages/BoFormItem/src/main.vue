@@ -3,18 +3,25 @@
     <el-input
       v-if="item.itemType === 'input' || item.itemType === undefined"
       v-model="model"
-      clearable
+      :clearable="item.clearable !== undefined ? item.clearable : true"
       :type="item.type || 'text'"
       :placeholder="item.placeholder"
+      :style="item.style"
       :disabled="isDisabled"
       @blur="model = $event.target.value.trim()"
-    />
+      v-bind="item.props"
+      v-on="item.events"
+    >
+      <template v-if="item.prependSlot !== undefined" slot="prepend">{{ item.prependSlot }}</template>
+      <template v-if="item.appendSlot !== undefined" slot="append">{{ item.appendSlot }}</template>
+    </el-input>
     <bo-currency-input
       v-else-if="item.itemType === 'currency'"
       v-model="model"
       clearable
       :placeholder="item.placeholder"
       :disabled="isDisabled"
+      v-bind="item.props"
     ></bo-currency-input>
     <div v-else-if="item.itemType === 'text'">
       {{ model }}
@@ -23,9 +30,13 @@
       v-else-if="item.itemType === 'select'"
       v-model="model"
       :placeholder="item.placeholder"
+      :style="item.style"
       :multiple="item.multiple"
       :disabled="isDisabled"
-      clearable
+      :clearable="item.clearable !== undefined ? item.clearable : true"
+      :filterable="item.filterable !== undefined ? item.filterable : true"
+      v-bind="item.props"
+      v-on="item.events"
     >
       <el-option
         v-for="(option, optionIndex) in item.options"
@@ -38,6 +49,7 @@
       v-else-if="item.itemType === 'multSelect'"
       v-model="model"
       :list="item.options"
+      :style="item.style"
       :disabled="isDisabled"
     >
     </bo-select>
@@ -55,9 +67,14 @@
       v-model="model"
       type="date"
       :placeholder="item.placeholder"
+      :format="item.format || 'yyyy-MM-dd'"
+      :value-format="form.valueFormat || 'yyyyMMdd'"
       clearable
       :picker-options="item.pickerOptions || {}"
       :disabled="isDisabled"
+      :style="item.style"
+      v-bind="item.props"
+      v-on="item.events"
     />
     <el-date-picker
       v-else-if="item.itemType === 'datetime'"
@@ -69,6 +86,9 @@
       clearable
       :picker-options="item.pickerOptions || {}"
       :disabled="isDisabled"
+      :style="item.style"
+      v-bind="item.props"
+      v-on="item.events"
     />
     <el-date-picker
       v-else-if="item.itemType === 'monthrange'"
@@ -78,7 +98,9 @@
       :value-format="item.valueFormat || 'yyyyMM'"
       :picker-options="item.pickerOptions || monthPickerOptions"
       :disabled="isDisabled"
-      style="width: 280px"
+      :style="item.style || { width: '280px' }"
+      v-bind="item.props"
+      v-on="item.events"
     />
     <el-date-picker
       v-else-if="item.itemType === 'daterange'"
@@ -89,16 +111,22 @@
       :placeholder="item.placeholder"
       :picker-options="item.pickerOptions || pickerOptions"
       :disabled="isDisabled"
-      style="width: 280px"
+      :style="item.style || { width: '280px' }"
+      v-bind="item.props"
+      v-on="item.events"
     />
     <el-switch
       v-else-if="item.itemType === 'switch'"
       v-model="model"
+      v-bind="item.props"
+      v-on="item.events"
     ></el-switch>
     <el-checkbox-group
       v-else-if="item.itemType === 'checkbox'"
       v-model="model"
       :disabled="isDisabled"
+      v-bind="item.props"
+      v-on="item.events"
     >
       <el-checkbox
         v-for="(checkbox, checkboxIndex) in item.options"
@@ -109,7 +137,10 @@
     <el-radio-group
       v-else-if="item.itemType === 'radio'"
       v-model="model"
+      :style="item.style"
       :disabled="isDisabled"
+      v-bind="item.props"
+      v-on="item.events"
     >
       <el-radio
         v-for="(radio, radioIndex) in item.options"
@@ -128,22 +159,26 @@
       :autosize="item.autosize"
       :disabled="isDisabled"
       :placeholder="item.placeholder"
+      :style="item.style"
       type="textarea"
       @blur="model = $event.target.value.trim()"
+      v-on="item.events"
     ></el-input>
     <bo-emoji
       v-else-if="item.itemType === 'emoji'"
       v-model="model"
       :show-word-limit="item.showWordLimit"
-      :size="item.size"
       :rows="item.rows"
       :autosize="item.autosize"
       :disabled="isDisabled"
+      :placeholder="item.placeholder"
+      v-on="item.events"
     ></bo-emoji>
     <bo-image-upload
       v-else-if="item.itemType === 'imageUpload'"
       v-model="model"
       :disabled="isDisabled"
+      :onValid="item.onValid"
     ></bo-image-upload>
     <bo-range-input
       v-else-if="item.itemType === 'rangeInput'"
@@ -155,6 +190,7 @@
       v-else-if="item.itemType === 'plus'"
       :maxSlots="item.maxSlots"
       :slotName="item.slotName"
+      :defaultValue="item.defaultValue"
       v-model="model"
     >
       <!-- by pass slot -->
@@ -201,38 +237,53 @@ export default {
   },
   props: {
     /**
-     * form item
+     * {  
+     * prop: form.model 裡的物件名稱  
+     * label: form label 顯示用  
+     * type: input type  
+     * disabledOn: 與 form.type 相等時會自動 disabled  
+     * placeholder: input placeholder  
+     * props: {} element ui 原生 props  
+     * events: {} element ui 原生 events  
+     * }
      */
     item: {
       type: Object,
       default: () => ({}),
     },
     /**
-     * 除了 form.type= 'add' | 'edit' (當type = add會自動清空model), 其他設定如
-     * [Form Attributes](https://element.eleme.io/#/zh-CN/component/form#form-attributes)
-     * (model, labelWidth, rules... )`
+     * isDisabled 拿 form.type 判斷 item.disabledOn 是否相等
      */
     form: {
       type: Object,
       default: () => ({}),
     },
     /**
-     * form.model for slot
+     * itemType = slot, rangeInput 使用
+     * 因為兩個地方傳入參數不同所以額外設定一個 prop 傳入 model
+     * BoDialog = form.model 
+     * BoMultLang = content[tab.name]
      */
     formModel: {
       type: Object,
       default: () => ({}),
     },
+    /**
+     * itemType:monthrange 使用之預設值
+     */
     monthPickerOptions: {
       type: Object,
       default: () => ({}),
     },
+    /**
+     * itemType:daterange 使用之預設值
+     */
     pickerOptions: {
       type: Object,
       default: () => ({}),
     },
     /**
-     * for v-model
+     * v-model prop
      */
     value: {
       default: '',
@@ -244,6 +295,9 @@ export default {
         return this.value
       },
       set(value) {
+        /**
+         * v-model event
+         */
         this.$emit("input", value);
       }
     },

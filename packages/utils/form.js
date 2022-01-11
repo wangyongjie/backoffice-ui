@@ -25,12 +25,11 @@ export const resetField = (value) => {
     return typeDefault[type];
 };
 
-export const resetForm = (model, formItems, pickerOptionsData) => {
+export const resetForm = (model, params, firstModel) => {
+    const clonedModel = JSON.parse(JSON.stringify(firstModel))
     Object.keys(model).forEach((key) => {
-        model[key] =
-            pickerOptionsData(formItems).params[key] ||
-            resetField(model[key]);
-    });
+        model[key] =  params[key] || (clonedModel[key] ?? resetField(model[key]))
+    })
 }
 
 export const parseCurrencyModel = (model, formItems) => {

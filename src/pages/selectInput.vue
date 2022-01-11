@@ -140,8 +140,7 @@ export default {
     };
   },
   methods: {
-    searchHandle(params) {
-      console.log(params)
+    searchHandle() {
       setTimeout(() => {
         this.tableOptions.data = [
           { name: "Sam", mobile: "15299xxxx", sex: 0 },

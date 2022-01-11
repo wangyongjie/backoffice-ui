@@ -6,7 +6,7 @@
     :collapse-tags="collapseTags"
     @change="handleChange"
     :disabled="disabled"
-    placeholder="Please select"
+    :placeholder="t('bo.select.selectPlaceholder')"
   >
     <div v-if="showBtn" style="padding: 4px 15px 8px 15px">
       <el-checkbox
@@ -14,14 +14,16 @@
         v-model="isSelectAll"
         @change="handleSelectAll"
         style="padding-left: 5px"
-        >All
+        >
+        {{ t('bo.select.allButtonText') }}
       </el-checkbox>
       <el-button
         v-if="showType === 1 && formatList.length > 30"
         type="primary"
         :disabled="ppValue.indexOf('_all_') !== -1"
         @click="reverseAll"
-        >Exclude
+        >
+        {{ t('bo.select.excludeButtonText') }}
       </el-button>
     </div>
     <el-option
@@ -40,11 +42,14 @@
 </template>
 
 <script>
+import locale from "../../BoLocale/mixins/locale";
+
 /**
  *  同 [Select multiple](https://element.eleme.io/#/zh-CN/component/select#ji-chu-duo-xuan)
  */
 export default {
   name: "BoSelect",
+  mixins: [locale],
   props: {
     /**
      * 绑定值

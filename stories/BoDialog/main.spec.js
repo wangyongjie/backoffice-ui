@@ -6,7 +6,7 @@ import BoDialog from '../../packages/BoDialog/src/main.vue'
 
 describe('BoDialog', () => {
 
-    it('computed.title ', async () => {
+    it('computed.formTitle ', async () => {
         const wrapper = shallowMount(BoDialog, {
             propsData: {
                 form: {
@@ -15,13 +15,26 @@ describe('BoDialog', () => {
                 formItems: []
             }
         })
-        expect(wrapper.vm.title).toBe('Add Form')
+        expect(wrapper.vm.formTitle).toBe('Add Form')
+
         await wrapper.setProps({
             form: {
-                type: null
-            }
+                type: 'edit'
+            },
         })
-        expect(wrapper.vm.title).toBe('Edit Form')
+        expect(wrapper.vm.formTitle).toBe('Edit Form')
+
+        await wrapper.setProps({
+            form: {
+                type: 'preview'
+            },
+        })
+        expect(wrapper.vm.formTitle).toBe('Preview Form')
+
+        await wrapper.setProps({
+            title: 'title'
+        })
+        expect(wrapper.vm.formTitle).toBe('title')
     })
 
     it('watch.visible ', async () => {

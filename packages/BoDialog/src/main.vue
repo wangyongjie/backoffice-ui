@@ -3,7 +3,7 @@
     :title="formTitle"
     :visible="visible"
     :width="dialogWidth"
-    @close="closeDialog"
+    @closed="closeDialog"
     :close-on-click-modal="false"
   >
     <transition name="dialog-fade">
@@ -48,13 +48,17 @@
     <div slot="footer" v-if="showFooter">
       <!-- preview footer  -->
       <div v-if="isPreview">
-        <el-button @click="closeDialog">Ok</el-button>
+        <el-button @click="closeDialog">
+          {{ t('bo.dialog.previewButtonText') }}
+        </el-button>
       </div>
       <!-- others footer  -->
       <div v-else>
-        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button @click="closeDialog">
+          {{ t('bo.dialog.cancelButtonText') }}
+        </el-button>
         <el-button type="primary" @click="confirm" :loading="loading">{{
-          confirmTitle
+          confirmTitle || t('bo.dialog.confirmButtonText')
         }}</el-button>
       </div>
     </div>
@@ -70,20 +74,23 @@ import {
   parseCurrencyModel,
   resetNotExistModel,
 } from "../../utils/form";
+import locale from '../../BoLocale/mixins/locale'
 /**
  * 預設寬度 50% form 靠左對齊, 600px 以下會改成 寬度 100% form 靠上對齊
+ * 使用element ui 進階用途可參考 BoFormItem
  */
 export default {
   name: "BoDialog",
+  mixins: [locale],
   components: {
     BoFormItem,
   },
   computed: {
     formTitle() {
       const titleByFormType = {
-        add: "Add Form",
-        edit: "Edit Form",
-        preview: "Preview Form",
+        add: this.t('bo.dialog.addFormTitle'),
+        edit: this.t('bo.dialog.editFormTitle'),
+        preview: this.t('bo.dialog.previewFormTitle'),
       }[this.form.type];
       return this.title || titleByFormType;
     },
@@ -100,21 +107,22 @@ export default {
           this.form.resetOnAdd !== undefined ? this.form.resetOnAdd : true;
         // watch visible & form type to reset form
         if (resetOnAdd && value && this.form.type === "add") {
-          const { formItems } = this.$props;
-          resetForm(this.form.model, formItems, pickerOptionsData);
+          const { params } = pickerOptionsData( this.formItems );
+          resetForm(this.form.model, params, this.firstModel);
         }
       },
     },
     form: {
       immediate: true,
       handler(form) {
-        setFormMsg(form, "Please check the configuration.");
+        setFormMsg(form, this.t('bo.dialog.formRuleMessage'));
       },
     },
     formItems: {
       immediate: true,
       handler(formItems) {
-        setFormItemsMsg(formItems, "Please check the configuration.");
+        setFormItemsMsg(formItems, this.t('bo.dialog.formRuleMessage'));
+        // reset formItems.isExist's model
         resetNotExistModel(this.form.model, formItems);
       },
     },
@@ -128,7 +136,7 @@ export default {
       default: "",
     },
     /**
-     * 除了 form.type= 'add' | 'edit' | 'preview' (當type = add會自動清空form.model), 
+     * 除了 form.type= 'add' | 'edit' | 'preview' (當type = add會自動清空form.model),
      * form.type = 'preview' 預設會 disabled form 表單
      * 其他設定如 [Form Attributes](https://element.eleme.io/#/zh-CN/component/form#form-attributes)
      * (model, labelWidth, rules... )`
@@ -142,6 +150,7 @@ export default {
      * label: 顯示在html上,
      * itemType: 預設input, 具体参数看下面说明,
      * 當itemType: 'currency' (輸入為 string 按下confirm後會轉成 number ),
+     * value: form.type='add' && itemType 為 [date, datetime, monthrange, daterange, multSelect] 才有的預設值設定 (實作在 pickerOptionsData)
      * change: (value) => { } 當數值改變的時候呼叫
      */
     formItems: {
@@ -156,7 +165,7 @@ export default {
       default: false,
     },
     /**
-     * confirm 按鈕是否 loading, 支持 .sync 修饰符
+     * 是否 loading, 支持 .sync 修饰符
      */
     loading: {
       type: Boolean,
@@ -167,8 +176,10 @@ export default {
      */
     confirmTitle: {
       type: String,
-      default: "Confirm",
     },
+    /**
+     * 是否显示 footer
+     */
     showFooter: {
       type: Boolean,
       default: true,
@@ -176,24 +187,30 @@ export default {
   },
   data() {
     const { formItems } = this.$props;
+    const { params, pickerOptions, monthPickerOptions } = pickerOptionsData(
+      formItems
+    );
     return {
       dialogWidth: null,
       labelPosition: null,
-      ...pickerOptionsData(formItems),
+      params,
+      pickerOptions,
+      monthPickerOptions,
+      firstModel: {}
     };
   },
   methods: {
     confirm() {
       this.$refs["dialogForm"].validate((valid) => {
         if (valid) {
-          // pasre itemType: "currency", from string to number
+          // parse itemType: "currency", from string to number
           parseCurrencyModel(this.form.model, this.formItems);
           /**
            * 回傳 form.model
            */
           this.$emit("confirm", { ...this.form.model });
         } else {
-          this.$message.error("Form validation failed!");
+          this.$message.error(this.t('bo.dialog.formValidationFailMessage'));
           return false;
         }
       });
@@ -224,6 +241,7 @@ export default {
     this.$nextTick(() => {
       this.onResize();
       window.addEventListener("resize", this.onResize);
+      this.firstModel = JSON.parse(JSON.stringify(this.form.model))
     });
   },
   beforeDestroy() {

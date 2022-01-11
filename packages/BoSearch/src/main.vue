@@ -15,46 +15,16 @@
       :required="form.required"
       :rules="form.rules || []"
     >
-      <el-input
-        v-if="form.itemType === 'input' || form.itemType === undefined"
+      <bo-form-item
+        v-if="formItemSet.has(form.itemType)"
         v-model="params[form.prop]"
-        :clearable="(form.clearable !== undefined) ? form.clearable : true"
+        :item="form"
+        :formModel="params"
+        :monthPickerOptions="monthPickerOptions"
+        :pickerOptions="pickerOptions"
+        @input="onChange(form)"
         @keyup.enter.native="searchHandler"
-        :placeholder="form.placeholder"
-        :style="form.style"
-        @change="onChange(form)"
-        @blur="params[form.prop] = $event.target.value.trim()"
       />
-      <el-select
-        v-else-if="form.itemType === 'select'"
-        v-model="params[form.prop]"
-        @change="onChange(form)"
-        :placeholder="form.placeholder"
-        :multiple="form.multiple"
-        :clearable="(form.clearable !== undefined) ? form.clearable : true"
-        :style="form.style"
-      >
-        <el-option
-          v-for="(option, optionIndex) in form.options"
-          :key="optionIndex + '_local'"
-          :value="option.value"
-          :label="option.label"
-        />
-      </el-select>
-
-      <el-radio-group
-          v-else-if="form.itemType === 'radio'"
-          v-model="params[form.prop]"
-          :style="form.style"
-        >
-          <el-radio
-            v-for="(radio, radioIndex) in form.options"
-            :key="radioIndex"
-            :label="radio.value"
-            v-bind="radio"
-            >{{ radio.label }}</el-radio
-          >
-        </el-radio-group>
 
       <bo-select-input
         v-else-if="form.itemType === 'selectInput'"
@@ -72,7 +42,7 @@
         :style="form.style"
       ></bo-select-date>
 
-       <bo-section
+      <bo-section
         v-else-if="form.itemType === 'section'"
         v-model="params[form.prop]"
         :maxSections="form.maxSections"
@@ -81,54 +51,6 @@
         @onDefault="form.Edefault"
       ></bo-section>
 
-      <bo-select
-        v-else-if="form.itemType === 'multSelect'"
-        v-model="params[form.prop]"
-        :list="form.options"
-        :style="form.style"
-      >
-      </bo-select>
-      <el-date-picker
-        v-else-if="form.itemType === 'date'"
-        v-model="params[form.prop]"
-        type="date"
-        :placeholder="form.placeholder"
-        :format="form.format || 'yyyy-MM-dd'"
-        :value-format="form.valueFormat || 'yyyyMMdd'"
-        clearable
-        :picker-options="form.pickerOptions || {}"
-        :style="form.style"
-      />
-      <el-date-picker
-        v-else-if="form.itemType === 'datetime'"
-        v-model="params[form.prop]"
-        type="datetime"
-        :placeholder="form.placeholder"
-        :format="form.format || 'yyyy-MM-dd HH:mm:ss'"
-        :value-format="form.valueFormat || 'yyyy-MM-dd HH:mm:ss'"
-        clearable
-        :picker-options="form.pickerOptions || {}"
-        :style="form.style"
-      />
-      <el-date-picker
-        v-else-if="form.itemType === 'monthrange'"
-        v-model="params[form.prop]"
-        type="monthrange"
-        :clearable="false"
-        :value-format="form.valueFormat || 'yyyyMM'"
-        :picker-options="form.pickerOptions || monthPickerOptions"
-        :style="form.style || { width: '280px' }"
-      />
-      <el-date-picker
-        v-else-if="form.itemType === 'daterange'"
-        v-model="params[form.prop]"
-        type="daterange"
-        value-format="yyyyMMdd"
-        :clearable="false"
-        :placeholder="form.placeholder"
-        :picker-options="pickerOptions"
-        :style="form.style || { width: '280px' }"
-      />
       <el-date-picker
         v-else-if="form.itemType === 'datetimerange'"
         v-model="params[form.prop]"
@@ -140,6 +62,8 @@
         :format="form.format || 'yyyy-MM-dd HH:mm:ss'"
         :default-time="form.defaultTime"
         :style="form.style"
+        v-bind="form.props"
+        v-on="form.events"
       />
     </el-form-item>
     <el-form-item label="">
@@ -149,8 +73,9 @@
         @click="searchHandler"
         :loading="loading"
       >
-        {{ submitBtnText }}
+        {{ submitBtnText || t('bo.search.submitButtonText') }}
       </el-button>
+
       <el-button
         v-bind="exportBtn"
         :type="exportBtn.type || 'primary'"
@@ -159,8 +84,13 @@
         :loading="loading"
         v-if="showExcel"
       >
-        {{ exportBtn.text || 'Excel' }}
+        {{ exportBtn.text || t('bo.search.exportButtonText') }}
+        <span v-if="exportBtn.percentage">
+          (<animationNumber :number="exportBtn.percentage"></animationNumber>%)
+        </span>
       </el-button>
+    
+
       <!-- @slot 預設 slot, 擴充按鈕等等 -->
       <slot></slot>
       <!-- @slot 給 tips 使用的 slot -->
@@ -170,15 +100,18 @@
 </template>
 
 <script>
-import BoSelect from "../../BoSelect";
+import BoFormItem from "../../BoFormItem"
 import BoSelectInput from "../../BoSelectInput";
 import BoSelectDate from "../../BoSelectDate";
 import BoSection from "../../BoSection";
 import { pickerOptionsData } from "../../config/picker-options";
 import { checkFormPropsDuplicates } from "../../utils/form";
+import locale from '../../BoLocale/mixins/locale'
+import { animationNumber } from '../../utils/animation'
 
 export default {
   name: "BoSearch",
+  mixins: [locale],
   props: {
     /**
      * Label 寬 （尚未實作）
@@ -200,7 +133,6 @@ export default {
      */
     submitBtnText: {
       type: String,
-      default: "Search",
     },
     /**
      * itemType: 預設input, 具体参数看下面说明,
@@ -218,21 +150,30 @@ export default {
     exportBtn: {
       type: Object,
       default: () => ({}),
-    }
+    },
   },
   components: {
-    BoSelect,
+    'animationNumber': animationNumber,
+    BoFormItem,
     BoSelectInput,
     BoSelectDate,
     BoSection,
   },
   data() {
+    // use BoFormItem set
+    const formItemSet = new Set(['input', undefined, 'textarea', 'select', 'radio', 'multSelect', 'date', 'datetime', 'monthrange', 'daterange'])
     const { forms } = this.$props;
     if (checkFormPropsDuplicates(forms)) {
       console.error("BoSearch form has duplicated prop.");
     }
+    const { params, pickerOptions, monthPickerOptions } = pickerOptionsData(
+      forms
+    );
     return {
-      ...pickerOptionsData(forms),
+      formItemSet,
+      params,
+      pickerOptions,
+      monthPickerOptions,
     };
   },
   methods: {
@@ -305,30 +246,30 @@ export default {
             formateDate(rangeDates[1]) - formateDate(rangeDates[0])
           );
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-          console.log("dataRanges", diffTime, diffDays);
+          // console.log("dataRanges", diffTime, diffDays);
           if (diffDays > maxRangeDays) {
             isValid = false;
             this.$message({
-              message: `Date range should not exceed ${maxRangeDays} days.`,
+              message: this.t('bo.search.maximumRangeDaysErrorMessage', { maxRangeDays }),
               type: "error",
             });
           }
         }
       });
-      const dataTimeRanges = this.forms.filter((x) => x.itemType === "datetimerange");
+      const dataTimeRanges = this.forms.filter(
+        (x) => x.itemType === "datetimerange"
+      );
       dataTimeRanges.forEach((x) => {
         const rangeDateTime = this.params[x.prop];
         const maxRangeDays = x.maxRangeDays;
         if (maxRangeDays && rangeDateTime && rangeDateTime.length === 2) {
-          const diffTime = Math.abs(
-            rangeDateTime[1] - rangeDateTime[0]
-          );
+          const diffTime = Math.abs(rangeDateTime[1] - rangeDateTime[0]);
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-          console.log("dataTimeRanges", diffTime, diffDays);
+          // console.log("dataTimeRanges", diffTime, diffDays);
           if (diffDays > maxRangeDays) {
             isValid = false;
             this.$message({
-              message: `DateTime range should not exceed ${maxRangeDays} days.`,
+              message: this.t('bo.search.maximumRangeDaysErrorMessage', { maxRangeDays }),
               type: "error",
             });
           }
@@ -339,35 +280,30 @@ export default {
     getParamsFromUrl() {
       const params = this.$route.query;
       // set selectInput
-      const form = this.forms.find((x) => x.itemType === "selectInput");      
-      const urlProp = form && params[form.selectName]
+      const form = this.forms.find((x) => x.itemType === "selectInput");
+      const urlProp = form && params[form.selectName];
       if (urlProp) {
-        form.prop = urlProp
+        form.prop = urlProp;
       }
       // parse number
       const isNumeric = (num) => !isNaN(num);
-      const textItemType = ['input', undefined, 'selectInput']
+      const textItemType = ["input", undefined, "selectInput"];
       for (const key in params) {
         const row = this.forms.find((x) => x.prop === key);
         const value = params[key];
         if (row && row.itemType === "multSelect") {
           if (Array.isArray(value)) {
-            params[key] = value.map((x) => (isNumeric(x) ? +x : x));
+            this.params[key] = value.map((x) => (isNumeric(x) ? +x : x));
           } else {
-            params[key] = [isNumeric(value) ? +value : value];
+            this.params[key] = [isNumeric(value) ? +value : value];
           }
         } else if (row && textItemType.includes(row.itemType)) {
           // keep selectInput value be text
-          params[key] = value       
+          this.params[key] = value;
         } else {
-          params[key] = isNumeric(value) ? +value : value;
+          this.params[key] = isNumeric(value) ? +value : value;
         }
       }
-
-      this.params = {
-        ...this.params,
-        ...params,
-      };
     },
     addParamsToUri(params) {
       const urlSyncList = this.forms
@@ -387,7 +323,7 @@ export default {
       });
 
       if (urlSyncList.includes("tab")) {
-        alert(`urlSync cannot use the 'tab' keyword, it's used by BoMenu.`);
+        console.error(`urlSync cannot use the 'tab' keyword, it's used by BoMenu.`);
       }
 
       const filteredParams = {};
@@ -399,7 +335,7 @@ export default {
         }
       }
 
-      const tab = this.$route.query.tab
+      const tab = this.$route.query.tab;
       const query = {
         tab,
         ...filteredParams,

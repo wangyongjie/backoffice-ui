@@ -1,4 +1,10 @@
 import BoPage from '../../packages/BoPage/src/main.vue'
+
+import BoSearch from "../../packages/BoSearch/src/main.vue";
+import BoPagination from "../../packages/BoPagination/src/main.vue";
+import BoTable from "../../packages/BoTable/src/main.vue";
+import BoChart from "../../packages/BoChart/src/main.vue";
+
 import {
   parseDocsSourceCode
 } from '../utils/storybook'
@@ -6,6 +12,12 @@ import {
 export default {
   title: 'Components/BoPage',
   component: BoPage,
+  subcomponents: {
+    BoSearch,
+    BoPagination,
+    BoTable,
+    BoChart,
+  },
   argTypes: {
     // event
     'update:loading': {

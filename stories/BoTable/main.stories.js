@@ -27,6 +27,9 @@ const html = `<div>
     <template v-slot:options="{ row }">
       <el-button type="primary">Edit</el-button>
     </template>
+    <template v-slot:option="{ row }">
+      <el-button type="primary">Edit2</el-button>
+    </template>
   </bo-table>
 </div>`
 
@@ -144,6 +147,11 @@ slotName.args = {
     minWidth: 140,
     align: "center",
     slotName: "options",
+  }, {
+    label: "Option",
+    minWidth: 140,
+    align: "center",
+    slotName: "option",
   }, ],
   data: [{
     name: "Sam",
@@ -153,6 +161,53 @@ slotName.args = {
 }
 slotName.parameters = parseDocsSourceCode(html, slotName.args)
 
+export const imageExample = Template.bind({});
+imageExample.storyName = "column.image with preview"
+imageExample.args = {
+  ...Primary.args,
+  columns: [{
+    prop: "image",
+    label: "Image",
+    image: {}
+  }, ],
+  data: [{
+      image: "https://via.placeholder.com/600x800"
+    },
+    {
+      image: "https://via.placeholder.com/1000x1600"
+    },
+    {
+      image: "https://via.placeholder.com/1000x1600"
+    },
+    {
+      image: "https://via.placeholder.com/1000x1600"
+    },
+    {
+      image: "https://via.placeholder.com/1000x1600"
+    },
+    {
+      image: "https://via.placeholder.com/1000x1600"
+    }
+  ],
+}
+imageExample.parameters = parseDocsSourceCode(html, imageExample.args)
+
+export const imageErrorMsg = Template.bind({});
+imageErrorMsg.storyName = "column.image with error message"
+imageErrorMsg.args = {
+  ...Primary.args,
+  columns: [{
+    prop: "image",
+    label: "Image",
+    image: {},
+    errorMsg: 'errorMsg'
+  }, ],
+  data: [{
+      image: ""
+    },
+  ],
+}
+imageErrorMsg.parameters = parseDocsSourceCode(html, imageErrorMsg.args)
 
 export const htmlExample = Template.bind({});
 htmlExample.storyName = "column.htmlExample"
@@ -304,43 +359,56 @@ groupingTableHead.storyName = "Grouping Table Head"
 groupingTableHead.args = {
   ...Primary.args,
   columns: [{
-    label: "Delivery Info",
-    children: [{
-        label: "Delivery Info",
-        children: [{
-            prop: "name",
-            label: "Name",
-            minWidth: 140,
-            align: "center",
-          },
-          {
-            prop: "currency",
-            label: "Currency",
-            minWidth: 140,
-            filter: "number",
-          },
-        ],
-      },
-      {
-        prop: "mobile",
-        label: "Mobile",
-        minWidth: 180,
-        align: "center"
-      },
-    ],
+      label: "Delivery Info",
+      children: [{
+          label: "Delivery Info",
+          children: [{
+              prop: "name",
+              label: "Name",
+              minWidth: 140,
+              align: "center",
+            },
+            {
+              prop: "currency",
+              label: "Currency",
+              minWidth: 140,
+              filter: "number",
+            },
+            {
+              label: "Option",
+              minWidth: 140,
+              align: "center",
+              slotName: "option",
+            },
+          ],
+        },
+        {
+          prop: "mobile",
+          label: "Mobile",
+          minWidth: 180,
+          align: "center"
+        },
+      ],
 
-  }, {
-    prop: "sex",
-    label: "Sex",
-    minWidth: 80,
-    align: "center",
-    render: (row) => {
-      const {
-        sex
-      } = row;
-      return sex === 0 ? "Male" : sex === 1 ? "Female" : "Unknow";
+    }, {
+      prop: "sex",
+      label: "Sex",
+      minWidth: 80,
+      align: "center",
+      render: (row) => {
+        const {
+          sex
+        } = row;
+        return sex === 0 ? "Male" : sex === 1 ? "Female" : "Unknow";
+      },
     },
-  }, ],
+    {
+      label: "Options",
+      minWidth: 140,
+      align: "center",
+      slotName: "options",
+    }
+  ],
   data: [{
       name: "Sam",
       mobile: "15299xxxx",

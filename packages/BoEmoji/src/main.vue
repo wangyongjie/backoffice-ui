@@ -6,11 +6,12 @@
       @input="$emit('input', $event)"
       resize="none"
       :show-word-limit="showWordLimit"
-      :size="size"
       :rows="rows"
+      :placeholder="placeholder"
       :disabled="disabled"
       type="textarea"
       @blur="$emit('input', $event.target.value.trim())"
+      v-on="$listeners"
     ></el-input>
     <el-popover
       width="325"
@@ -69,18 +70,18 @@ export default {
     },
     /**
      * [同 elemnent-ui input](https://element.eleme.io/#/en-US/component/input#textarea)
-     */
-    size: {
-      type: Number,
-      default: null,
-    },
-    /**
-     * [同 elemnent-ui input](https://element.eleme.io/#/en-US/component/input#textarea)
      * rows 預設為 1 視同 input
      */
     rows: {
       type: Number,
       default: 1,
+    },
+    /**
+     * [同 elemnent-ui input](https://element.eleme.io/#/en-US/component/input#textarea)
+     */
+    placeholder: {
+      type: String,
+      default: "",
     },
     /**
      * [同 elemnent-ui input](https://element.eleme.io/#/en-US/component/input#textarea)

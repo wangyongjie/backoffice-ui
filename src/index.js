@@ -19,6 +19,7 @@ import BoPlugin from '../packages/BoPlugin/index.js';
 import BoSection from '../packages/BoSection/index.js';
 import BoPlus from '../packages/BoPlus/index.js';
 import BoChart from '../packages/BoChart/index.js';
+import locale from '../packages/BoLocale/index.js'
 
 const components = [
     BoCurrencyInput,
@@ -43,6 +44,9 @@ const components = [
 ];
 
 const install = function (Vue, opts = {}) {
+    locale.use(opts.locale)
+    locale.i18n(opts.i18n)
+
     components.forEach(component => {
         Vue.component(component.name, component);
     });
@@ -63,6 +67,8 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
+    locale: locale.use,
+    i18n: locale.i18n,
     install,
     BoCopy,
     BoPagination,

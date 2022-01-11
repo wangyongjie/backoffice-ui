@@ -10,6 +10,7 @@
         v-for="(column, columnIndex) in columns"
         :key="columnIndex"
         :column="column"
+        @toggleImage="toggleImage"
       >
         <!-- by pass slot for bo-table -->
         <slot v-for="(_, name) in $slots" :name="name" :slot="name" />
@@ -21,12 +22,21 @@
         /></template>
       </table-column>
     </el-table>
+
+    <!-- modal image -->
+    <div
+      class="image-modal"
+      :class="{ open: imageModal.visible }"
+      @click="toggleImage"
+    >
+      <img class="modal-content" :src="imageModal.src" />
+    </div>
   </div>
 </template>
 
 <script>
 import TableColumn from "./tableColumn";
-import { flatColumns } from '../../utils/table'
+import { flatColumns } from "../../utils/table";
 
 /**
  * 同 [Table 表格](https://element.eleme.io/#/zh-CN/component/table#table-biao-ge)
@@ -40,6 +50,10 @@ export default {
     return {
       key: Date.now(),
       extraData: this.data,
+      imageModal: {
+        visible: false,
+        src: "",
+      },
     };
   },
   props: {
@@ -75,7 +89,7 @@ export default {
         const summary = this.getSummaries();
         if (summary) {
           this.extraData = [summary, ...data];
-        }else {
+        } else {
           this.extraData = [...data];
         }
       },
@@ -84,7 +98,7 @@ export default {
       immediate: true,
       handler(columns) {
         // 重写el-table的key值，避免表头混乱问题
-        this.key = Date.now()
+        this.key = Date.now();
 
         // prevent 'extraBtn' used by table slot
         const useExtraBtn = columns.find((x) => x.slotName === "extraBtn");
@@ -99,6 +113,10 @@ export default {
   methods: {
     sortChange(event) {
       this.$emit("sort-change", event);
+    },
+    toggleImage(src) {
+      this.imageModal.visible = !this.imageModal.visible;
+      this.imageModal.src = src;
     },
     getSummaries() {
       const isString = (value) =>
@@ -119,14 +137,14 @@ export default {
         avg: "Avg",
         sum: "Sum",
       }[summaryType];
-      const noData = this.data.length === 0
+      const noData = this.data.length === 0;
 
       if (!summaryType || !summaryLabel || noData) {
         return null;
       }
 
       const results = {};
-      const flatedColumns = flatColumns(this.columns)
+      const flatedColumns = flatColumns(this.columns);
       flatedColumns.forEach((column, index) => {
         const prop = column.prop;
         if (index === 0) {
@@ -140,7 +158,7 @@ export default {
           !excludeProps.includes(prop)
         ) {
           const round = (n) => {
-            return Number.isInteger(n) ? n : n.toFixed(precision)
+            return Number.isInteger(n) ? n : n.toFixed(precision);
           };
           const sum = values.reduce((prev, curr) => {
             const value = Number(curr);
@@ -152,7 +170,7 @@ export default {
           }, 0);
           const result =
             summaryType === "avg" ? round(sum / values.length) : sum;
-          results[prop] = result
+          results[prop] = result;
         } else {
           results[prop] = "-";
         }
@@ -162,3 +180,26 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  &.open {
+    display: block;
+  }
+
+  .modal-content {
+    display: block;
+    margin: 100px auto;
+    max-width: 80%;
+  }
+}
+</style>

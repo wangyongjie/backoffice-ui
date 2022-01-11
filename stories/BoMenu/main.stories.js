@@ -17,7 +17,7 @@ export default {
 };
 
 const html = `<div>
-  <bo-menu :menus="menus" @node-click="nodeClick">
+  <bo-menu :menus="menus">
   <!-- Default -->
   <template #banner>
     banner
@@ -29,12 +29,15 @@ const html = `<div>
     form
   </template>
   <!-- Tree -->
-  <template #label>
-    label
+  <template #section>
+    section
+  </template>
+  <template #trend>
+    trend
   </template>
   <template #layer>
-layer
-</template>
+  layer
+  </template>
   </bo-menu>
 </div>`
 
@@ -47,11 +50,6 @@ const Template = (args, {
   },
   props: Object.keys(argTypes),
   template: html,
-  methods: {
-    nodeClick(data, node, el) {
-      console.log('node-click', data, node, el)
-    }
-  },
 });
 
 
@@ -80,8 +78,7 @@ withTree.storyName = "with Tree"
 withTree.args = {
   menus: [{
       label: "Label",
-      index: "label",
-      tree: [
+      children: [
         {
           label: 'Activity',
           children: [
@@ -90,9 +87,12 @@ withTree.args = {
               children: [
                 {
                   label: 'Section',
+                  index: 'section'
                 },
                 {
                   label: 'Trend',
+                  index: 'trend',
+                  default: true
                 },
               ]
             },

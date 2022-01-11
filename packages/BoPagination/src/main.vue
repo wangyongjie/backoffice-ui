@@ -101,10 +101,13 @@ export default {
     },
   },
   methods: {
-    handleSizeChange() {
+    handleSizeChange(size) {
       /**
        * 當分頁改變時回傳
        */
+      if (this.currentPage * size > this.total) {
+        return
+      }
       this.$emit("pagination");
       // size change
       if (this.autoScroll) {

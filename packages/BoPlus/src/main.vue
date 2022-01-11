@@ -7,7 +7,7 @@
       @click="addItem"
     ></el-button>
 
-    <div class="slot-item" v-for="(slotItem, index) in itemList">
+    <div class="slot-item" v-for="(slotItem, index) in itemList" :key="index">
       <div class="btn-block">
         <el-button
           type="primary"
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import locale from '../../BoLocale/mixins/locale'
+
 /**
  *  <template v-slot:slotItem="{item, index}" />
  * item: v-for item
@@ -31,6 +33,7 @@
  */
 export default {
   name: "BoPlus",
+  mixins: [locale],
   props: {
     /**
      * max slot number
@@ -45,6 +48,10 @@ export default {
     slotName: {
       type: String,
       default: "",
+    },
+    defaultValue: {
+      type: Object,
+      default: () => ({})
     },
     /**
      * for v-model
@@ -71,12 +78,13 @@ export default {
     addItem() {
       if (this.itemList.length >= this.maxSlots) {
         this.$message({
-          message: `Maximum ${this.maxSlots} sections.`,
+          message: this.t('bo.plus.maximumSlotSectionMessage', { maxSlots: this.maxSlots}),
           type: "error",
         });
         return;
       }
-      this.itemList = [...this.itemList, {}];
+      const clonedDefaultValue = JSON.parse(JSON.stringify(this.defaultValue))
+      this.itemList = [...this.itemList, clonedDefaultValue];
     },
   },
 };
@@ -92,7 +100,8 @@ export default {
   align-items: flex-start;
 
   .btn-block {
-    padding: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
   }
 }
 </style>

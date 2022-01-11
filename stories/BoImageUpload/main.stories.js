@@ -11,7 +11,7 @@ export default {
 };
 
 const html = `<div>
-  <bo-image-upload v-model="image"></bo-image-upload>
+  <bo-image-upload v-model="image" :disabled="disabled" :onValid="onValid"></bo-image-upload>
 </div>`
 
 //👇 We create a “template” of how args map to rendering
@@ -33,5 +33,29 @@ Primary.args = {
     src: '',
     file: null
   },
+  disabled: false,
+  onValid: null
 };
 Primary.parameters = parseDocsSourceCode(html, Primary.args)
+
+
+export const onValid = Template.bind({});
+onValid.storyName = "with valid"
+onValid.args = {
+  image: {
+    src: '',
+    file: null
+  },
+  disabled: false,
+  onValid: (file) => {
+    console.log('file', file)
+    if ( file.raw.type === "image/png") {
+      console.log('ok')
+      return true
+    } else {
+      console.error('not allow type')
+      return false
+    }
+  }
+};
+onValid.parameters = parseDocsSourceCode(html, onValid.args)

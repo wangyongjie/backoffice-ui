@@ -94,5 +94,16 @@ export default {
   .el-input-group__prepend {
     background-color: #fff;
   }
+  // ##### Remove Arrows/Spinners
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 }
 </style>

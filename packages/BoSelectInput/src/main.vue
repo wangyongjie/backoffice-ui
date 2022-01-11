@@ -53,9 +53,6 @@ export default {
   data() {
     return {
       isMounted: false,
-      params: {
-        ...this.value,
-      },
     };
   },
   watch: {
@@ -64,13 +61,17 @@ export default {
       handler() {
         this.resetSelectInputParams();
       },
-    },
+    }
+  },
+  computed: {
     params: {
-      deep: true,
-      handler(value) {
-        this.$emit("input", value);
+      get() {
+        return this.value
       },
-    },
+      set(value) {
+        this.$emit("input", value);
+      }
+    }
   },
   mounted() {
     this.isMounted = true
@@ -83,8 +84,10 @@ export default {
       this.params[prop] = this.params[prop].trim();
     },
     resetSelectInputParams() {
+      // prevent default value reset
+      const withDefaultValue = this.params[this.form.prop]
       // prevent params.prop delete when form.prop change before mounted
-      if (!this.isMounted) {
+      if (!this.isMounted || withDefaultValue) {
         return
       }
       // 先抓現有的 prop 資料

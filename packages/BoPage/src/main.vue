@@ -1,7 +1,6 @@
 <template>
   <div ref="bopage" class="bopage">
     <bo-search
-      style="margin-top: 20px"
       v-if="formOptions"
       ref="searchForm"
       v-bind="formOptions"
@@ -16,7 +15,7 @@
         type="primary"
         @click="toggleChart"
       >
-        Chart
+        {{ t('bo.page.chartButtonText') }}
       </el-button>
       <!-- tips button -->
       <template v-if="tips && tips.length" v-slot:tips>
@@ -28,7 +27,7 @@
         ></el-button>
         <el-dialog
           custom-class="dialog-width"
-          title="Notes:"
+          :title="t('bo.page.tipDialogTitle')"
           :visible.sync="dialogVisible"
         >
           <div v-for="(content, index) in tips" :key="`${index}contents`">
@@ -128,12 +127,14 @@ import BoChart from "../../BoChart";
 import { transformUtils } from "../../BoChart/src/transform-utils";
 import { flatColumns } from "../../utils/table";
 import { getPosition } from '../../utils/dom'
+import locale from '../../BoLocale/mixins/locale'
 
 /**
  * 由 BoSearch, BoPagination, BoTable,  BoLineChart
  */
 export default {
   name: "BoPage",
+  mixins: [locale],
   components: {
     BoSearch,
     BoPagination,
@@ -174,7 +175,11 @@ export default {
      *    label: 'Custom Label', 預設表格label 可以修改  
      *    color: 'black' 可修改預設顏色  
      *  }]  
-     *  option: {} 可依照 echart.option 覆蓋設定  
+     *  option: { 可依照 [echart.option 覆蓋設定](https://echarts.apache.org/zh/option.html#title)   
+     *    xAxis: {},  
+     *    yAxis: {},  
+     *    ...  
+     *  } 
      * }  
      * 設定 table 資料顯示圖表資料,
      * paginationTotals 設定分 pagination 的資料總和,
@@ -349,12 +354,12 @@ export default {
     this.$nextTick(() => {
       this.autoHeight();
       this.setChartOptions();
-    });
 
-    //是否自动搜索
-    if (this.formOptions.autoSearch) {
-      this.autoSearch();
-    }
+      //是否自动搜索
+      if (this.formOptions.autoSearch) {
+        this.autoSearch();
+      }
+    });
   },
   watch: {
     tableOptions: {

@@ -6,6 +6,7 @@
       :columns="columns"
       :tableOptions="tableOptions"
       @search="searchHandle"
+      @excel="searchHandle($event, true)"
     >
       <template v-slot:options="{ row }">
         <el-button type="primary" @click="editHandle(row)">Edit</el-button>
@@ -82,7 +83,7 @@ export default {
           {
             "itemType": "selectInput",
             "selectName": "selectType",
-            "prop": "gameid",
+            "prop": "uids",
             "options": [{
                 "value": "uids",
                 "label": "UID"
@@ -103,7 +104,8 @@ export default {
             periodRange: ['daily', 'week'],
             periodValue: 'week',
             urlSync: true,
-          }
+          },
+          { prop: "textarea", label: "Name", itemType: "textarea", autosize: {minRows: 2},  style: {width: '400px'} },
         ],
         exportBtn: {
           type: 'success',
@@ -208,14 +210,19 @@ export default {
     change(value) {
       console.log(value)
     },
-    searchHandle(params) {
+    searchHandle(params, excel) {
       console.log(params)
-      setTimeout(() => {
-        this.tableOptions.data = [
-          { name: "Sam", mobile: "15299xxxx", sex: 0 },
-          { name: "Jean", mobile: "13452xxxx", sex: 1 },
-        ];
-      }, 2000);
+
+      if (excel) {
+        this.$exportExcel({ columns: this.columns, data: this.tableOptions.data, describe: ['test1', 'test1', 'test1', 'test1', 'test1', 'test1'] })
+      } else {
+        setTimeout(() => {
+          this.tableOptions.data = [
+            { name: "Sam", mobile: "15299xxxx", sex: 0 },
+            { name: "Jean", mobile: "13452xxxx", sex: 1 },
+          ];
+        }, 2000);
+      }
     },
     editHandle() {
       this.editDialogVisible = true;

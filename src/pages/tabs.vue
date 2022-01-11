@@ -65,7 +65,7 @@ export default {
       return async() => {
         if(exec) {
           await setTimeout(() => {
-            console.log('get data')
+            // console.log('get data')
             exec = false
           }, 1000);
         }
@@ -75,7 +75,7 @@ export default {
       var getData = await this.getData()
       await getData()
 
-      console.log('fdf')
+      // console.log('fdf')
       await getData()
 
       setTimeout(() => {

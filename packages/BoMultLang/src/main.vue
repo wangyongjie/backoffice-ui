@@ -12,7 +12,9 @@
         :label="lan.label"
       ></el-option>
     </el-select>
-    <el-button type="primary" icon="el-icon-plus" :disabled="disabled" @click="addTab(editableTabsValue)">Add Language</el-button>
+    <el-button type="primary" icon="el-icon-plus" :disabled="disabled" @click="addTab(editableTabsValue)">
+      {{ t('bo.multLang.addLanguageButtonText') }}
+    </el-button>
 
     <el-tabs v-model="editableTabsValue" type="border-card" @tab-remove="removeTab" style="margin-top: 10px;">
       <el-tab-pane
@@ -47,9 +49,11 @@
 </template>
 
 <script>
+import locale from '../../BoLocale/mixins/locale'
 
 export default {
   name: "BoMultLang",
+  mixins: [locale],
   components: {
     BoFormItem: () => import('../../BoFormItem/src/main.vue'),
   },
@@ -135,7 +139,7 @@ export default {
       const ifExist = this.editableTabs.some(item => item.name === this.lang);
       if(ifExist) {
         this.$message({
-          message: 'Lanugage existed.',
+          message: this.t('bo.multLang.languageExistMessage'),
           type: 'error'
         });
         return;

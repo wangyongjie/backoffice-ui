@@ -59,7 +59,7 @@ describe('BoSearch', () => {
                     label: "Daterange:",
                     itemType: "daterange",
                     maxRangeDays: 31,
-                    pastDays: 1,
+                    dayRange: 1,
                 }]
             },
             mocks: mocksData

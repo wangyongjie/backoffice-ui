@@ -52,6 +52,7 @@ export default {
           show: true,
           type: "line",
           labelProp: "time",
+          dataReverse: true
         },
         data,
       };

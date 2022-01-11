@@ -14,6 +14,22 @@ npm i --save backoffice-ui
 
 Detailed changes for each release are documented in the [release notes](./CHANGELOG.md).
 
+## 国际化
+组件内部默认使用英文，若希望使用其他语言，则需要进行多语言设置。以中文为例，在 main.js 中：
+
+```js
+import Vue from 'vue'
+import BackofficeUI from 'backoffice-ui'
+import locale from 'backoffice-ui/BoLocale/lang/zh-CN'
+
+Vue.use(BackofficeUI, { locale })
+```
+其他設定同 https://element.eleme.io/#/zh-CN/component/i18n  
+目前内置了以下语言：
+
+- 简体中文（zh-CN）
+- 英语（en）
+
 ## 快速开始
 
 Import modules and set up settings in `main.js`:
@@ -105,7 +121,7 @@ export default {
       loading: false,
       formOptions: {
         forms: [
-          { prop: 'date', label: 'Date:', itemType: 'daterange', pastDays: 1 },
+          { prop: 'date', label: 'Date:', itemType: 'daterange', dayRange: 1 },
           {
             prop: 'region',
             label: 'Country',
@@ -210,7 +226,7 @@ export default {
       loading: false,
       formOptions: {
         forms: [
-          { prop: 'date', label: 'Date:', itemType: 'daterange', pastDays: 7 },
+          { prop: 'date', label: 'Date:', itemType: 'daterange', dayRange: 7 },
           { prop: 'userIDs', label: 'Uid:' }
         ]
       },

@@ -17,7 +17,7 @@
       style="width: 160px"
       v-model="dateValue"
       type="week"
-      format="Week WW of yyyy"
+      :format="t('bo.selectData.weekFormat') || 'Week WW of yyyy'"
       value-format="yyyyMMdd"
       :clearable="false">
     </el-date-picker>
@@ -49,10 +49,12 @@
 </template>
 
 <script>
+import locale from "../../BoLocale/mixins/locale";
 import { parseTime } from '../../utils/index'
 
 export default {
   name: "BoSelectDate",
+  mixins: [locale],
   props: {
     /**
      * 用来传入时间默认值

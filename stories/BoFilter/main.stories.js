@@ -64,6 +64,7 @@ cardArray.parameters = parseDocsSourceCode(html, cardArray.args)
 
 
 export const multiple = Template.bind({});
+multiple.storyName = "Multiple filter combination"
 multiple.args = {
   label: 'multiple filter',
   value: 1212121,

@@ -1,4 +1,7 @@
 import BoMultLang from '../../packages/BoMultLang/src/main.vue'
+
+import BoFormItem from '../../packages/BoFormItem/src/main.vue'
+
 import {
   parseDocsSourceCode
 } from '../utils/storybook'
@@ -6,6 +9,9 @@ import {
 export default {
   title: 'Components/BoMultLang',
   component: BoMultLang,
+  subcomponents: {
+    BoFormItem
+  },
   argTypes: {
     // slot
     default: {

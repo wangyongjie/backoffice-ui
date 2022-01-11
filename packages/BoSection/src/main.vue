@@ -9,7 +9,9 @@
     >
       <el-input class="input" slot="reference" :value="inputValue" readonly />
 
-      <h4 class="title">Section Setting</h4>
+      <h4 class="title">
+        {{ t("bo.section.popoverTitle") }}
+      </h4>
       <el-radio-group v-model="radioValue" @input="radioChange">
         <div class="radios-block" v-for="item in radioList" :key="item">
           <el-radio :label="item">{{ item }}</el-radio>
@@ -18,10 +20,12 @@
       <div class="content" v-if="radioValue !== radioList[0]">
         <div
           class="section-block"
-          v-for="(item, index) in sectionList"
+          v-for="(item, index) in sectionLength"
           :key="`section${index}`"
         >
-          Section {{ index + 1 }}:{{ index === 0 ? "(" : "[" }}
+          {{ t("bo.section.section") }} {{ index + 1 }}:{{
+            index === 0 ? "(" : "["
+          }}
           <span class="input-block">
             <!-- left input -->
             <el-input
@@ -37,7 +41,7 @@
           <span class="input-block">
             <!-- right input -->
             <el-input
-              v-if="index !== sectionList.length - 1"
+              v-if="index !== sectionLength - 1"
               type="number"
               v-model="clonedValue[index]"
               @blur="adjustRange(index)"
@@ -50,8 +54,8 @@
           )
           <span
             v-if="
-              index === sectionList.length - 1 &&
-              sectionList.length >= minShowDelete
+              index === sectionLength - 1 &&
+              sectionLength >= minShowDelete
             "
           >
             <el-button
@@ -67,29 +71,34 @@
           icon="el-icon-circle-plus-outline"
           type="text"
           @click="addSection"
-          >Add Section</el-button
+          >{{ t("bo.section.addSection") }}</el-button
         >
-        <el-button class="default-btn" size="mini" @click="setAsDefault"
-          >Set as Default</el-button
-        >
+        <el-button class="default-btn" size="mini" @click="setAsDefault">{{
+          t("bo.section.setAsDefault")
+        }}</el-button>
       </div>
 
       <div class="footer">
-        <el-button size="mini" @click="visible = false">Cancel</el-button>
-        <el-button type="primary" size="mini" @click="confirm"
-          >Confirm</el-button
-        >
+        <el-button size="mini" @click="visible = false">
+          {{ t("bo.section.cancelButtonText") }}
+        </el-button>
+        <el-button type="primary" size="mini" @click="confirm">
+          {{ t("bo.section.confirmButtonText") }}
+        </el-button>
       </div>
     </el-popover>
   </div>
 </template>
 
 <script>
+import locale from "../../BoLocale/mixins/locale";
+
 /**
  * 不支援 urlSync
  */
 export default {
   name: "BoSection",
+  mixins: [locale],
   props: {
     /**
      * max section number, default 10
@@ -109,30 +118,37 @@ export default {
      * for v-model, Default: [], confirm 之後才會更新
      */
     value: {
-      type: Array,
+      type: [String, Array],
       default: () => [],
     },
   },
   data() {
+    const defaultText = this.t("bo.section.default")
+    const customText = this.t("bo.section.custom")
+
     return {
       visible: false,
-      inputValue: "Default",
-      radioValue: "Default",
-      radioList: ["Default", "Custom"],
+      defaultText,
+      customText,
+      inputValue: '',
+      radioValue: '',
+      radioList: [defaultText, customText],
       clonedValue: [],
     };
   },
   computed: {
-    sectionList: {
-      get() {
-        // set fakeLastItem for loop more than clonedValue.length
-        const fakeLastItem = "fake last item";
-        return [...this.clonedValue, fakeLastItem];
-      },
+    sectionLength() {
+      // for loop more than clonedValue.length
+      return this.clonedValue.length + 1
     },
+  },
+  mounted() {
+    this.initSetting();
   },
   methods: {
     initSetting() {
+      const defaultStr = this.value.length ? this.customText : this.defaultText;
+      this.inputValue = defaultStr;
       // reset radioValue
       this.radioValue = this.inputValue;
       this.radioChange();
@@ -153,9 +169,9 @@ export default {
       );
     },
     addSection() {
-      if (this.sectionList.length >= this.maxSections) {
+      if (this.sectionLength >= this.maxSections) {
         this.$message({
-          message: `Maximum ${this.maxSections} sections.`,
+          message: this.t('bo.section.maximumSectionMessage', { maxSections: this.maxSections }),
           type: "error",
         });
         return;
@@ -163,41 +179,34 @@ export default {
       this.clonedValue = [...this.clonedValue, null];
     },
     adjustRange(index) {
-      const currentValue = this.clonedValue[index];
-      const min = index === 0 ? null : this.clonedValue[index - 1];
+      const currentValue = +this.clonedValue[index];
+      const min = index === 0 ? null : +this.clonedValue[index - 1];
       if (min !== null && currentValue < min) {
         this.$message({
-          message:
-            "The value must be greater than that of the previous section.",
+          message: this.t('bo.section.sectionValueRangeErrorMessage'),
           type: "error",
         });
       }
     },
-    isValid() {
+    isNotValid() {
       // valid: all clonedValue with number
-      let valid = true;
-      this.clonedValue.forEach((x, idx) => {
-        // not empty
-        if (x === null) {
-          valid = false;
-        }
-        // not greater then previous
-        if (idx > 0 && x <= this.clonedValue[idx - 1]) {
-          valid = false;
-        }
+      const isNotValid = this.clonedValue.some((x, idx) => {
+        const isEmpty = x === null || x === ''
+        const isNotGreaterThenPrevious = idx > 0 && +x <= +this.clonedValue[idx - 1]
+        return isEmpty || isNotGreaterThenPrevious
       });
 
-      if (!valid) {
+      if (isNotValid) {
         this.$message({
-          message: "Please enter section value, pure numbers only.",
+          message: this.t('bo.section.sectionValueTypeErrorMessage'),
           type: "error",
         });
       }
 
-      return valid;
+      return isNotValid;
     },
     setAsDefault() {
-      if (!this.isValid()) {
+      if (this.isNotValid()) {
         return;
       }
       /**
@@ -206,7 +215,7 @@ export default {
       this.$emit("onDefault", this.clonedValue);
     },
     confirm() {
-      if (!this.isValid()) {
+      if (this.isNotValid()) {
         return;
       }
       this.inputValue = this.radioValue;

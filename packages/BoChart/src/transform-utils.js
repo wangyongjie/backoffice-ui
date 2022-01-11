@@ -1,3 +1,5 @@
+import { deepClone } from '../../utils/index'
+
 const getSeriesByType = ({
     type,
     dataProps,
@@ -201,7 +203,8 @@ const boChartData = ({
             dataset: {
                 dimensions: dimensions,
                 // 預設為 table data array object
-                source: tableOptions.data
+                // 使用deepclone避免影响table表数据
+                source: chart.dataReverse ? deepClone(tableOptions.data).reverse() : tableOptions.data
             },
             ...option,
             /// custom option

@@ -312,7 +312,7 @@ export default {
             showOn: "edit",
           },
           { prop: "sb", label: "S.B.", itemType: "currency" },
-          { prop: "fee", label: "Fee" },
+          { prop: "fee", label: "Fee", prependSlot: 'prepend', appendSlot: 'append' },
           {
             prop: "roomName",
             label: "RoomName",

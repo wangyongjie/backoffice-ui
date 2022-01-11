@@ -60,9 +60,9 @@ describe('BoMenu', () => {
             mocks: mocksData
         })
         wrapper.vm.handleSelect('0')
-        expect(addTabToUri).toHaveBeenCalledTimes(0)
+        expect(addTabToUri).toHaveBeenCalledTimes(2)
         wrapper.vm.handleSelect('1')
-        expect(addTabToUri).toHaveBeenCalledTimes(1)
+        expect(addTabToUri).toHaveBeenCalledTimes(3)
     })
 
     it('methods.setTabFromUrl', async () => {
