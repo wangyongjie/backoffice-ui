@@ -28,7 +28,7 @@ export const resetField = (value) => {
 export const resetForm = (model, params, firstModel) => {
     const clonedModel = JSON.parse(JSON.stringify(firstModel))
     Object.keys(model).forEach((key) => {
-        model[key] =  params[key] || (clonedModel[key] ?? resetField(model[key]))
+        model[key] =  params[key] || ((clonedModel[key] !== undefined && clonedModel[key] !== null) ? clonedModel[key] : resetField(model[key]))
     })
 }
 

@@ -1,9 +1,10 @@
 {
   "name": "backoffice-ui",
-  "version": "1.0.109",
+  "version": "1.0.111",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build:lib": "vue-cli-service build --target lib --inline-vue --name backoffice-ui src/index.js",
+    "build:report": "vue-cli-service build --target lib --inline-vue --name backoffice-ui src/index.js --report",
     "test:unit": "vue-cli-service test:unit",
     "test:generate-output": "vue-cli-service test:unit --json --outputFile=.jest-test-results.json --watch",
     "lint": "vue-cli-service lint --fix",
@@ -12,11 +13,13 @@
   },
   "main": "src/index.js",
   "files": [
+    "lib",
     "src",
     "packages"
   ],
   "dependencies": {
     "@vue/composition-api": "^1.4.0",
+    "deepmerge": "^4.2.2",
     "echarts": "^5.2.2",
     "file-saver": "^2.0.5",
     "v-emoji-picker": "^2.3.3",
