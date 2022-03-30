@@ -6,18 +6,16 @@
         <div class="title">{{ item.name }}</div>
         <v-chart
           class="chart"
-          :autoresize="autoresize"
           :option="{ ...option, series: item }"
         />
       </div>
     </div>
     <!-- other charts -->
-    <v-chart v-else ref="chartRef" :autoresize="autoresize" />
+    <v-chart v-else :initOptions="initOptions" ref="chartRef" />
   </div>
 </template>
 <script>
-import "./echarts.all";
-import VChart, { THEME_KEY } from "vue-echarts";
+import vChart from './v-chart.vue'
 /**
  * 資料範例可參考 [前往 →](https://echarts.apache.org/examples/zh/index.html)  
  * <bo-chart ref="boChartRef" :option="option" />  
@@ -28,7 +26,7 @@ import VChart, { THEME_KEY } from "vue-echarts";
 export default {
   name: "BoChart",
   components: {
-    VChart,
+    vChart
   },
   props: {
     /**
@@ -45,9 +43,12 @@ export default {
       type: Object,
       default: () => ({}),
     },
-  },
-  provide: {
-    [THEME_KEY]: "macarons",
+    initOptions: {
+     type: Object,
+     default: () => ({
+       height: '400px'
+     })
+    }
   },
   watch: {
     option: {
@@ -69,8 +70,12 @@ export default {
   data() {
     return {
       lastType: "",
-      autoresize: true,
     };
+  },
+  mounted() {
+    this.$refs.chartRef.chart.on('dblclick', (params) => {
+      this.$emit('dblclick', params)
+    })
   },
   methods: {
     // clear type !== 'pie'
@@ -82,7 +87,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .bo-chart {
-  height: 400px;
+  // height: 400px;
   .pie-container {
     margin: 10px 0;
     display: flex;
@@ -96,9 +101,9 @@ export default {
       flex-grow: 1;
       width: 33%;
     }
-    .chart {
-      height: 400px;
-    }
+    // .chart {
+    //   height: 400px;
+    // }
   }
 }
 </style>

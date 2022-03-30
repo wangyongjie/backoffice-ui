@@ -34,6 +34,9 @@ export default {
         {
           prop: "a",
           label: "A",
+          html: function render() {
+            return '<pre>Name in pre</pre>'
+          }
         },
         {
           prop: "b",

@@ -242,6 +242,149 @@ export default {
 
 :::
 
+## 关系图
+
+可用于金币溯源等关系图
+
+:::demo
+
+```html
+<template>
+  <bo-chart :initOptions="initOptions" :option="option" @dblclick="dblclick" />
+</template>
+
+<script>
+  export default {
+  data() {
+    return {
+      initOptions: {
+        height: '700px'
+      },
+      option:  {
+        title: {
+          text: '金币溯源图'
+        },
+        series: [
+          {
+            type: 'graph',
+            layout: 'force',
+            symbol: 'path://M512 512c123.776 0 224-100.224 224-224S635.776 64 512 64a223.936 223.936 0 0 0-224 224C288 411.776 388.224 512 512 512z m0 64c-149.504 0-448 85.76-448 256v128h896v-128c0-170.24-298.496-256-448-256z',
+            symbolSize: 25,
+            label: {
+              show: true,
+              position: 'bottom'
+            },
+            edgeSymbol: ['none', 'arrow'],
+            edgeLabel: {
+              fontSize: 14
+            },
+            force: {
+              repulsion: 1000,
+              layoutAnimation: false
+            },
+            roam: true,
+            data: [
+              {
+                name: 'Node 1',
+                // fixed: true,
+                x: 500,
+                y: 400,
+                itemStyle: {
+                  color: 'red'
+                }
+              },
+              {
+                name: 'Node 2',
+              },
+              {
+                name: 'Node 3',
+              },
+              {
+                name: 'Node 4',
+              },
+              {
+                name: 'Node 5',
+              },
+              {
+                name: 'Node 6',
+              },
+              {
+                name: 'Node 7',
+              },
+              {
+                name: 'Node 8',
+                label: {
+                  formatter : 'Node 6'
+                },
+                itemStyle: {
+                  color: 'grey'
+                }
+              }
+            ],
+            links: [
+              {
+                source: 'Node 1',
+                target: 'Node 2',
+                value: 11,
+                lineStyle: {
+                  curveness: 0.2,
+                  color: 'blue'
+                }
+              },
+              {
+                source: 'Node 2',
+                target: 'Node 1',
+                value: 10,
+                lineStyle: {
+                  curveness: 0.2
+                }
+              },
+              {
+                source: 'Node 1',
+                target: 'Node 3'
+              },
+              {
+                source: 'Node 1',
+                target: 'Node 4'
+              },
+              {
+                source: 'Node 2',
+                target: 'Node 5'
+              },
+              {
+                source: 'Node 2',
+                target: 'Node 6'
+              },
+              {
+                source: 'Node 3',
+                target: 'Node 7'
+              },
+              {
+                source: 'Node 3',
+                target: 'Node 8'
+              }
+            ],
+            lineStyle: {
+              width: 2,
+              color: '#666',
+              curveness: 0
+            }
+          }
+        ]
+      }
+    };
+  },
+  methods: {
+    dblclick(params) {
+      alert(params.name)
+    }
+  }
+}
+</script>
+```
+
+:::
+
 ### Input Attributes
 
 | 参数            | 说明       | 类型    | 可选值 | 默认值     |

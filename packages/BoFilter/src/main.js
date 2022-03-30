@@ -42,6 +42,9 @@ const dateFormat = (value) => {
                 second: '2-digit',
                 hour12: false
             }).format(date)
+        } else if (value.indexOf('-') > -1) {
+            // ex: 2022-03-08 18:08:35 转换成 2022/03/08 18:08:35
+            return value.replace(/-/g, '/')
         } else {
             return '-';
         }

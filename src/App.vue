@@ -5,10 +5,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import BackofficeUI from './index'
 
-Vue.use(BackofficeUI)
 export default {
   name: "App",
 };

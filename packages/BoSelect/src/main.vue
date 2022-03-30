@@ -107,6 +107,10 @@ export default {
       type: Number,
       default: 1,
     },
+    isEmpty: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -115,8 +119,7 @@ export default {
   },
   computed: {
     formatList: function () {
-      let _this = this;
-      return this.list.map(function (item) {
+      return this.list.map((item)=> {
         if (typeof item !== "object") {
           return { value: item, label: item };
         } else if (
@@ -124,9 +127,7 @@ export default {
           !(item instanceof Array) &&
           !(item instanceof Function)
         ) {
-          let valueName = _this.valueName;
-          let labelName = _this.labelName;
-          return { value: item[valueName], label: item[labelName] };
+          return { value: item[this.valueName], label: item[this.labelName] };
         } else {
           alert("Invalid list");
           return {};
@@ -143,20 +144,22 @@ export default {
   },
   methods: {
     handleChange(options) {
+      console.log('ddddddd')
+      console.log(options)
       if (options.length) {
         let newOptions =
           options[options.length - 1] !== "_all_"
             ? options.filter((item) => {
                 return item !== "_all_";
               })
-            : ["_all_"];
+            : this.isEmpty ? [] : ["_all_"];
         // v-model upload
         this.$emit("input", newOptions);
       } else {
         let newOptions = [];
         switch (this.showType) {
           case 1:
-            newOptions = ["_all_"];
+            newOptions = this.isEmpty ? [] : ["_all_"];
             break;
         }
         // v-model upload

@@ -126,7 +126,7 @@ function formatJson(filterVal, jsonData) {
   )
 }
 
-function parseHeader(columns, starCol = 0, startRow = 0) {
+function parseHeader(columns, starCol = 0, startRow = 0, rowSize = 0) {
   // ref: element-ui table-header
   const getAllColumns = (columns) => {
     const result = [];
@@ -189,32 +189,38 @@ function parseHeader(columns, starCol = 0, startRow = 0) {
   // 計算 excel header 欄位給 xlsx 使用
   const excelHeader = (columns, header = [], merges = []) => {
     columns.forEach(_ => {
-      header.push([])
+      header.push(new Array(rowSize).fill(null))
     })
 
-    columns.forEach((arr, rowIdx) => {
+    columns.forEach((arr, yIndex) => {
+      let xIndex = 0
+
       arr.forEach((column) => {
-        const sc = starCol + header[rowIdx].length
-        const sr = startRow + rowIdx
+        // console.log(`rowSpan: ${column.rowSpan} colSpan: ${column.colSpan} label: ${column.label}`)
+        // find first  null
+        xIndex = header[yIndex].findIndex(x => x === null)
         // console.log('column', column, header)
+        // 垂直
         for (let y = 1; y < column.rowSpan; y++) {
-          header[rowIdx + y].push('')
+          header[yIndex + y][xIndex] = column.label
         }
-        for (let i = 0; i < column.colSpan; i++) {
-          if (i === 0) {
-            header[rowIdx].push(column.label)
-          } else {
-            header[rowIdx].push('')
-          }
+        // 水平
+        for (let x = 0; x < column.colSpan; x++) {
+          header[yIndex][xIndex + x] = column.label
         }
 
         if ((column.rowSpan > 1) || (column.colSpan > 1)) {
+          const sc = starCol + xIndex
+          const sr = startRow + yIndex
           const numberToAlphabet = (n) => String.fromCharCode(n + 'A'.charCodeAt(0))
           // ref: https://stackoverflow.com/questions/53516403/sheetjs-xlsx-how-to-write-merged-cells
           merges.push(`${numberToAlphabet(sc)}${sr + 1}:${numberToAlphabet(sc + column.colSpan - 1)}${sr + column.rowSpan}`)
         }
+
+        xIndex += column.colSpan
       })
     })
+    // console.log('header', header)
 
     return {
       header,
@@ -308,28 +314,28 @@ export function export_json_to_excel({
   // map array.object to array.array
   data = formatJson(filterVal, data)
 
+  const firstDataRow = (data && data.length) ? data[0] : []
   // ######### block1 describe: 额外添加描述 ######### 
   if (describe) {
-    const dataLength = (data && data.length) ? data[0] : []
     const formatDesc = describe.map(item => {
       let res = []
-      dataLength.forEach(_ => {
+      firstDataRow.forEach(_ => {
         res.push('')
       })
       res[0] = item
       return res
     })
     // 空两行
-    const nullArray = dataLength.map(_ => '')
+    const nullArray = firstDataRow.map(_ => '')
     formatDesc.push(nullArray)
     formatDesc.push(nullArray)
 
     // 添加到 sheetData 里
     sheetData = formatDesc.concat(sheetData)
 
-    // 增加merge合并
+    // 增加merge合并 改成 10 col 寬
     merges = describe.map((_, index) => {
-      return 'A' + (index + 1) + ':' + 'F' + (index + 1)
+      return 'A' + (index + 1) + ':' + 'J' + (index + 1)
     }).concat(merges)
   }
 
@@ -348,7 +354,7 @@ export function export_json_to_excel({
       const starCol = 0
       const startRow = sheetData.length
       // headerData: { header, merges}
-      const headerData = parseHeader(columns, starCol, startRow)
+      const headerData = parseHeader(columns, starCol, startRow, firstDataRow.length)
       sheetData = sheetData.concat(headerData.header);
       merges = merges.concat(headerData.merges)
     } else {
@@ -417,7 +423,7 @@ export function export_json_to_excel({
     }))
     // auto width 以 block3 的第一行為基準
     let result = colWidth[autoWidthBenchmark];
-    for (let i = 1; i < colWidth.length; i++) {
+    for (let i = autoWidthBenchmark; i < colWidth.length; i++) {
       for (let j = 0; j < colWidth[i].length; j++) {
         if (result[j]['wch'] < colWidth[i][j]['wch']) {
           result[j]['wch'] = colWidth[i][j]['wch'];

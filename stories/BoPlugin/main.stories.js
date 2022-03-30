@@ -208,7 +208,7 @@ multiHeader.parameters = parseDocsSourceCode(html, multiHeader.args)
 
 
 export const groupTableHeader = Template.bind({});
-groupTableHeader.storyName = "Grouping table head"
+groupTableHeader.storyName = "Grouping table head 1"
 groupTableHeader.args = {
   exportExcel: {
     columns: [{
@@ -249,3 +249,36 @@ groupTableHeader.args = {
   }
 };
 groupTableHeader.parameters = parseDocsSourceCode(html, groupTableHeader.args)
+
+
+const testData = new Array(20).fill(0).map((_, index) => ({
+  name: 'Sam' + index,
+  mobile: 1234567 + index,
+  age: 12 + index,
+  num: 43 + index
+}))
+export const testGroupTableHeader = Template.bind({});
+testGroupTableHeader.storyName = "Grouping table head 2"
+testGroupTableHeader.args = {
+  exportExcel: {
+    columns: [
+      {
+        label: "Persion Info",
+        children: [
+          {
+            label: "Basic Info",
+            children: [
+              { prop: 'name', label: 'Name' },
+              { prop: 'mobile', label: 'Mobile' }
+            ],
+          },
+          { prop: "age", label: "Age" },
+        ],
+      },
+      { prop: 'num', label: 'Num' },
+    ],
+    data: testData,
+    describe
+  }
+};
+testGroupTableHeader.parameters = parseDocsSourceCode(html, testGroupTableHeader.args)

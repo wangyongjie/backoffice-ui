@@ -29,8 +29,8 @@
         <template #tabs>
           <tabs></tabs>
         </template>
-        <template #section>
-          section
+        <template #section_menu>
+          <section_menu/>
         </template>
         <template #trend>
           trend
@@ -50,6 +50,7 @@ import tableSummary from "./pages/tableSummary.vue";
 import boMultLang from "./pages/boMultLang.vue";
 import selectInput from "./pages/selectInput.vue";
 import tabs from "./pages/tabs.vue";
+import section_menu from "./pages/section.vue";
 
 export default {
   name: "Home",
@@ -63,6 +64,7 @@ export default {
     boMultLang,
     selectInput,
     tabs,
+    section_menu
   },
   data() {
     return {
@@ -140,7 +142,11 @@ export default {
             },
           ],
         },
-      ],
+        {
+          index: "section_menu",
+          label: "Section"
+        }
+      ]
     };
   },
 };

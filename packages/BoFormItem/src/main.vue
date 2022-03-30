@@ -49,8 +49,13 @@
       v-else-if="item.itemType === 'multSelect'"
       v-model="model"
       :list="item.options"
+      :showType="item.showType"
       :style="item.style"
       :disabled="isDisabled"
+      :isEmpty="item.isEmpty"
+      :valueName="item.valueName"
+      :labelName="item.labelName"
+      :showBtn="item.showBtn"
     >
     </bo-select>
     <bo-mult-lang
@@ -112,6 +117,21 @@
       :picker-options="item.pickerOptions || pickerOptions"
       :disabled="isDisabled"
       :style="item.style || { width: '280px' }"
+      v-bind="item.props"
+      v-on="item.events"
+    />
+    <el-date-picker
+      v-else-if="item.itemType === 'datetimerange'"
+      v-model="model"
+      type="datetimerange"
+      :clearable="false"
+      :placeholder="item.placeholder"
+      :picker-options="item.pickerOptions"
+      :value-format="item.valueFormat || 'timestamp'"
+      :format="item.format || 'yyyy-MM-dd HH:mm:ss'"
+      :default-time="item.defaultTime"
+      :disabled="isDisabled"
+      :style="item.style"
       v-bind="item.props"
       v-on="item.events"
     />
@@ -192,6 +212,9 @@
       :slotName="item.slotName"
       :defaultValue="item.defaultValue"
       v-model="model"
+      :style="item.plusStyle"
+      :onlyRemoveLast="item.onlyRemoveLast"
+      :model="formModel"
     >
       <!-- by pass slot -->
       <slot v-for="(_, name) in $slots" :name="name" :slot="name" />
@@ -304,7 +327,7 @@ export default {
     isDisabled() {
       const type = this.form.type;
       const disabledOn = this.item.disabledOn;
-      return !!type && !!disabledOn && type === disabledOn;
+      return (!!type && !!disabledOn && type === disabledOn) || (type === "preview") || (this.item.disabled === true);
     },
   },
 };

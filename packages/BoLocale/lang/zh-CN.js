@@ -8,7 +8,7 @@ export default {
             formValidationFailMessage: '表单验证失败！',
             previewButtonText: '好的',
             cancelButtonText: '取消',
-            ConfirmButtonText: '确认',
+            confirmButtonText: '确认',
         },
         multLang: {
             addLanguageButtonText: '添加语言',

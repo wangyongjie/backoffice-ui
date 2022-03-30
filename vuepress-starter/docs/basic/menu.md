@@ -1,30 +1,28 @@
 ## Menu 菜单
 
-用来切换不同大群类时，使用此寻览列组件来进行切换
+为网站提供导航功能的菜单
 
 ### 基本用法
 
-横向可根据需求自订不同群类的寻览标签
+横向可根据需求自订不同群类的菜单标签
 
 :::demo
 
 ```html
 
 <template>
-    <div>
-        <bo-menu :menus="menus">
-            <!-- Default -->
-            <template #banner>
-                banner
-            </template>
-            <template #seo>
-                seo
-            </template>
-            <template #form>
-                form
-            </template>
-        </bo-menu>
-    </div>
+    <bo-menu :menus="menus">
+        <!-- Default -->
+        <template #banner>
+            banner
+        </template>
+        <template #seo>
+            seo
+        </template>
+        <template #form>
+            form
+        </template>
+    </bo-menu>
 </template>
 <script>
     export default {
@@ -54,35 +52,33 @@
 
 :::
 
-### 直式巢狀導覽列
+### 进阶巢状菜单
 
-直向可在标签下设置子标签建立巢状寻览列
+垂直菜单，可内嵌子菜单
 
 :::demo
 
 ```html
 
 <template>
-    <div>
-        <bo-menu :menus="menus">
-            <!-- Default -->
-            <template #banner_portrait>
-                banner
-            </template>
-            <template #seo_portrait>
-                seo
-            </template>
-            <template #form_portrait>
-                form
-            </template>
-            <template #section_portrait>
-                section
-            </template>
-            <template #trend_portrait>
-                trend
-            </template>
-        </bo-menu>
-    </div>
+    <bo-menu :menus="menus">
+        <!-- Default -->
+        <template #banner_portrait>
+            banner
+        </template>
+        <template #seo_portrait>
+            seo
+        </template>
+        <template #form_portrait>
+            form
+        </template>
+        <template #section_portrait>
+            section
+        </template>
+        <template #trend_portrait>
+            trend
+        </template>
+    </bo-menu>
 </template>
 <script>
     export default {
@@ -179,4 +175,4 @@
 
 | 方法名        | 说明                              | 参数                    |
 | ----------   | -------------------------------- | ----------------------- |
-| handleSelect | url的tab切换至目标页签的index值    | 输入目标页签的index索引值   |
+| handleSelect | url的tab切换至目标页签的index值      | 输入目标页签的index索引值   |

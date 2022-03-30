@@ -3,7 +3,8 @@
     :title="formTitle"
     :visible="visible"
     :width="dialogWidth"
-    @closed="closeDialog"
+    @close="closeDialog"
+    @closed="closeLoading"
     :close-on-click-modal="false"
   >
     <transition name="dialog-fade">
@@ -217,6 +218,8 @@ export default {
     },
     closeDialog() {
       this.$emit("update:visible", false);
+    },
+    closeLoading() {
       this.$emit("update:loading", false);
     },
     onResize() {
@@ -225,7 +228,7 @@ export default {
         this.dialogWidth = "100%";
         this.labelPosition = "top";
       } else {
-        this.dialogWidth = "50%";
+        this.dialogWidth = this.$attrs.width || "50%";
         this.labelPosition = "left";
       }
     },

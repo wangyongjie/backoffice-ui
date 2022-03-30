@@ -40,16 +40,25 @@ export default {
             prop: "date1",
             label: "Time Rage",
             itemType: "daterange",
+            dayRange: 3,
             urlSync: true,
+          },
+          {
+            prop: "date2",
+            label: "Time Rage2",
+            itemType: "daterange",
+            dayRange: 3,
+            ignoreToday: true
           },
           { prop: "dureDate", label: "Due Date", itemType: "date", urlSync: true, value: '20211028', offset: -2 },
           { prop: "datetime", label: "DateTime", itemType: "datetime", offset: 300 },
-          { prop: "date", label: "DateTimeRange", itemType: "datetimerange", dayRange: 7, defaultTime: ['02:30:00', '02:30:00'], maxRangeDays: 30 },
+          { prop: "date", label: "DateTimeRange", itemType: "datetimerange", dayRange: 7, defaultTime: ['02:30:00', '02:30:00'], maxRangeDays: 30, disabled: true },
           { prop: "month", label: "Month", itemType: "monthrange", range: 6, urlSync: true },
           {
             prop: "location",
             label: "Location",
             itemType: "multSelect",
+            showType: 1,
             options: [
               { value: 0, label: "A Country" },
               { value: 1, label: "B Country" },
@@ -214,7 +223,7 @@ export default {
       console.log(params)
 
       if (excel) {
-        this.$exportExcel({ columns: this.columns, data: this.tableOptions.data, describe: ['test1', 'test1', 'test1', 'test1', 'test1', 'test1'] })
+        this.$exportExcel({ columns: this.columns, data: this.tableOptions.data, describe: ['test1', 'test1', 'test1', 'test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1', 'test1', 'test1'] })
       } else {
         setTimeout(() => {
           this.tableOptions.data = [

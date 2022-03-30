@@ -249,8 +249,9 @@ const tableOptions = {
     },
   ]
 }
+
 export const tabsShow = Template.bind({});
-tabsShow.storyName = "tabs"
+tabsShow.storyName = "four tabs with chart"
 tabsShow.args = {
   ...Primary.args,
   formOptions: {
@@ -342,6 +343,25 @@ tabsShow.args = {
   ]
 }
 tabsShow.parameters = parseDocsSourceCode(html, tabsShow.args)
+
+export const oneTabs = Template.bind({});
+oneTabs.storyName = "one tabs"
+oneTabs.args = {
+  ...Primary.args,
+  formOptions: {
+    forms: []
+  },
+  tips: null,
+  columns: [],
+  tableOptions: {},
+  tabs: [{
+      label: 'LineChart Tab',
+      columns,
+      tableOptions
+    },
+  ]
+}
+oneTabs.parameters = parseDocsSourceCode(html, oneTabs.args)
 
 
 export const lineChart = Template.bind({});

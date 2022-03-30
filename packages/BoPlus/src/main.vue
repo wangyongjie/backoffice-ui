@@ -8,7 +8,7 @@
     ></el-button>
 
     <div class="slot-item" v-for="(slotItem, index) in itemList" :key="index">
-      <div class="btn-block">
+      <div class="btn-block" :style="{ visibility: onlyRemoveLast && (index !== itemList.length -1) ? 'hidden' : 'visible' }">
         <el-button
           type="primary"
           size="mini"
@@ -18,7 +18,7 @@
       </div>
 
       <!-- @slot 可從外部傳入 slot 給 bo-plush 使用 -->
-      <slot :name="slotName" :item="slotItem" :index="index"></slot>
+      <slot :name="slotName" :item="slotItem" :index="index" :model="model"></slot>
     </div>
   </div>
 </template>
@@ -59,6 +59,14 @@ export default {
     value: {
       type: Array,
       default: () => [],
+    },
+    onlyRemoveLast: {
+      type: Boolean,
+      default: false
+    },
+    model: {
+      type: Object,
+      default: () => ({})
     },
   },
   computed: {

@@ -70,6 +70,83 @@ export const pickerOptionsData = (formItems) => {
             }
         ],
     }
+    // 忽略今天的快捷项配置
+    let pickerOptions2 = {
+        shortcuts: [{
+                text: "Yesterday",
+                rangeDays: 1, // custom field for 'maxRangeDays' to filter
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    end.setTime(end.getTime() - 3600 * 1000 * 24 * 1);
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
+                    picker.$emit("pick", [
+                        parseTime(start, "{y}{m}{d}"),
+                        parseTime(end, "{y}{m}{d}"),
+                    ]);
+                },
+            },
+            {
+                text: "Past 7 Days",
+                rangeDays: 7, // custom field for 'maxRangeDays' to filter
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    end.setTime(end.getTime() - 3600 * 1000 * 24 * 1);
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                    picker.$emit("pick", [
+                        parseTime(start, "{y}{m}{d}"),
+                        parseTime(end, "{y}{m}{d}"),
+                    ]);
+                },
+            },
+            {
+                text: "Past 15 Days",
+                rangeDays: 15, // custom field for 'maxRangeDays' to filter
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    end.setTime(end.getTime() - 3600 * 1000 * 24 * 1);
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 15);
+                    picker.$emit("pick", [
+                        parseTime(start, "{y}{m}{d}"),
+                        parseTime(end, "{y}{m}{d}"),
+                    ]);
+                },
+            },
+            {
+                text: "Past 30 Days",
+                rangeDays: 30, // custom field for 'maxRangeDays' to filter
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    end.setTime(end.getTime() - 3600 * 1000 * 24 * 1);
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                    picker.$emit("pick", [
+                        parseTime(start, "{y}{m}{d}"),
+                        parseTime(end, "{y}{m}{d}"),
+                    ]);
+                },
+            },
+            {
+                text: "Past 90 Days",
+                rangeDays: 90, // custom field for 'maxRangeDays' to filter
+                onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    end.setTime(end.getTime() - 3600 * 1000 * 24 * 1);
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                    picker.$emit("pick", [
+                        parseTime(start, "{y}{m}{d}"),
+                        parseTime(end, "{y}{m}{d}"),
+                    ]);
+                },
+            }
+        ],
+        disabledDate: function(date) {
+            return date.getTime() > (new Date()).getTime() - 3600 * 1000 * 24 * 1
+        }
+    }
     let timeRangePickerOptions = (defaultTime) => ({
         shortcuts: [{
                 text: "Today",
@@ -189,6 +266,11 @@ export const pickerOptionsData = (formItems) => {
                 const end = new Date();
                 const start = new Date();
                 start.setTime(start.getTime() - 3600 * 1000 * 24 * (v.dayRange - 1));
+
+                if(v.ignoreToday) {
+                    end.setTime(end.getTime() - 3600 * 1000 * 24 * 1);
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
+                }
                 params[v.prop] = [
                     parseTime(start, "{y}{m}{d}"),
                     parseTime(end, "{y}{m}{d}"),
@@ -202,23 +284,22 @@ export const pickerOptionsData = (formItems) => {
             if(v.pickerOptions) {
                 if(v.pickerOptions.shortcuts) {
                     if((typeof v.pickerOptions.shortcuts === 'string') && v.pickerOptions.shortcuts === 'all') {
-                        pickerOptions.shortcuts.push({
+                        v.pickerOptions.shortcuts = [ ...(v.ignoreToday ? pickerOptions2.shortcuts : pickerOptions.shortcuts) ]
+                        v.pickerOptions.shortcuts.push({
                             text: "All Time",
                             onClick(picker) {
                                 picker.$emit("pick", ['', '']);
                             },
                         })
                     }
-                    if(typeof v.pickerOptions.shortcuts === 'object') {
-                        pickerOptions.shortcuts = v.pickerOptions.shortcuts
-                    }
                 }
+            }else {
+                v.pickerOptions = v.ignoreToday ? pickerOptions2 : pickerOptions
             }
-            pickerOptions = { ...v.pickerOptions, ...pickerOptions }
 
             // filter by maxRangeDays
             if (v.maxRangeDays) {
-                pickerOptions.shortcuts = pickerOptions.shortcuts.filter(x => {
+                v.pickerOptions.shortcuts = v.pickerOptions.shortcuts.filter(x => {
                     return x.rangeDays <= v.maxRangeDays
                 })
             }
@@ -278,7 +359,7 @@ export const pickerOptionsData = (formItems) => {
                 params[v.periodName] = v.periodValue;
             }
         } else if (v.itemType === "multSelect") {
-            params[v.prop] = v.value || ["_all_"];
+            params[v.prop] = v.value || (v.isEmpty ? [] : ["_all_"]);
         } else if (v.itemType === "datetime") {
             
             params[v.prop] = v.value || "";
@@ -296,7 +377,7 @@ export const pickerOptionsData = (formItems) => {
                 params[v.prop] = parseTime(Date.now() + parseInt(v.offset) * 86400000, v.cFormat || '{y}{m}{d}');
             }
         } else {
-            params[v.prop] = v.value || "";
+            params[v.prop] = (v.value !== undefined && v.value !== null) ? v.value : "";
         }
     });
 

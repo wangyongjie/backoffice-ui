@@ -155,6 +155,7 @@ select.args = {
     style: null,
     change: (form) => console.log('onChange', form),
     multiple: null,
+    value: 0,
     options: [{
         value: 0,
         label: "Male"

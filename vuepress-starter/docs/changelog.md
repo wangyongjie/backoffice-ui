@@ -1,13 +1,138 @@
-## 更新日志
+# 更新日志
+
+## 1.0.120
+
+2022-03-09
+
+- bo-filter  优化时间过滤
+- bo-select  优化全选默认值
+
+## 1.0.119
+
+2022-03-2
+
+- bo-form-item  修复报错
+
+## 1.0.118
+
+2022-02-22
+
+- bo-chart 可自定义高度和放开dblclick事件
+
+## 1.0.117
+
+2022-02-16
+
+- bo-locale 修复使用中文文案出现的报错
+
+## 1.0.116
+
+2022-02-15
+
+- bo-search 的dateRange支持新属性 ignoreToday，设置为true会忽略今天且今天之后的日期都不可选
+- 新增 导入和导出配置组件
+- 修复export导出多级表头的展示不正确问题
+
+## 1.0.115
+
+2022-01-26
+
+- bo-plus 支持model
+
+## 1.0.114
+
+2022-01-25
+
+- bo-menu 的tree点击任意项都可收缩菜单
+- exportExcel 修复自动宽度问题
+
+
+## 1.0.113
+
+2022-01-21
+
+- bo-form-item 的 plus 增加onlyRemoveLast配置
+- bo-dialog 修复无法关闭问题和可配置宽度
+
+## 1.0.112
+
+2022-01-21
+
+- bo-form-item增加plusStyle
+
+
+## 1.0.111
+
+2022-01-17
+
+- 修复bug
+
+## 1.0.110
+
+2022-01-13
+
+- backoffice-ui导出编译后的umd文件
+
+## 1.0.109
+
+2022-01-11
+
+- bo-search 去除上边距
+
+## 1.0.108
+
+2022-01-10
+
+- bo-form-item
+  - select选择默认可搜索
+  - el-input支持配置prependSlot和appendSlot插槽
+  
+- 修复一些eslint报错
+
+## 1.0.107
+
+2022-01-07
+
+- bo-dialog 初始化默認值優化
+
+## 1.0.106
+
+2022-01-06
+
+- fixed bo-select-input 初始值问题
+- bo-plus 新增预设值 & 调整 UI
+
+
+## 1.0.105
+
+2022-01-05
+
+- bo-plugin
+  - excel auto width 以 header 的第一行为基准
+  - fixed header & filterVal
+
+- bo-search 
+  - exportBtn 按钮增加百分比 & 动画
+
+## 1.0.104
+
+2022-01-04
+
+- bo-section 修正数字比对前转成int
+- bo-locale 新增国际化设定同 element-ui
 
 ## 1.0.103
-- bo-form-item 讓 bo-dialog, bo-search, bo-multLang 共用
+
+2021-12-28
+
+- bo-form-item 让 bo-dialog, bo-search, bo-multLang 共用
 - 组件支持所有element原有组件的属性和方法
-- bo-section 修復初始值問題
+- bo-section 修復初始值问题
 
 ## 1.0.101
 
 2021-12-21
+
 - bo-pagination
 - fix change limit callback twice problem
 
@@ -45,14 +170,14 @@
 2021-12-17
 
 - bo-table 
- - [hotfix]多級表頭slot問題
+ - [hotfix]多级表头slot问题
 
 ## 1.0.95
 
 2021-12-16
 
 - bo-plugin
- - exportExcel 支援多級表頭
+ - exportExcel 支援多级表头
 
 ## 1.0.94
 
@@ -127,7 +252,7 @@ chart: {
    label: 'Custom Label', // label名称， 不配置就用column对应的label
    color: 'black' // 线颜色，不配置就用预设的10个颜色中的某一个
  }],
- option: {} // 可依照 echart.option 覆盖
+ option: {} // 可依照 echart.option 复盖
 }
 ```
 
@@ -137,7 +262,7 @@ chart: {
 
 - bo-dialog
 - 新增 form.type = preview
-- 可自行設定 title
+- 可自行设定 title
 
 ## 1.0.84
 
@@ -165,7 +290,7 @@ chart: {
 2021-11-23
 
 - 新增 BoPlugin
-- 可在元件內使用 this.$watermark 新增浮水印
+- 可在元件内使用 this.$watermark 新增浮水印
 - bo-filter
 - 新增 card filter
 
@@ -181,7 +306,7 @@ chart: {
 2021-11-22
 
 - bo-dialog
-  - add form.resetOnAdd 關閉重設表單 預設為 true
+  - add form.resetOnAdd 关闭重设表单 预设为 true
 
 ## 1.0.78
 
@@ -194,8 +319,8 @@ chart: {
 
 2021-11-15
 
-- bo-page autoHeight 自動判斷高 不需外部傳入
-- bo-dialog 新增 isExist 欄位, false 時會清空 model
+- bo-page autoHeight 自动判断高 不需外部传入
+- bo-dialog 新增 isExist 栏位, false 时会清空 model
 
 ## 1.0.76
 
@@ -214,7 +339,7 @@ chart: {
 
 2021-11-12
 
-- bo-dialog 新增 transition 修復關閉動畫流暢度
+- bo-dialog 新增 transition 修復关闭动画流畅度
 
 ## 1.0.73
 
@@ -241,7 +366,7 @@ chart: {
 
 - 新增 bo-image-upload 元件
 - 新增 bo-emoji 元件
-- bo-dialog 新增兩種 itemType
+- bo-dialog 新增两种 itemType
   - itemType === 'emoji'
   - itemType === 'imageUpload'
 
@@ -366,9 +491,9 @@ chart: {
 
 - bo-table
   - filter: 'date', 格式化日期
-  - filter: number 新增預設值 0
+  - filter: number 新增预设值 0
   - filter: 'currency' 支持货币转换
-  - filter: 'currency|number' 支援多filter 照順序執行
+  - filter: 'currency|number' 支援多filter 照顺序执行
 
 ## 1.0.53
 
@@ -450,7 +575,7 @@ chart: {
 2021-10-12
 
 - bo-search
-  - itemType: "daterange" 新增 maxRangeDays 限制最大天數和側邊欄快捷鍵顯示
+  - itemType: "daterange" 新增 maxRangeDays 限制最大天数和侧边栏快捷键显示
 - bo-chart
   - move table logic to bo-page
   - adjust tooltip & grid line
@@ -515,7 +640,7 @@ chart: {
 
 2021-09-16
 
-- 修改 Storybook 文件顯示格式
+- 修改 Storybook 文件显示格式
 - 移除 console.log
 - 移除 router.catch error
 
@@ -525,29 +650,29 @@ chart: {
 
 - bo-search
 - bo-menu
-  - urlSync 改以 vue-router 實作
+  - urlSync 改以 vue-router 实作
 
 ## 1.0.34
 
 2021-09-14
 
 - bo-table
-  - 修正沒資料的時候 summary 顯示
+  - 修正没资料的时候 summary 显示
   - 移除 summary 背景色
-  - 修正沒資料的時候 chart 顯示
-  - 修正多级表头 summary & chart 的問題
+  - 修正没资料的时候 chart 显示
+  - 修正多级表头 summary & chart 的问题
 
 ## 1.0.33
 
 2021-09-11
 
 - bo-chart
-  - 移除 tableOptions.lineChartProp 設定
+  - 移除 tableOptions.lineChartProp 设定
   - 新增 tableOptions.chart = {show: Boolean , type: 'line' | 'bar' | 'pie', labelProp: string , dataProps:[]}
-    - show 是否預設展示
-    - type 圖表類型 除了 line 還新增 bar 和 pie 圖表
-    - labelProp 選 table 的哪個 prop 作為 X 軸的 label
-    - dataProps 選 table 的哪些 prop 加入圖表資料 (預設為全部, 除了 labelProp)
+    - show 是否预设展示
+    - type 图表类型 除了 line 还新增 bar 和 pie 图表
+    - labelProp 选 table 的哪个 prop 作为 X 轴的 label
+    - dataProps 选 table 的哪些 prop 加入图表资料 (预设为全部, 除了 labelProp)
 - bo-filter
   - fixed null toString bug
 
@@ -556,12 +681,12 @@ chart: {
 2021-09-09
 
 - bo-table
-  - 增加求和和平均值计算 summary: 'avg' | 'sum' 或 summary: { type: 'avg' excludeProps: ['prop']}, 預設第一個欄位會變成 Sum 或 Avg, excludeProps 可排除欄位, precision 精準度到小數第幾位 (預設為0)
-  - 修復多级表头 columns 格式化錯誤的問題
+  - 增加求和和平均值计算 summary: 'avg' | 'sum' 或 summary: { type: 'avg' excludeProps: ['prop']}, 预设第一个栏位会变成 Sum 或 Avg, excludeProps 可排除栏位, precision 精准度到小数第几位 (预设为0)
+  - 修復多级表头 columns 格式化错误的问题
 - bo-dialog
-  - formItems.change: (value) => { } 當數值改變的時候呼叫
+  - formItems.change: (value) => { } 当数值改变的时候呼叫
 - bo-search
-  - urlSync: true, 支持複雜物件及陣列 (利用encodeURIComponent, JSON.stringify)
+  - urlSync: true, 支持複杂物件及阵列 (利用encodeURIComponent, JSON.stringify)
 
 ## 1.0.30
 
@@ -607,7 +732,7 @@ chart: {
 2021-08-27
 
 - bo-dialog
-  - 更新 currency input 輸入為 string 格式, 按下 confirm 後會轉為 number
+  - 更新 currency input 输入为 string 格式, 按下 confirm 后会转为 number
 - bo-table
   - add slot name 'extraBtn' validation
 
@@ -618,8 +743,8 @@ chart: {
 - bo-table
   - fixed slot not pass issue
 - bo-dialog
-  - set close-on-click-modal to false 避免誤觸關閉
-  - 更新 currency input 為 text 格式
+  - set close-on-click-modal to false 避免误触关闭
+  - 更新 currency input 为 text 格式
 
 ## 1.0.21
 
@@ -633,17 +758,17 @@ chart: {
 2021-08-26
 
 - bo-dialog
-  - 新增 form.type = type ('add' || 'edit'), type === 'add' 會幫你重設 form 表單
-    - formItems 新增 showOn: "edit" 根據 type 決定是否顯示
-    - formItems 新增 disabledOn: "edit" 根據 type 決定是否 disabled
-  - 新增預設錯誤訊息 form.rules && formItems[].rules
-  - formItems 新增 itemType: "currency" 格式化輸出為千分位, 數值為 number (目前不支持小數)
-  - formItems 新增 tips 會在下方秀提示訊息
+  - 新增 form.type = type ('add' || 'edit'), type === 'add' 会帮你重设 form 表单
+    - formItems 新增 showOn: "edit" 根据 type 决定是否显示
+    - formItems 新增 disabledOn: "edit" 根据 type 决定是否 disabled
+  - 新增预设错误讯息 form.rules && formItems[].rules
+  - formItems 新增 itemType: "currency" 格式化输出为千分位, 数值为 number (目前不支持小数)
+  - formItems 新增 tips 会在下方秀提示讯息
 
 - bo-table
-  - columns 新增 html function 來設定color & html 格式
-  - columns 新增 linkPrefix: "/test-link?uid=" 讓資料變成超連結
-  - columns 新增 image 格式，設定同 element-ui Image
+  - columns 新增 html function 来设定color & html 格式
+  - columns 新增 linkPrefix: "/test-link?uid=" 让资料变成超连结
+  - columns 新增 image 格式，设定同 element-ui Image
     image: {
       style: null,
       fit: "",
@@ -661,19 +786,19 @@ chart: {
 2021-08-23
 
 - bo-page
-  - 新增 tips 欄位可顯示提示訊息
+  - 新增 tips 栏位可显示提示讯息
 
 ## 1.0.17
 
 2021-08-12
 
 - bo-table
-  - sortable: true 客戶端排序
-  - sortable: "custom" 後端排序, 新增欄位 order("ascending", "descending" or null), prop
+  - sortable: true 客户端排序
+  - sortable: "custom" 后端排序, 新增栏位 order("ascending", "descending" or null), prop
 - bo-dialog
-  - 添加和编辑功能，input ， select，multSelect，时间，text，checkbox，slot (包含驗證, confirm loading)
+  - 添加和编辑功能，input ， select，multSelect，时间，text，checkbox，slot (包含验证, confirm loading)
 - bo-search
-  - formOptions.forms 設定 urlSync: true 讓搜尋參數和 url 同步
+  - formOptions.forms 设定 urlSync: true 让搜寻参数和 url 同步
 
 ## 1.0.16
 

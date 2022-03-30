@@ -31,6 +31,7 @@
         v-model="params"
         :form="form"
         :style="form.style"
+        :disabled="form.disabled"
         @onEnter="searchHandler"
       ></bo-select-input>
 
@@ -39,6 +40,7 @@
         :value.sync="params[form.prop]"
         :period.sync="params[form.periodName]"
         :period-range="form.periodRange"
+        :disabled="form.disabled"
         :style="form.style"
       ></bo-select-date>
 
@@ -46,6 +48,7 @@
         v-else-if="form.itemType === 'section'"
         v-model="params[form.prop]"
         :maxSections="form.maxSections"
+        :disabled="form.disabled"
         :minShowDelete="form.minShowDelete"
         @input="form.Econfirm"
         @onDefault="form.Edefault"
@@ -61,6 +64,7 @@
         :value-format="form.valueFormat || 'timestamp'"
         :format="form.format || 'yyyy-MM-dd HH:mm:ss'"
         :default-time="form.defaultTime"
+        :disabled="form.disabled"
         :style="form.style"
         v-bind="form.props"
         v-on="form.events"
@@ -70,6 +74,7 @@
       <el-button
         type="primary"
         icon="el-icon-search"
+        v-bind="searchBtn"
         @click="searchHandler"
         :loading="loading"
       >
@@ -148,6 +153,10 @@ export default {
       default: true,
     },
     exportBtn: {
+      type: Object,
+      default: () => ({}),
+    },
+    searchBtn: {
       type: Object,
       default: () => ({}),
     },

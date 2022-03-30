@@ -1,6 +1,7 @@
 <template>
   <div class="bo-table">
     <el-table
+      ref="elTableRef"
       v-bind="$attrs"
       :key="key"
       :data="extraData"
@@ -92,6 +93,10 @@ export default {
         } else {
           this.extraData = [...data];
         }
+        // ref: https://blog.csdn.net/weixin_45818024/article/details/108580300
+        this.$nextTick(() => {
+          this.$refs.elTableRef.doLayout();
+        });
       },
     },
     columns: {

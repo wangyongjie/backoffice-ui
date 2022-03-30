@@ -4,6 +4,7 @@
       :formOptions="formOptions"
       :columns="columns"
       :tableOptions="tableOptions"
+      ref="page"
       @search="searchHandle"
     >
       <template v-slot:extraBtn>
@@ -14,6 +15,9 @@
         <el-button type="primary" @click="editHandle('edit', row)"
           >Edit</el-button
         >
+        <el-button type="primary" @click="editHandle('preview', row)"
+          >Preview</el-button
+        >
       </template>
     </bo-page>
 
@@ -21,11 +25,17 @@
       v-bind="editDialog"
       :visible.sync="editDialogVisible"
       :loading.sync="editDialogLoading"
+      width="800px"
       confirm-title="preview"
       @confirm="confirm"
     >
       <template v-slot:slotTest="{ model }">
         <el-input v-model="model.slotTest"></el-input>
+      </template>
+
+      <template v-slot:slotPlus="{ item, model }">
+        {{ model.name }}
+        <el-input v-model="item.test"></el-input>
       </template>
     </bo-dialog>
   </div>
@@ -45,10 +55,12 @@ export default {
       editDialogVisible: false,
       editDialogLoading: false,
       formOptions: {
-        submitBtnText: "Search",
+        searchBtn: {
+          disabled: false
+        },
         forms: [
-          { prop: "name", label: "Name", urlSync: true },
-          { prop: "mobile", label: "Mobile", urlSync: true },
+          { prop: "name", label: "Name", urlSync: true, disabled: false },
+          { prop: "mobile", label: "Mobile", urlSync: true, disabled: false },
           {
             prop: "sex",
             label: "Sex",
@@ -252,6 +264,7 @@ export default {
             region: [],
             date: "",
             daterange: "",
+            dateTimeRange: '',
             datetime: '',
             month: '',
             delivery: false,
@@ -264,6 +277,7 @@ export default {
               'br': { title: 'test1', textarea: 'test1' },
             },
             slotTest: "",
+            plus: []
           },
           labelWidth: "100px",
           rules: {
@@ -340,12 +354,28 @@ export default {
             ],
           },
           {
+            prop: "radio",
+            label: "Radio",
+            itemType: "radio",
+
+            options: [
+              { value: 1, label: "radio1" },
+              { value: 2, label: "radio2" },
+              { value: 3, label: "radio3" },
+            ],
+          },
+          {
             prop: "region",
             label: "Country",
             itemType: "multSelect",
+            isEmpty: true,
             options: [
               { value: 0, label: "options1" },
               { value: 1, label: "options2" },
+              { value: 2, label: "options3" },
+              { value: 3, label: "options4" },
+              { value: 4, label: "options5" },
+              { value: 5, label: "options6" },
             ],
           },
           {
@@ -394,6 +424,7 @@ export default {
             itemType: "daterange",
             dayRange: 1,
           },
+          { prop: "dateTimeRange", label: "DateTimeRange", itemType: "datetimerange", dayRange: 1 },
           {
             prop: "delivery",
             label: "Delivery:",
@@ -410,16 +441,6 @@ export default {
             ],
           },
           {
-            prop: "radio",
-            label: "Radio",
-            itemType: "radio",
-            options: [
-              { value: 1, label: "radio1" },
-              { value: 2, label: "radio2" },
-              { value: 3, label: "radio3" },
-            ],
-          },
-          {
             prop: "textarea",
             label: "Textarea",
             itemType: "textarea",
@@ -433,9 +454,22 @@ export default {
             itemType: "slot",
             slotName: "slotTest",
           },
+          {
+            prop: "plus",
+            label: "Plus",
+            itemType: "plus",
+            slotName: "slotPlus",
+            plusStyle: {'margin-top': '40px', 'margin-left': '-40px'},
+            onlyRemoveLast: true
+          },
         ],
       },
     };
+  },
+  mounted() {
+    this.formOptions.forms[0].disabled = true
+    this.formOptions.forms[1].disabled = true
+    this.formOptions.searchBtn.disabled = true 
   },
   methods: {
     searchHandle() {
@@ -458,7 +492,8 @@ export default {
       this.editDialog.form.type = type;
       this.editDialogVisible = true;
     },
-    confirm() {
+    confirm(param) {
+      console.log(param)
       this.editDialogLoading = true;
 
       setTimeout(() => {

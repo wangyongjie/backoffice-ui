@@ -50,11 +50,12 @@
     ></bo-chart>
     <!-- @slot 可從外部傳入 slot="preTable" 在 tabs & table 上方 -->
     <slot name="preTable"></slot>
-
+    <!-- hide tabs by class when tabs.length === 1 -->
     <el-tabs
       v-if="tabs.length"
       v-model="tabActiveName"
       @tab-click="setChartOptions"
+      :class="{ 'is-hide-tabs': tabs.length === 1 }"
       style="margin-top: -6px"
     >
       <el-tab-pane
@@ -292,15 +293,14 @@ export default {
       this.searchHandler();
     },
     setChartOptions(tab) {
-      // 先隱藏來觸發圖表重繪
-      // this.chartOptions.visible = false;
       // 無 tab 預設值
       let tableOptions = this.tableOptions || {};
       let columns = this.columns || [];
-      // tab 預設值 抓第一個
+      // tab 預設值, 抓現在點選的 tab
       if (!tab && this.tabs && this.tabs.length) {
-        tableOptions = this.tabs[0].tableOptions;
-        columns = this.tabs[0].columns;
+        const activeIndex = parseInt(this.tabActiveName)
+        tableOptions = this.tabs[activeIndex].tableOptions;
+        columns = this.tabs[activeIndex].columns;
       }
       if (tab) {
         const index = +tab.index;
@@ -394,6 +394,12 @@ export default {
   @media screen and (max-width: 600px) {
     .dialog-width {
       width: 100%;
+    }
+  }
+  // hide tab header
+  .is-hide-tabs {
+    .el-tabs__header {
+      display: none;
     }
   }
 }

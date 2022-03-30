@@ -5,7 +5,7 @@
 ```javascript
 import Vue from 'vue'
 import BackofficeUI from 'backoffice-ui'
-import locale from 'backoffice-ui/BoLocale/lang/zh-CN'
+import locale from 'backoffice-ui/packages/BoLocale/lang/zh-CN'
 
 Vue.use(BackofficeUI, { locale })
 ```
@@ -17,8 +17,8 @@ Vue.use(BackofficeUI, { locale })
 ```javascript
 import Vue from 'vue'
 import BackofficeUI from 'backoffice-ui'
-import enLocale from 'backoffice-ui/BoLocale/lang/en'
-import zhLocale from 'backoffice-ui/BoLocale/lang/zh-CN'
+import enLocale from 'backoffice-ui/packages/BoLocale/lang/en'
+import zhLocale from 'backoffice-ui/packages/BoLocale/lang/zh-CN'
 
 Vue.use(BackofficeUI, {
   i18n: function (path, options) {
@@ -35,8 +35,8 @@ Vue.use(BackofficeUI, {
 import Vue from 'vue'
 import BackofficeUI from 'backoffice-ui'
 import VueI18n from 'vue-i18n'
-import enLocale from 'backoffice-ui/BoLocale/lang/en'
-import zhLocale from 'backoffice-ui/BoLocale/lang/zh-CN'
+import enLocale from 'backoffice-ui/packages/BoLocale/lang/en'
+import zhLocale from 'backoffice-ui/packages/BoLocale/lang/zh-CN'
 
 Vue.use(VueI18n)
 
@@ -69,9 +69,9 @@ new Vue({ i18n }).$mount('#app')
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
-import enLocale from 'backoffice-ui/BoLocale/lang/en'
-import zhLocale from 'backoffice-ui/BoLocale/lang/zh-CN'
-import BackofficeUILocale from 'backoffice-ui/BoLocale/locale'
+import enLocale from 'backoffice-ui/packages/BoLocale/lang/en'
+import zhLocale from 'backoffice-ui/packages/BoLocale/lang/zh-CN'
+import BackofficeUILocale from 'backoffice-ui/packages/BoLocale/locale'
 
 Vue.use(VueI18n)
 
@@ -100,4 +100,6 @@ BackofficeUILocale.i18n((key, value) => i18n.t(key, value))
   <li>简体中文（zh-CN）</li>
   <li>英语（en）</li>
 </ul>
+如果你需要使用其他的语言，欢迎贡献 PR：只需在 [这里](https://github.com/wangyongjie/backoffice-ui/tree/master/packages/BoLocale/lang) 添加一个语言配置文件即可。
+
 

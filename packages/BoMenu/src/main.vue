@@ -21,7 +21,6 @@
           :data="treeData"
           node-key="id"
           default-expand-all
-          :expand-on-click-node="false"
           @node-click="nodeClick"
         >
           <span
