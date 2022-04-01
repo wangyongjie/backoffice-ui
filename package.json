@@ -1,6 +1,6 @@
 {
   "name": "backoffice-ui",
-  "version": "1.0.124",
+  "version": "1.0.125",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build:lib": "vue-cli-service build --target lib --inline-vue --name backoffice-ui src/index.js",

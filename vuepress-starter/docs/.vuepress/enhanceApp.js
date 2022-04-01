@@ -14,7 +14,7 @@ export default async ({
         if(typeof window !== 'undefined') {
             window.global = window
         }
-        await import('../../../lib/backoffice-ui.umd.min.js').then(function (m) {
+        await import('../../../src/index.js').then(function (m) {
             Vue.use(m.default)
         })
     }

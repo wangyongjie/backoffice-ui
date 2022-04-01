@@ -662,6 +662,82 @@ export default {
 
 :::
 
+### 自定义图表
+
+可自定义图形的维度和展示细节
+
+:::demo
+
+```html
+<template>
+  <bo-page
+    :loading.sync="loading"
+    :formOptions="formOptions"
+    :columns="columns"
+    :tableOptions="tableOptions"
+    @search="searchHandle"
+    @excel="searchHandle($event, true)"
+  >
+  </bo-page>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      loading: false,
+      formOptions: {
+        forms: [
+          { prop: 'task', label: '任务' }
+        ],
+        autoSearch: true
+      },
+      columns: [
+        { prop: 'task', label: '任务' },
+        { prop: 'task1', label: '任务1' },
+        { prop: 'task2', label: '任务2' },
+        { prop: 'task3', label: '任务3' },
+        { prop: 'task4', label: '任务4' }
+      ],
+      tableOptions: {
+        data: [],
+        chart: {
+          show: true,
+          type: 'bar',
+          dimension: 'row',
+          labelProp: 'task',
+          option: {
+            label: {
+              formatter: '{b} ({d}%)'
+            }
+          }
+        },
+      }
+    }
+  },
+  methods: {
+    searchHandle(params, excel) {
+      const data = [
+        { task: '参加人数', task1: 10, task2: 20, task3: 30, task4: 40 },
+        // { task: '完成人数', task1: 5, task2: 8, task3: 12, task4: 23 }
+      ]
+
+      if (excel) {
+        this.$exportExcel({ columns: this.columns, data })
+      } else {
+        // 使用setTimeout模拟调接口
+        setTimeout(() => {
+          this.tableOptions.data = data
+        }, 2000)
+      }
+    }
+  },
+};
+</script>
+```
+
+:::
+
 ### Attributes
 
 | 参数            | 说明       | 类型    | 可选值 | 默认值     |
@@ -747,6 +823,8 @@ export default {
 | show | 是否展示图表     | boolean  | —      | false |
 | type | 图标类型，支持折线图，柱状图和饼图     | line / bar / pie  | —      | line |
 | labelProp | x轴对应的key     | string  | —      | — |
+| dataProps | 哪些列需要展示，格式和column一致     | array  | —      | — |
+| dimension | 图形展示维度，默认按列     | string  | row / column     | column |
 | dataReverse | 数据是否倒序     | boolean  | —      | false |
 | option | echarts配置，会与bo-charts的配置进行合并，参考[echarts](https://echarts.apache.org/zh/option.html#title)     | object  | —      | — |
 

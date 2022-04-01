@@ -151,6 +151,32 @@ const boChartData = ({
         console.error('chart.labelProp field is required.')
         return
     }
+
+    if(chart.dimension === 'row') {
+        // 使用深拷贝来规避影响
+        tableOptions = deepClone(tableOptions)
+        columns = deepClone(columns)
+
+        let copyColumns = columns.filter(c => c.prop === labelProp).concat(tableOptions.data.map(d => {
+            return { prop: d[labelProp], label: d[labelProp] }
+        }))
+
+        tableOptions.data = columns.filter(c => c.prop !== labelProp).map(item => {
+            let obj = {}
+            tableOptions.data.forEach(d => {
+                obj[d[labelProp]] = d[item.prop]
+            })
+            return {
+                [labelProp]: item.label,
+                ...obj
+            }
+        })
+        columns = copyColumns
+    }
+
+    console.log(tableOptions.data, columns)
+
+
     // 預設為 line chart
     const type = chart.type || 'line'
 
@@ -194,8 +220,24 @@ const boChartData = ({
     // 用 dimensions 指定了维度的顺序。直角坐标系中，如果 X 轴 type 为 category，
     // 默认把第一个维度映射到 X 轴上，后面维度映射到 Y 轴上。
     const reestDimensions = dataProps.map(x => x.prop)
-    const dimensions = [labelProp, ...reestDimensions]
+    let dimensions = [labelProp, ...reestDimensions]
 
+    console.log({
+        type,
+        // dataset: https://echarts.apache.org/handbook/zh/concepts/dataset
+        option: {
+            dataset: {
+                dimensions: dimensions,
+                // 預設為 table data array object
+                // 使用deepclone避免影响table表数据
+                source: chart.dataReverse ? deepClone(tableOptions.data).reverse() : tableOptions.data
+            },
+            ...option,
+            /// custom option
+            ...customOption
+        }
+    })
+    
     return {
         type,
         // dataset: https://echarts.apache.org/handbook/zh/concepts/dataset
