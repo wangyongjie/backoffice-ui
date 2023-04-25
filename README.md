@@ -6,6 +6,10 @@
 npm i --save backoffice-ui
 ```
 
+## 相关文档
+介绍 https://juejin.cn/post/7010711177521020965
+教程 https://wangyongjie.github.io/backoffice-ui-docs/advanced/page.html
+
 ## 例子
 
 暂无
